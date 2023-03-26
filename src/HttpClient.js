@@ -9,7 +9,7 @@ class HttpClient {
   }
 
   static async getHtml(endpoint, encoding) {
-    var params = {
+    let params = {
       headers: { 'content-type': "text/html;charset=" + encoding }
     }
     try {

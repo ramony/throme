@@ -21,7 +21,7 @@ class ContentParse {
     }
     console.log('parse contentUrl:' + contentUrl);
 
-    var urlRule = this.ruleMatcher.match(contentUrl)
+    let urlRule = this.ruleMatcher.match(contentUrl)
     if (!urlRule.rule) {
       window.open(contentUrl, '_blank');
       return;
@@ -36,11 +36,11 @@ class ContentParse {
   }
 
   async sendRequest(contentUrl, urlRule, contentId) {
-    var rule = urlRule.rule;
+    let rule = urlRule.rule;
     let params = rule.params;
 
-    var htmlData = await HttpAdaptor.getHtml(contentUrl, params.encoding);
-    var html = htmlData.data;
+    let htmlData = await HttpAdaptor.getHtml(contentUrl, params.encoding);
+    let html = htmlData.data;
 
     document.getElementById("nowUrl").setAttribute('href', contentUrl);
 

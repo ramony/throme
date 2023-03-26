@@ -3,7 +3,7 @@ import NextFunMap from './NextFunMap';
 class Html2Json {
 
   static htmlToJson(html, dataRule, removeImg) {
-    var dom = this.htmlToDom(html, removeImg);
+    let dom = this.htmlToDom(html, removeImg);
     return this.domToJson(dom, dataRule)
   }
 
@@ -18,9 +18,9 @@ class Html2Json {
     if (!dataRule || !dom) {
       return {};
     }
-    var typeOfRule = Object.prototype.toString.call(dataRule);
-    var data;
+    let typeOfRule = Object.prototype.toString.call(dataRule);
     if (typeOfRule.includes('String')) {
+      let data;
       if (dataRule.includes('@')) {
         let [selector, func] = dataRule.split('@');
         data = NextFunMap[func](this.$s(selector, dom))
@@ -31,7 +31,7 @@ class Html2Json {
       } else {
         let selector = dataRule;
         let subDom = this.$s(selector, dom);
-        return this.getData(subDom, 'html');
+        data = this.getData(subDom, 'html');
       }
       return data;
     } else if (typeOfRule.includes('Array')) {
@@ -40,8 +40,8 @@ class Html2Json {
       let data = [...doms].map((it) => this.domToJson(it, arrayRule));
       return data;
     } else if (typeOfRule.includes('Object')) {
-      var data = {};
-      for (var key in dataRule) {
+      let data = {};
+      for (let key in dataRule) {
         data[key] = this.domToJson(dom, dataRule[key])
       }
       return data;
