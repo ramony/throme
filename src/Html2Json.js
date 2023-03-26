@@ -2,19 +2,19 @@ import NextFunMap from './NextFunMap';
 
 class Html2Json {
 
-  htmlToJson(html, dataRule, removeImg) {
+  static htmlToJson(html, dataRule, removeImg) {
     var dom = this.htmlToDom(html, removeImg);
     return this.domToJson(dom, dataRule)
   }
 
-  htmlToDom(html, removeImg) {
+  static htmlToDom(html, removeImg) {
     html = this.trimHtmlTag(html, removeImg);
     let dom = document.createElement('div');
     dom.innerHTML = html;
     return dom;
   }
 
-  domToJson(dom, dataRule) {
+  static domToJson(dom, dataRule) {
     if (!dataRule || !dom) {
       return {};
     }
@@ -48,7 +48,7 @@ class Html2Json {
     }
   }
 
-  getData(dom, attr) {
+  static getData(dom, attr) {
     if (!dom) {
       return '';
     }
@@ -76,14 +76,14 @@ class Html2Json {
     return data;
   }
 
-  $s(selector, dom) {
+  static $s(selector, dom) {
     if (selector == '' || selector == '$') {
       return dom;
     }
     return this.$(selector, dom)
   }
 
-  $(a, b) {
+  static $(a, b) {
     let result;
     if (b) {
       result = b.querySelectorAll(a);
@@ -94,7 +94,7 @@ class Html2Json {
     return result;
   }
 
-  trimHtmlTag(html, removeImg) {
+  static trimHtmlTag(html, removeImg) {
     html = html.replace(/<meta[^>]+>/ig, '');
     html = html.replace(/<link[^>]+>/ig, '');
     html = html.replace(/<base[^>]+>/ig, '');
@@ -110,6 +110,6 @@ class Html2Json {
 
 }
 
-export default new Html2Json()
+export default Html2Json
 
 

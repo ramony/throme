@@ -1,14 +1,14 @@
 class HttpClient {
 
-  createSuccess(data) {
+  static createSuccess(data) {
     return { success: true, data: data };
   }
 
-  createFail(errMsg) {
+  static createFail(errMsg) {
     return { success: false, errMsg: errMsg };
   }
 
-  async getHtml(endpoint, encoding) {
+  static async getHtml(endpoint, encoding) {
     var params = {
       headers: { 'content-type': "text/html;charset=" + encoding }
     }
@@ -23,7 +23,7 @@ class HttpClient {
     }
   }
 
-  async getJSON(endpoint) {
+  static async getJSON(endpoint) {
     try {
       const res = await fetch(endpoint, {
         method: 'get',
@@ -38,7 +38,7 @@ class HttpClient {
     }
   }
 
-  async postJSON(endpoint, requestBody) {
+  static async postJSON(endpoint, requestBody) {
     try {
       const res = await fetch(endpoint, {
         method: 'post',
@@ -56,4 +56,4 @@ class HttpClient {
 
 }
 
-export default new HttpClient()
+export default HttpClient
