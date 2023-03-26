@@ -8,24 +8,24 @@ class Content extends Component {
   }
 
   mouseOver(index) {
-    this.setState({[this.hoveKey(index)]: '1'})
+    this.setState({ [this.hoveKey(index)]: '1' })
   }
 
   mouseOut(index) {
-    this.setState({[this.hoveKey(index)]: ''})
+    this.setState({ [this.hoveKey(index)]: '' })
   }
 
   itemClick(item, index) {
     this.props.onItemClick(item.url)
-    this.setState({clickKey:index})
+    this.setState({ clickKey: index })
   }
 
   render() {
     return (
       <div className="Content">
         {
-          this.props.contentData.map((item, index)=> {            
-            return <div className="Content-Item" dangerouslySetInnerHTML={{ __html: item.content}}></div>
+          this.props.contentData.map((item, index) => {
+            return <div className="Content-Item" dangerouslySetInnerHTML={{ __html: item.content }}></div>
           })
         }
       </div>

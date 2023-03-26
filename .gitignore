@@ -106,3 +106,4 @@ dist
 .idea
 /public/entry.html
 /public/ruleConfig.json
+.DS_Store

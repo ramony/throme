@@ -11,18 +11,18 @@ class ActionButtons extends Component {
   }
 
   componentDidMount() {
-    
+
   }
 
   render() {
-    let {nextFn, openFn, loading} = this.props;
+    let { nextFn, openFn, loading } = this.props;
     return (
-        <div>
-            <Loading visible={loading}/>
-            <input type="button"  className="button input-right" onClick={()=>nextFn()} value="Next"/>
-            <input type="button"  className="button input-right" onClick={()=>openFn()}  value="Open"/>
-            <input type="button"  className="button input-right" onClick={()=>window.location.reload()}  value="Reset"/>
-        </div>
+      <div>
+        <Loading visible={loading} />
+        <input type="button" className="button input-right" onClick={() => nextFn()} value="Next" />
+        <input type="button" className="button input-right" onClick={() => openFn()} value="Open" />
+        <input type="button" className="button input-right" onClick={() => window.location.reload()} value="Reset" />
+      </div>
     )
   }
 }

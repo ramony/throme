@@ -7,72 +7,67 @@ class Listing extends Component {
     this.state = {}
   }
 
-  componentDidMount(){ 
+  componentDidMount() {
     //必须在这里声明，所以 ref 回调可以引用它
     //this.props.onRef(this)
   }
+
   mouseOver(index) {
-    this.setState({[this.hoveKey(index)]: '1'})
+    this.setState({ [this.hoveKey(index)]: '1' })
   }
 
   mouseOut(index) {
-    this.setState({[this.hoveKey(index)]: ''})
+    this.setState({ [this.hoveKey(index)]: '' })
   }
 
   itemClick(item, index) {
     this.props.onItemClick(item.url)
-    this.setState({clickKey:item.url})
+    this.setState({ clickKey: item.url })
   }
 
   scroll(e) {
     let element = e.target;
     let top = element.scrollTop;
     let height = element.clientHeight;
-    let scrollHeight = element.scrollHeight;    
-    if( top + height >=  scrollHeight - 400) {
+    let scrollHeight = element.scrollHeight;
+    if (top + height >= scrollHeight - 400) {
       this.props.onScrollToBottom()
-      //console.log('scroll')
     }
   }
 
-  // resetClickKey() {
-  //   this.setState({clickKey:-1})
-  // }
-
   calcClassName(index, url) {
     let classes = ['Listing-Round-Angle Listing-Item']
-    if(index %2 == 0) {
+    if (index % 2 === 0) {
       classes.push('Listing-Item-Even');
     }
-    if(this.state[this.hoveKey(index)]) {
+    if (this.state[this.hoveKey(index)]) {
       classes.push('Listing-Item-Hover')
     }
-    if(this.state.clickKey === url) {
+    if (this.state.clickKey === url) {
       classes.push('Listing-Item-Click')
     }
     return classes.join(' ')
   }
 
   hoveKey(index) {
-    return 'hoveKey-' + index; 
+    return 'hoveKey-' + index;
   }
 
   openUrl(e, url) {
     e.preventDefault()
     console.log(url)
-    window.open(url,'_blank');
+    window.open(url, '_blank');
   }
-
 
   render() {
     return (
-      <div className="Listing" onScroll={(e)=>this.scroll(e)}>
+      <div className="Listing" onScroll={(e) => this.scroll(e)}>
         {
-          this.props.listingData.map((item, index)=> {
+          this.props.listingData.map((item, index) => {
             let className = this.calcClassName(index, item.url)
-            return <div className={className} key={index} 
-                onMouseOver={()=>this.mouseOver(index)} onMouseOut={()=>this.mouseOut(index)}
-                onClick={()=>this.itemClick(item, index)} onContextMenu={(e)=>this.openUrl(e, item.url)}>{item.title}</div>
+            return <div className={className} key={index}
+              onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}
+              onClick={() => this.itemClick(item, index)} onContextMenu={(e) => this.openUrl(e, item.url)}>{item.title}</div>
           })
         }
       </div>
