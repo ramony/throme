@@ -1,0 +1,21 @@
+.Container {
+  margin:0 auto;
+  text-align:left;
+  padding:0;
+  width:100%;
+  height:100%;
+  background : #EAEEF3;
+}
+
+.Left-Box{
+   width:calc(30% - 4px);
+   height:100%;
+   float:left;
+   overflow-y:hidden;
+}
+
+.Right-Box{
+  width:70%;
+  height:100%;
+  float:left;
+}

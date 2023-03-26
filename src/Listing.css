@@ -1,0 +1,37 @@
+.Listing {
+  margin-left: 5px;
+  width: calc(100% - 6px);
+  height:100%;
+  float: left;
+  overflow-y:auto;
+}
+
+.Listing-Item {
+  float: left;
+  width:calc(100% - 28px);
+  background : #CCE8CF ;
+  min-height:35px;
+  margin:5px 10px 0 0;
+  cursor: pointer;
+  padding:10px 0 0 12px;
+}
+
+.Listing-Item-Even {
+  background-color : #DDEADF;
+}
+
+.Listing-Round-Angle {
+  border-radius: 5px;
+  /**box-shadow:5px 5px 5px #F6C;**/
+  box-shadow: 0px 0px 10px 0px #F6C
+}
+
+.Listing-Item-Hover {
+  background : #DDAECD;
+  padding-left:10px;
+}
+
+.Listing-Item-Click {
+  background : #4f9060;
+  padding-left:12px;
+}
