@@ -31,7 +31,8 @@ class HttpClient {
           'Content-Type': 'application/json'
         }
       });
-      return await res.json();
+      const data = await res.json();
+      return this.createSuccess(data); 
     } catch (e) {
       console.log(endpoint + " getJSON error, " + e)
       return this.createFail(e);
@@ -47,7 +48,8 @@ class HttpClient {
         },
         body: JSON.stringify(requestBody)
       })
-      return await res.json();
+      const data = await res.json();
+      return this.createSuccess(data);
     } catch (e) {
       console.log(endpoint + " getJSON error, " + e)
       return this.createFail(e);

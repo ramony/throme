@@ -33,13 +33,17 @@ class Container extends Component {
     let rules = []
     for (let config of ["ruleConfig"]) {
       let fileRules = await HttpClient.getJSON(`${config}.json`);
-      rules.push(...fileRules)
+      if(!fileRules.success) {
+        console.log('Fail to load config');
+        return;
+      }
+      rules.push(...fileRules.data)
     }
     this.contentParse = new ContentParse(rules);
   }
 
   handleUrl(url, append) {
-    if (!url) {
+    if (!url || !this.contentParse) {
       return;
     }
     this.setState({ loading: true })
