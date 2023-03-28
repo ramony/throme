@@ -5,7 +5,7 @@ import { Button, ButtonGroup } from '@mui/material';
 
 const ActionButtons = ({ nextFn, openFn, loading }) => {
   return (
-    <div>
+    <div className='ActionButtons'>
       <Loading visible={loading} />
       <ButtonGroup variant="contained" color='warning'>
         <Button onClick={() => nextFn()}>Next</Button>

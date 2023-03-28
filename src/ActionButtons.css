@@ -1,4 +1,7 @@
-
+.ActionButtons {
+      text-align: center;
+      padding: 2px;
+}
 .button {
       display: inline-block;
       zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
