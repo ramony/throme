@@ -1,30 +1,20 @@
 import React, { Component } from 'react'
 import './ActionButtons.css';
 import Loading from './Loading';
+import { Button, ButtonGroup } from '@mui/material';
 
-class ActionButtons extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+const ActionButtons = ({ nextFn, openFn, loading }) => {
+  return (
+    <div>
+      <Loading visible={loading} />
+      <ButtonGroup variant="contained" color='warning' fullWidth="true">
+        <Button onClick={() => nextFn()}>Next</Button>
+        <Button onClick={() => openFn()}>Open</Button>
+        <Button onClick={() => window.location.reload()}>Reset</Button>
+      </ButtonGroup>
+    </div>
+  )
 
-    }
-  }
-
-  componentDidMount() {
-
-  }
-
-  render() {
-    let { nextFn, openFn, loading } = this.props;
-    return (
-      <div>
-        <Loading visible={loading} />
-        <input type="button" className="button input-right" onClick={() => nextFn()} value="Next" />
-        <input type="button" className="button input-right" onClick={() => openFn()} value="Open" />
-        <input type="button" className="button input-right" onClick={() => window.location.reload()} value="Reset" />
-      </div>
-    )
-  }
 }
 
 export default ActionButtons
