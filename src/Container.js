@@ -88,6 +88,21 @@ class Container extends Component {
     }
   }
 
+  onContentClose(index) {
+    this.setState(state=> {
+      let contentData = state.contentData.filter((_, i)=>i!==index)
+      return {contentData}
+    });
+  }
+
+  onContentDelete(index) {
+
+  }
+
+  onContentLike(index){
+
+  }
+
   render() {
     let { listingData, contentData, loading } = this.state;
     return (
@@ -98,7 +113,9 @@ class Container extends Component {
             onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.nextFn()} />
         </div>
         <div className="Right-Box">
-          <Content contentData={contentData} />
+          <Content contentData={contentData} onDelete={(index)=>this.onContentDelete(index)}
+          onClose={(index)=>this.onContentClose(index)}
+          onLike={(index)=>this.onContentLike(index)}/>
         </div>
       </div>
     )

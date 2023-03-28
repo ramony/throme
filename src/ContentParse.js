@@ -77,8 +77,8 @@ class ContentParse {
 
   processContentData(list, contentUrl, contentId) {
     list.forEach(it => {
-      it['originalUrl'] = contentUrl;
-      it['contentId'] = contentId;
+      it.contentId = 'Ja'; //contentId
+      it.contentUrl = contentUrl;
     })
     return list;
   }

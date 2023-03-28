@@ -1,26 +1,33 @@
 import React, { Component } from 'react'
 import './Content.css';
+import { Button, ButtonGroup } from '@mui/material';
 
-class Content extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div className="Content">
-        {
-          this.props.contentData.map((item, index) => {
-            return (
-              <div className="Content-Item">
-                  <div class="Content-Title">{item.title}</div>
-                  <div className="Content-Detail" dangerouslySetInnerHTML={{ __html: item.content }}></div>
-              </div>)
-          })
-        }
-      </div>
-    )
-  }
+const Content = ({ contentData, onDelete, onClose, onLike}) => {
+  return (
+    <div className="Content">
+      {
+        contentData.map((item, index) => {
+          let actions = null;
+          if (item.contentId) {
+            actions = <div>
+              <ButtonGroup variant="outlined" color='warning'>
+                <Button onClick={() => onDelete(index)}>Delete {item.contentId}</Button>
+                <Button onClick={() => onClose(index)}>Close {item.contentId}</Button>
+                <Button onClick={() => onLike(index)}>Like {item.contentId}</Button>
+              </ButtonGroup>
+            </div>
+          }
+          return (
+            <div className="Content-Item">
+              {actions}
+              <div className="Content-Title">{item.title}</div>
+              <div className="Content-Detail" dangerouslySetInnerHTML={{ __html: item.content }}></div>
+              {actions}
+            </div>)
+        })
+      }
+    </div>
+  )
 
 }
 
