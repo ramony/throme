@@ -7,7 +7,7 @@ const ActionButtons = ({ nextFn, openFn, loading }) => {
   return (
     <div className='ActionButtons'>
       <Loading visible={loading} />
-      <ButtonGroup variant="contained" color='warning'>
+      <ButtonGroup variant="outlined" color='warning'>
         <Button onClick={() => nextFn()}>Next</Button>
         <Button onClick={() => openFn()}>Open</Button>
         <Button onClick={() => window.location.reload()}>Reset</Button>
