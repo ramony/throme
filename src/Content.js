@@ -4,20 +4,6 @@ import './Content.css';
 class Content extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
-  }
-
-  mouseOver(index) {
-    this.setState({ [this.hoveKey(index)]: '1' })
-  }
-
-  mouseOut(index) {
-    this.setState({ [this.hoveKey(index)]: '' })
-  }
-
-  itemClick(item, index) {
-    this.props.onItemClick(item.url)
-    this.setState({ clickKey: index })
   }
 
   render() {
@@ -25,7 +11,11 @@ class Content extends Component {
       <div className="Content">
         {
           this.props.contentData.map((item, index) => {
-            return <div className="Content-Item" dangerouslySetInnerHTML={{ __html: item.content }}></div>
+            return (
+              <div className="Content-Item">
+                  <div class="Content-Title">{item.title}</div>
+                  <div className="Content-Detail" dangerouslySetInnerHTML={{ __html: item.content }}></div>
+              </div>)
           })
         }
       </div>
