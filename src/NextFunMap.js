@@ -1,33 +1,23 @@
 const NextFunMap = {
-  findFirst: function (nodelist) {
+  findFirst(nodelist) {
     let elements = [...nodelist]
-    if (elements.length > 0) {
-      return elements[0]['href'];
-    }
-    return null;
+    return elements.at(0)?.['href'];;
   },
-  findLast: function (nodelist) {
+  findLast(nodelist) {
     let elements = [...nodelist]
-    if (elements.length > 0) {
-      return elements[elements.length - 1]['href'];
-    }
-    return null;
+    return elements.at(-1)?.['href'];;
   },
-  findNext: function (nodelist) {
+  findNext(nodelist) {
     let elements = [...nodelist]
     if (elements.length > 0) {
       return elements.next()[0]['href'];
     }
     return null;
   },
-  findLast2: function (nodelist) {
+  findLast2(nodelist) {
     let elements = [...nodelist]
-    if (elements.length > 0) {
-      return elements[elements.length - 2]['href'];
-    }
-    return null;
+    return elements.at(-2)?.['href'];;
   }
 }
-
 
 export default NextFunMap
