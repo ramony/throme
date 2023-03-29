@@ -1,7 +1,6 @@
 import './Loading.css';
 
-const Loading = props => {
-  let { visible } = props;
+const Loading = ({ visible } ) => {
   if (!visible) {
     return <></>
   }
