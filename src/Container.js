@@ -5,6 +5,7 @@ import HttpClient from './HttpClient';
 import Listing from './Listing';
 import Content from './Content';
 import ActionButtons from './ActionButtons';
+import DataService from './DataService';
 
 import './Container.css';
 
@@ -33,7 +34,7 @@ class Container extends Component {
     let rules = []
     for (let config of ["ruleConfig"]) {
       let fileRules = await HttpClient.getJSON(`${config}.json`);
-      if(!fileRules.success) {
+      if (!fileRules.success) {
         console.log('Fail to load config');
         return;
       }
@@ -56,6 +57,11 @@ class Container extends Component {
       this.setState(state => {
         return append ? this.mergeData(state, result) : result;
       })
+      if (result?.autoDisplayList) {
+        result.listingData.forEach(item => {
+          this.handleUrl(item.url, true);
+        });
+      }
     });
   }
 
@@ -89,18 +95,22 @@ class Container extends Component {
   }
 
   onContentClose(index) {
-    this.setState(state=> {
-      let contentData = state.contentData.filter((_, i)=>i!==index)
-      return {contentData}
+    this.setState(state => {
+      let contentData = state.contentData.filter((_, i) => i !== index)
+      return { contentData }
     });
   }
 
-  onContentDelete(index) {
-
+  onContentDelete(index, item) {
+    let contentId = item.contentId;
+    DataService.markReadByDetailId(contentId[0], contentId[1])
+    this.onContentClose(index);
   }
 
-  onContentLike(index){
-
+  onContentLike(index, item) {
+    let contentId = item.contentId;
+    DataService.markScore(contentId[0], contentId[1], 10)
+    this.onContentClose(index);
   }
 
   render() {
@@ -113,9 +123,9 @@ class Container extends Component {
             onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.nextFn()} />
         </div>
         <div className="Right-Box">
-          <Content contentData={contentData} onDelete={(index)=>this.onContentDelete(index)}
-          onClose={(index)=>this.onContentClose(index)}
-          onLike={(index)=>this.onContentLike(index)}/>
+          <Content contentData={contentData} onDelete={(index, item) => this.onContentDelete(index, item)}
+            onClose={(index) => this.onContentClose(index)}
+            onLike={(index, item) => this.onContentLike(index, item)} />
         </div>
       </div>
     )

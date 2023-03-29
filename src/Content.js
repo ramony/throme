@@ -2,18 +2,19 @@ import React, { Component } from 'react'
 import './Content.css';
 import { Button, ButtonGroup } from '@mui/material';
 
+const ButtonColor = { bgcolor: "gray" };
 const Content = ({ contentData, onDelete, onClose, onLike}) => {
   return (
     <div className="Content">
       {
         contentData.map((item, index) => {
           let actions = null;
-          if (item.contentId) {
+          if (item.contentIdString) {
             actions = <div>
-              <ButtonGroup variant="outlined" color='warning'>
-                <Button onClick={() => onDelete(index)}>Delete {item.contentId}</Button>
-                <Button onClick={() => onClose(index)}>Close {item.contentId}</Button>
-                <Button onClick={() => onLike(index)}>Like {item.contentId}</Button>
+              <ButtonGroup variant="contained" color='warning'>
+                <Button onClick={() => onDelete(index, item)} sx={ButtonColor}>Delete {item.contentIdString}</Button>
+                <Button onClick={() => onClose(index)} sx={ButtonColor}>Close {item.contentIdString}</Button>
+                <Button onClick={() => onLike(index, item)} sx={ButtonColor}>Like {item.contentIdString}</Button>
               </ButtonGroup>
             </div>
           }

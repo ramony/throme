@@ -1,6 +1,7 @@
 import RuleMatcher from './RuleMatcher';
 import HttpAdaptor from './HttpAdaptor';
 import Html2Json from './Html2Json';
+import DataService from './DataService';
 
 class ContentParse {
 
@@ -9,7 +10,10 @@ class ContentParse {
   }
 
   checkUrlRead(contentId) {
-    return false; //localCache.exist(urlId.join('-'))
+    if(!contentId) {
+      return false;
+    }
+    return DataService.contentExistLocal(...contentId)
   }
 
   async parse(contentUrl) {
@@ -35,7 +39,7 @@ class ContentParse {
     return this.sendRequest(contentUrl, urlRule);
   }
 
-  async sendRequest(contentUrl, urlRule, contentId) {
+  async sendRequest(contentUrl, urlRule) {
     let rule = urlRule.rule;
     let params = rule.params;
 
@@ -56,9 +60,9 @@ class ContentParse {
     if (rule.target === 'listing') {
       let listingData = this.processListingData(responseData.list);
       let listingNext = responseData.next
-      return { listingData, listingNext, listFlag: true };
+      return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay};
     } else {
-      let contentData = this.processContentData(responseData.list, contentUrl, contentId);
+      let contentData = this.processContentData(responseData.list, contentUrl, urlRule.contentId);
       return { contentData }
     }
   }
@@ -77,7 +81,8 @@ class ContentParse {
 
   processContentData(list, contentUrl, contentId) {
     list.forEach(it => {
-      it.contentId = 'Ja'; //contentId
+      it.contentId = contentId;
+      it.contentIdString = contentId.reverse().join('-');
       it.contentUrl = contentUrl;
     })
     return list;
