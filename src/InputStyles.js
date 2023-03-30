@@ -1,5 +1,17 @@
-const ButtonNormal = { textTransform: "none" , bgcolor: "gray"  };
-const ButtonGray = { textTransform: "none", bgcolor: "gray"  };
-const TextSmall = { width: "80px" };
+import { createTheme } from '@mui/material/styles';
 
-export {ButtonNormal, ButtonGray, TextSmall}
+const NoTextTransform = { textTransform: "none"};
+// const ButtonGray = { textTransform: "none", bgcolor: "gray" };
+const SmallText = { width: "80px" };
+
+const GrayButtonTheme = createTheme({
+    palette: {
+        primary: {
+            light: '#909090',
+            main: '#909090',
+            dark: '#808080'
+        },
+    },
+});
+
+export { NoTextTransform, SmallText, GrayButtonTheme }

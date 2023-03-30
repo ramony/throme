@@ -1,3 +1,8 @@
 .center {
   text-align: center;
 }
+.console {
+  background-color: gray;
+  height: 100px;
+  width: 100%;
+}

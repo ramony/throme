@@ -4,7 +4,8 @@ import './ActionButtons.css';
 import Loading from './Loading';
 import Download from './Download';
 import { Button, ButtonGroup } from '@mui/material';
-import {ButtonNormal} from './InputStyles';
+import { NoTextTransform, SmallText, GrayButtonTheme } from './InputStyles';
+import {ThemeProvider } from '@mui/material/styles';
 
 const ActionButtons = ({ nextFn, openFn, loading }) => {
   const downloadRef = useRef(null);
@@ -14,12 +15,14 @@ const ActionButtons = ({ nextFn, openFn, loading }) => {
   return (
     <div className='ActionButtons'>
       <Loading visible={loading} />
-      <ButtonGroup variant="contained" color='warning'>
-        <Button sx={ButtonNormal} onClick={() => nextFn()}>Next</Button>
-        <Button sx={ButtonNormal} onClick={() => openFn()}>Open</Button>
-        <Button sx={ButtonNormal} onClick={() => window.location.reload()}>Reset</Button>
-        <Button sx={ButtonNormal} onClick={handleDownload}>Download</Button>
-      </ButtonGroup>
+      <ThemeProvider theme={GrayButtonTheme}>
+        <ButtonGroup variant="contained">
+          <Button sx={NoTextTransform} onClick={() => nextFn()}>Next</Button>
+          <Button sx={NoTextTransform} onClick={() => openFn()}>Open</Button>
+          <Button sx={NoTextTransform} onClick={() => window.location.reload()}>Reset</Button>
+          <Button sx={NoTextTransform} onClick={handleDownload}>Download</Button>
+        </ButtonGroup>
+      </ThemeProvider>
       <Download ref={downloadRef} />
     </div>
   )

@@ -30,7 +30,7 @@ class Download extends Component {
             return;
         }
         let {list, defaultRange} = config.data;
-        let {from, to} = defaultRange;
+        let [from, to] = defaultRange;
         let downloadList = list.map(item => ({ ...item, checked: false, from, to, skip: true }));
         this.setState({ downloadList })
     }
@@ -96,17 +96,20 @@ class Download extends Component {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell><Checkbox value={row.checked} onChange={(e) => this.changeRow(index, 'checked', e)} variant="outlined" /></TableCell>
                                     <TableCell>{row.name}</TableCell>
-                                    <TableCell><TextField value={row.from} onChange={(e) => this.changeRow(index, 'from', e)} sx={TextSmall} variant="outlined" /></TableCell>
-                                    <TableCell><TextField value={row.to} onChange={(e) => this.changeRow(index, 'to', e)} sx={TextSmall} variant="outlined" /></TableCell>
+                                    <TableCell><TextField value={row.from} onChange={(e) => this.changeRow(index, 'from', e)} size="small" sx={TextSmall} variant="outlined" /></TableCell>
+                                    <TableCell><TextField value={row.to} onChange={(e) => this.changeRow(index, 'to', e)} size="small" sx={TextSmall} variant="outlined" /></TableCell>
                                     <TableCell><Switch checked={row.skip} /></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <div className='console'>
+
+                </div>
                 <div className='center'>
                     <ButtonGroup variant="contained" color='warning'>
-                        <Button onClick={() => this.startDownload()} sx={ButtonNormal}>Download</Button>
+                        <Button onClick={() => this.startDownload()} >Download</Button>
                         <Button onClick={() => this.close()} sx={ButtonNormal}>Close</Button>
                     </ButtonGroup>
                 </div>
