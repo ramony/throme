@@ -1,12 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
 
 import Container from './Container';
 
+import { ThromeTheme } from './InputStyles';
+import { ThemeProvider } from '@mui/material/styles';
+
 function App() {
   return (
     <div className="App">
-      <Container />
+      <ThemeProvider theme={ThromeTheme}>
+        <Container />
+      </ThemeProvider>
+
     </div>
   );
 }

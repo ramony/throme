@@ -46,7 +46,8 @@ class Container extends Component {
         return;
       }
       if(result.unMatched) {
-        window.open(url, '_blank');
+        console.log('No rule for url', url);
+        return;
       }
       this.setState(state => {
         return append ? this.mergeData(state, result) : result;

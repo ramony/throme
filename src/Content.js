@@ -1,6 +1,6 @@
 import './Content.css';
 import { Button, ButtonGroup } from '@mui/material';
-import {ButtonGray} from './InputStyles';
+import {NoTextTransform} from './InputStyles';
 
 const Content = ({ contentData, onDelete, onClose, onLike}) => {
   return (
@@ -10,10 +10,10 @@ const Content = ({ contentData, onDelete, onClose, onLike}) => {
           let actions = null;
           if (item.contentIdString) {
             actions = <div>
-              <ButtonGroup variant="contained" color='warning'>
-                <Button onClick={() => onDelete(index, item)} sx={ButtonGray}>Delete {item.contentIdString}</Button>
-                <Button onClick={() => onClose(index)} sx={ButtonGray}>Close {item.contentIdString}</Button>
-                <Button onClick={() => onLike(index, item)} sx={ButtonGray}>Like {item.contentIdString}</Button>
+              <ButtonGroup variant="contained">
+                <Button onClick={() => onDelete(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</Button>
+                <Button onClick={() => onClose(index)} sx={NoTextTransform}>Close {item.contentIdString}</Button>
+                <Button onClick={() => onLike(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</Button>
               </ButtonGroup>
             </div>
           }

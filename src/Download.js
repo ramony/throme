@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { ButtonNormal, TextSmall } from './InputStyles';
+import { SmallText, NoTextTransform } from './InputStyles';
 
 import Paper from '@mui/material/Paper';
-import HttpClient from './HttpClient';
 import ConfigLoad from './ConfigLoad';
 import ContentParse from './ContentParse';
 
@@ -15,7 +14,8 @@ class Download extends Component {
         super(props);
         this.state = {
             openFlag: false,
-            downloadList: []
+            downloadList: [],
+            logs:[]
         };
     }
 
@@ -24,12 +24,8 @@ class Download extends Component {
     }
 
     async loadConfig() {
-        let config = await HttpClient.getJSON('downloadConfig.json');
-        if (!config.success) {
-            console.log('Fail to load download config');
-            return;
-        }
-        let {list, defaultRange} = config.data;
+        let config = await ConfigLoad.loadDownloads();
+        let { list, defaultRange } = config;
         let [from, to] = defaultRange;
         let downloadList = list.map(item => ({ ...item, checked: false, from, to, skip: true }));
         this.setState({ downloadList })
@@ -40,20 +36,25 @@ class Download extends Component {
         let rules = await ConfigLoad.loadRules();
         let contentParse = new ContentParse(rules);
         const { downloadList } = this.state;
+        const mylogs = ["Start job"];
         for (let item of downloadList) {
             if (!item.checked) {
                 continue;
             }
             for (let i = item.from; i < item.to; i++) {
                 let url = item.url.replace("{pageNo}", i);
+                mylogs.push(`Download ${url}`)
                 let { listingData } = await contentParse.parse(url);
                 if (listingData) {
-                    //save
-                    console.log(i, listingData);
+                    //console.log(i, listingData);
                 }
             }
         }
-
+        mylogs.push("Done.")
+        this.setState(({logs})=>{
+            logs = [...logs, ...mylogs];
+            return {logs};
+        });
     }
 
     open() {
@@ -68,18 +69,18 @@ class Download extends Component {
         let value = e.target.value;
         this.setState((state) => {
             let { downloadList } = state;
-            downloadList = [...downloadList].map((item, i) => index == i ? { ...item, [keyName]: value } : item);
+            downloadList = [...downloadList].map((item, i) => index === i ? { ...item, [keyName]: value } : item);
             return { downloadList }
         })
     }
 
     render() {
-        const { openFlag, downloadList } = this.state;
+        const { openFlag, downloadList, logs } = this.state;
         return (
-            <Dialog onClose={() => false} open={openFlag}>
-                <DialogTitle>Set backup account</DialogTitle>
+            <Dialog onClose={() => false} open={openFlag} maxWidth={'1'}>
+                <DialogTitle>Download It!</DialogTitle>
                 <TableContainer component={Paper}>
-                    <Table aria-label="simple table">
+                    <Table aria-label="table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Checked</TableCell>
@@ -95,9 +96,9 @@ class Download extends Component {
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell><Checkbox value={row.checked} onChange={(e) => this.changeRow(index, 'checked', e)} variant="outlined" /></TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell><TextField value={row.from} onChange={(e) => this.changeRow(index, 'from', e)} size="small" sx={TextSmall} variant="outlined" /></TableCell>
-                                    <TableCell><TextField value={row.to} onChange={(e) => this.changeRow(index, 'to', e)} size="small" sx={TextSmall} variant="outlined" /></TableCell>
+                                    <TableCell>{row.url}</TableCell>
+                                    <TableCell><TextField value={row.from} onChange={(e) => this.changeRow(index, 'from', e)} size="small" sx={SmallText} variant="outlined" /></TableCell>
+                                    <TableCell><TextField value={row.to} onChange={(e) => this.changeRow(index, 'to', e)} size="small" sx={SmallText} variant="outlined" /></TableCell>
                                     <TableCell><Switch checked={row.skip} /></TableCell>
                                 </TableRow>
                             ))}
@@ -105,12 +106,12 @@ class Download extends Component {
                     </Table>
                 </TableContainer>
                 <div className='console'>
-
+                    {logs.map(log => <div>{log}</div>)}
                 </div>
                 <div className='center'>
-                    <ButtonGroup variant="contained" color='warning'>
-                        <Button onClick={() => this.startDownload()} >Download</Button>
-                        <Button onClick={() => this.close()} sx={ButtonNormal}>Close</Button>
+                    <ButtonGroup variant="contained">
+                        <Button onClick={() => this.startDownload()} sx={NoTextTransform}>Download</Button>
+                        <Button onClick={() => this.close()} sx={NoTextTransform}>Close</Button>
                     </ButtonGroup>
                 </div>
             </Dialog>

@@ -1,10 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 
 const NoTextTransform = { textTransform: "none"};
-// const ButtonGray = { textTransform: "none", bgcolor: "gray" };
 const SmallText = { width: "80px" };
 
-const GrayButtonTheme = createTheme({
+const ThromeTheme = createTheme({
     palette: {
         primary: {
             light: '#909090',
@@ -14,4 +13,4 @@ const GrayButtonTheme = createTheme({
     },
 });
 
-export { NoTextTransform, SmallText, GrayButtonTheme }
+export { NoTextTransform, SmallText, ThromeTheme }

@@ -7,7 +7,7 @@ class RuleMatcher {
 		let contentIds = null;
 		for (let rule of this.rules) {
 			for (let linkPattern of rule.linkPatterns) {
-				if (linkPattern == contentUrl) {
+				if (linkPattern === contentUrl) {
 					return { rule, contentIds };
 				}
 				let matching = contentUrl.match(new RegExp('^' + linkPattern + '$'));

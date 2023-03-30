@@ -2,7 +2,7 @@ import HttpClient from './HttpClient';
 
 const ConfigLoad = {
     async loadRules() {
-        if(!this.rules) {
+        if (!this.rules) {
             let rules = [];
             for (let config of ["ruleConfig"]) {
                 let fileRules = await HttpClient.getJSON(`${config}.json`);
@@ -17,11 +17,11 @@ const ConfigLoad = {
         return this.rules;
     },
     async loadDownloads() {
-        if(!this.downloads) {
+        if (!this.downloads) {
             let config = await HttpClient.getJSON('downloadConfig.json');
             if (!config.success) {
                 console.log('Fail to load download config');
-                return;
+                return { list: [] };
             }
             this.downloads = config.data;
         }

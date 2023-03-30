@@ -55,7 +55,7 @@ class Html2Json {
     let node;
     if (Object.prototype.toString.call(dom).includes('NodeList')) {
       let [firstNode] = [...dom];
-      if (firstNode == undefined) {
+      if (firstNode === undefined) {
         return '';
       }
       node = firstNode
@@ -64,11 +64,11 @@ class Html2Json {
     }
 
     let data;
-    if (attr == 'text') {
+    if (attr === 'text') {
       data = node.innerText;
-    } else if (attr == 'html') {
+    } else if (attr === 'html') {
       data = node.innerHTML;
-    } else if (attr == 'href') {
+    } else if (attr === 'href') {
       data = node.href;
     } else {
       data = node.getAttribute(attr);
@@ -77,7 +77,7 @@ class Html2Json {
   }
 
   static $s(selector, dom) {
-    if (selector == '' || selector == '$') {
+    if (selector === '' || selector === '$') {
       return dom;
     }
     return this.$(selector, dom)
