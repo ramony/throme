@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { DialogTitle, Dialog, Button,ButtonGroup, Switch, TextField,Checkbox } from '@mui/material';
+import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import {ButtonNormal, TextSmall} from './InputStyles';
+import { ButtonNormal, TextSmall } from './InputStyles';
 
 import Paper from '@mui/material/Paper';
 import HttpClient from './HttpClient';
+import ConfigLoad from './ConfigLoad';
+import ContentParse from './ContentParse';
 
 import './Download.css';
 
@@ -27,12 +29,31 @@ class Download extends Component {
             console.log('Fail to load download config');
             return;
         }
-        let downloadList = config.data.map(item => ({ ...item, checked:false, from: 1, to: 1000 ,skip:true}));
+        let {list, defaultRange} = config.data;
+        let {from, to} = defaultRange;
+        let downloadList = list.map(item => ({ ...item, checked: false, from, to, skip: true }));
         this.setState({ downloadList })
     }
 
-    startDownload() {
+    async startDownload() {
         //start to download from remote server.
+        let rules = await ConfigLoad.loadRules();
+        let contentParse = new ContentParse(rules);
+        const { downloadList } = this.state;
+        for (let item of downloadList) {
+            if (!item.checked) {
+                continue;
+            }
+            for (let i = item.from; i < item.to; i++) {
+                let url = item.url.replace("{pageNo}", i);
+                let { listingData } = await contentParse.parse(url);
+                if (listingData) {
+                    //save
+                    console.log(i, listingData);
+                }
+            }
+        }
+
     }
 
     open() {
@@ -55,7 +76,7 @@ class Download extends Component {
     render() {
         const { openFlag, downloadList } = this.state;
         return (
-            <Dialog onClose={()=>false} open={openFlag}>
+            <Dialog onClose={() => false} open={openFlag}>
                 <DialogTitle>Set backup account</DialogTitle>
                 <TableContainer component={Paper}>
                     <Table aria-label="simple table">
@@ -73,10 +94,10 @@ class Download extends Component {
                                 <TableRow
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell><Checkbox  value={row.checked} onChange={(e) => this.changeRow(index, 'checked', e)} variant="outlined"/></TableCell>
+                                    <TableCell><Checkbox value={row.checked} onChange={(e) => this.changeRow(index, 'checked', e)} variant="outlined" /></TableCell>
                                     <TableCell>{row.name}</TableCell>
-                                    <TableCell><TextField value={row.from} onChange={(e) => this.changeRow(index, 'from', e)} sx={TextSmall} variant="outlined"/></TableCell>
-                                    <TableCell><TextField value={row.to} onChange={(e) => this.changeRow(index, 'to', e)} sx={TextSmall} variant="outlined"/></TableCell>
+                                    <TableCell><TextField value={row.from} onChange={(e) => this.changeRow(index, 'from', e)} sx={TextSmall} variant="outlined" /></TableCell>
+                                    <TableCell><TextField value={row.to} onChange={(e) => this.changeRow(index, 'to', e)} sx={TextSmall} variant="outlined" /></TableCell>
                                     <TableCell><Switch checked={row.skip} /></TableCell>
                                 </TableRow>
                             ))}

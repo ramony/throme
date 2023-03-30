@@ -1,4 +1,3 @@
-import React, { Component } from 'react'
 import './Content.css';
 import { Button, ButtonGroup } from '@mui/material';
 import {ButtonGray} from './InputStyles';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
+import ConfigLoad from './ConfigLoad';
 import ContentParse from './ContentParse';
-import HttpClient from './HttpClient';
 
 import Listing from './Listing';
 import Content from './Content';
@@ -31,15 +31,7 @@ class Container extends Component {
   }
 
   async loadConfig() {
-    let rules = []
-    for (let config of ["ruleConfig"]) {
-      let fileRules = await HttpClient.getJSON(`${config}.json`);
-      if (!fileRules.success) {
-        console.log('Fail to load config');
-        return;
-      }
-      rules.push(...fileRules.data)
-    }
+    let rules = await ConfigLoad.loadRules()
     this.contentParse = new ContentParse(rules);
   }
 
@@ -48,8 +40,14 @@ class Container extends Component {
       return;
     }
     this.setState({ loading: true })
-    this.contentParse.parse(url).then(result => {
+    this.contentParse.parse(url, append).then(result => {
       this.setState({ loading: false })
+      if(!result) {
+        return;
+      }
+      if(result.unMatched) {
+        window.open(url, '_blank');
+      }
       this.setState(state => {
         return append ? this.mergeData(state, result) : result;
       })

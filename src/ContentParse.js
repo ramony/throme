@@ -6,7 +6,7 @@ import DataService from './DataService';
 class ContentParse {
 
   constructor(rules) {
-    this.ruleMatcher = new RuleMatcher(rules);
+    this.ruleMatcher = new RuleMatcher(rules||[]);
   }
 
   checkUrlRead(contentIds) {
@@ -16,7 +16,7 @@ class ContentParse {
     return DataService.contentExistLocal(...contentIds)
   }
 
-  async parse(contentUrl) {
+  async parse(contentUrl, append) {
     contentUrl = this.filterUrl(contentUrl);
 
     if (!contentUrl) {
@@ -27,11 +27,10 @@ class ContentParse {
 
     let urlRule = this.ruleMatcher.match(contentUrl)
     if (!urlRule.rule) {
-      window.open(contentUrl, '_blank');
-      return;
+      return {unMatched:true};
     }
 
-    if (this.checkUrlRead(urlRule.contentIds)) {
+    if (this.checkUrlRead(urlRule.contentIds) && append) {
       return;
     }
 
