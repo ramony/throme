@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './Content.css';
 import { Button, ButtonGroup } from '@mui/material';
+import {ButtonGray} from './InputStyles';
 
-const ButtonColor = { bgcolor: "gray" };
 const Content = ({ contentData, onDelete, onClose, onLike}) => {
   return (
     <div className="Content">
@@ -12,9 +12,9 @@ const Content = ({ contentData, onDelete, onClose, onLike}) => {
           if (item.contentIdString) {
             actions = <div>
               <ButtonGroup variant="contained" color='warning'>
-                <Button onClick={() => onDelete(index, item)} sx={ButtonColor}>Delete {item.contentIdString}</Button>
-                <Button onClick={() => onClose(index)} sx={ButtonColor}>Close {item.contentIdString}</Button>
-                <Button onClick={() => onLike(index, item)} sx={ButtonColor}>Like {item.contentIdString}</Button>
+                <Button onClick={() => onDelete(index, item)} sx={ButtonGray}>Delete {item.contentIdString}</Button>
+                <Button onClick={() => onClose(index)} sx={ButtonGray}>Close {item.contentIdString}</Button>
+                <Button onClick={() => onLike(index, item)} sx={ButtonGray}>Like {item.contentIdString}</Button>
               </ButtonGroup>
             </div>
           }
