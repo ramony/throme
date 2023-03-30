@@ -1,14 +1,10 @@
-class HttpClient {
 
-  static createSuccess(data) {
-    return { success: true, data: data };
-  }
+const CreateSuccess = (data) => ({ success: true, data: data });
+const CreateFail = (errMsg) => ({ success: false, errMsg: errMsg });
 
-  static createFail(errMsg) {
-    return { success: false, errMsg: errMsg };
-  }
+const HttpClient = {
 
-  static async getHtml(endpoint, encoding) {
+  async getHtml(endpoint, encoding) {
     let params = {
       headers: { 'content-type': "text/html;charset=" + encoding }
     }
@@ -16,14 +12,14 @@ class HttpClient {
       const res = await fetch(endpoint, params);
       const buffer = await res.arrayBuffer();
       const html = new TextDecoder(encoding).decode(buffer);
-      return this.createSuccess(html);
+      return CreateSuccess(html);
     } catch (e) {
       console.log(endpoint + " getHtml error, " + e)
-      return this.createFail(e);
+      return CreateFail(e);
     }
-  }
+  },
 
-  static async getJSON(endpoint) {
+  async getJSON(endpoint) {
     try {
       const res = await fetch(endpoint, {
         method: 'get',
@@ -32,14 +28,14 @@ class HttpClient {
         }
       });
       const data = await res.json();
-      return this.createSuccess(data); 
+      return CreateSuccess(data);
     } catch (e) {
       console.log(endpoint + " getJSON error, " + e)
-      return this.createFail(e);
+      return CreateFail(e);
     }
-  }
+  },
 
-  static async postJSON(endpoint, requestBody) {
+  async postJSON(endpoint, requestBody) {
     try {
       const res = await fetch(endpoint, {
         method: 'post',
@@ -49,10 +45,10 @@ class HttpClient {
         body: JSON.stringify(requestBody)
       })
       const data = await res.json();
-      return this.createSuccess(data);
+      return CreateSuccess(data);
     } catch (e) {
       console.log(endpoint + " getJSON error, " + e)
-      return this.createFail(e);
+      return CreateFail(e);
     }
   }
 

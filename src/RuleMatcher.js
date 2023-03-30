@@ -4,20 +4,21 @@ class RuleMatcher {
 	}
 
 	match(contentUrl) {
+		let contentIds = null;
 		for (let rule of this.rules) {
 			for (let linkPattern of rule.linkPatterns) {
 				if (linkPattern == contentUrl) {
-					return {rule: rule, contentId: null}
+					return { rule, contentIds };
 				}
 				let matching = contentUrl.match(new RegExp('^' + linkPattern + '$'));
 				if (matching != null) {
 					let contentId = matching[1];
 					if (rule?.params?.idPrefix) {
-						contentId = [contentId, rule.params.idPrefix];
+						contentIds = [contentId, rule.params.idPrefix];
 					} else {
-						contentId = [contentId]
+						contentIds = [contentId]
 					}
-					return {rule: rule, contentId: contentId}
+					return { rule, contentIds }
 				}
 			}
 		}

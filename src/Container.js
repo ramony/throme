@@ -49,10 +49,6 @@ class Container extends Component {
     }
     this.setState({ loading: true })
     this.contentParse.parse(url).then(result => {
-      //if(!append && result.listFlag) {
-      //当前是listing数据，并且不是追加，则需要重置最后一次点击Item
-      //this.listing.resetClickKey()
-      //}
       this.setState({ loading: false })
       this.setState(state => {
         return append ? this.mergeData(state, result) : result;
@@ -102,14 +98,14 @@ class Container extends Component {
   }
 
   onContentDelete(index, item) {
-    let contentId = item.contentId;
-    DataService.markReadByDetailId(contentId[0], contentId[1])
+    let contentIds = item.contentIds;
+    DataService.markReadByDetailId(contentIds[0], contentIds[1])
     this.onContentClose(index);
   }
 
   onContentLike(index, item) {
-    let contentId = item.contentId;
-    DataService.markScore(contentId[0], contentId[1], 10)
+    let contentIds = item.contentIds;
+    DataService.markScore(contentIds[0], contentIds[1], 10)
     this.onContentClose(index);
   }
 

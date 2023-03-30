@@ -2,9 +2,9 @@ import HttpClient from './HttpClient';
 
 const UseProxy = true;
 
-class HttpAdaptor {
+const HttpAdaptor = {
 
-  static async getHtml(endpoint, encoding) {
+  async getHtml(endpoint, encoding) {
     if (UseProxy && endpoint.includes("http")) {
       endpoint = "http://localhost:8888/302?url=" + endpoint;
     }

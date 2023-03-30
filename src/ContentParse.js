@@ -9,11 +9,11 @@ class ContentParse {
     this.ruleMatcher = new RuleMatcher(rules);
   }
 
-  checkUrlRead(contentId) {
-    if(!contentId) {
+  checkUrlRead(contentIds) {
+    if(!contentIds) {
       return false;
     }
-    return DataService.contentExistLocal(...contentId)
+    return DataService.contentExistLocal(...contentIds)
   }
 
   async parse(contentUrl) {
@@ -31,7 +31,7 @@ class ContentParse {
       return;
     }
 
-    if (this.checkUrlRead(urlRule.contentId)) {
+    if (this.checkUrlRead(urlRule.contentIds)) {
       return;
     }
 
@@ -62,7 +62,7 @@ class ContentParse {
       let listingNext = responseData.next
       return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay};
     } else {
-      let contentData = this.processContentData(responseData.list, contentUrl, urlRule.contentId);
+      let contentData = this.processContentData(responseData.list, contentUrl, urlRule.contentIds);
       return { contentData }
     }
   }
@@ -79,10 +79,10 @@ class ContentParse {
     return list;
   }
 
-  processContentData(list, contentUrl, contentId) {
+  processContentData(list, contentUrl, contentIds) {
     list.forEach(it => {
-      it.contentId = contentId;
-      it.contentIdString = contentId.reverse().join('-');
+      it.contentIds = contentIds;
+      it.contentIdString = contentIds.reverse().join('-');
       it.contentUrl = contentUrl;
     })
     return list;

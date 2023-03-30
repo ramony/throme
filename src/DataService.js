@@ -57,7 +57,7 @@ const DataService = {
   },
 
   async createList(requestBody) {
-    var result = await HttpClient.postJSON(API_HOST + 'listing/createList', requestBody);
+    return await HttpClient.postJSON(API_HOST + 'listing/createList', requestBody);
   },
 
   async listingExist(url) {
