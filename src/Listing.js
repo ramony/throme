@@ -22,7 +22,7 @@ class Listing extends Component {
 
   itemClick(item, index) {
     this.props.onItemClick(item.url)
-    this.setState({ clickKey: item.url })
+    this.setState({ clickKey: item.url + index })
   }
 
   scroll(e) {
@@ -35,7 +35,7 @@ class Listing extends Component {
     }
   }
 
-  calcClassName(index, url) {
+  calcClassName(index, item) {
     let classes = ['Listing-Round-Angle Listing-Item']
     if (index % 2 === 0) {
       classes.push('Listing-Item-Even');
@@ -43,7 +43,7 @@ class Listing extends Component {
     if (this.state[this.hoveKey(index)]) {
       classes.push('Listing-Item-Hover')
     }
-    if (this.state.clickKey === url) {
+    if (this.state.clickKey === item.url + index) {
       classes.push('Listing-Item-Click')
     }
     return classes.join(' ')
@@ -64,7 +64,7 @@ class Listing extends Component {
       <div className="Listing" onScroll={(e) => this.scroll(e)}>
         {
           this.props.listingData.map((item, index) => {
-            let className = this.calcClassName(index, item.url)
+            let className = this.calcClassName(index, item)
             return <div className={className} key={index}
               onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}
               onClick={() => this.itemClick(item, index)} onContextMenu={(e) => this.openUrl(e, item.url)}>{item.title}</div>

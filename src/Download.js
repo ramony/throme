@@ -26,6 +26,9 @@ class Download extends Component {
     async loadConfig() {
         let config = await ConfigLoad.loadDownloads();
         let { list, defaultRange } = config;
+        if(list.length <1) {
+          return;
+        }
         let [from, to] = defaultRange;
         let downloadList = list.map(item => ({ ...item, checked: false, from, to, skip: true }));
         this.setState({ downloadList })

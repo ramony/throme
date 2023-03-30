@@ -24,6 +24,9 @@ class Html2Json {
       if (dataRule.includes('@')) {
         let [selector, func] = dataRule.split('@');
         data = NextFunMap[func](this.$s(selector, dom))
+      } else if (dataRule.includes('#')) {
+        let [_, pageFieldName] = dataRule.split('#');
+        //@next page
       } else if (dataRule.includes('/')) {
         let [selector, attr] = dataRule.split('/');
         let subDom = this.$s(selector, dom);
