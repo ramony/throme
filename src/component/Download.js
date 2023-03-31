@@ -16,7 +16,7 @@ class Download extends Component {
         this.state = {
             openFlag: false,
             downloadList: [],
-            logs:[]
+            logs:["Log Console"]
         };
     }
 
