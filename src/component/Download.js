@@ -8,7 +8,8 @@ import Paper from '@mui/material/Paper';
 import { SmallText, NoTextTransform } from '../config/ThromeConfig';
 import ConfigLoad from '../service/ConfigLoad';
 import ContentParse from '../service/ContentParse';
-
+import DataService from '../service/DataService';
+import {HashCode} from '@/utils/Common';
 
 class Download extends Component {
     constructor(props) {
@@ -26,39 +27,67 @@ class Download extends Component {
 
     async loadConfig() {
         let config = await ConfigLoad.loadDownloads();
-        let { list, defaultRange } = config;
-        if(list.length <1) {
-          return;
-        }
+        let { list = [], defaultRange= [1 , 10], filterOutKeywords = []} = config;
         let [from, to] = defaultRange;
         let downloadList = list.map(item => ({ ...item, checked: false, from, to, skip: true }));
         this.setState({ downloadList })
+        this.filterOutKeywords = filterOutKeywords;
     }
 
     async startDownload() {
         //start to download from remote server.
+        const { downloadList } = this.state;
+        if(downloadList.length < 1) {
+          this.buildLog(['Download list is required']);
+          return;
+        }
         let rules = await ConfigLoad.loadRules();
         let contentParse = new ContentParse(rules);
-        const { downloadList } = this.state;
-        const mylogs = ["Start job"];
+        const newLogs = ["Start job"];
         for (let item of downloadList) {
             if (!item.checked) {
                 continue;
             }
             for (let i = item.from; i < item.to; i++) {
                 let url = item.url.replace("{pageNo}", i);
-                mylogs.push(`Download ${url}`)
-                let { listingData } = await contentParse.parse(url);
-                if (listingData) {
-                    //console.log(i, listingData);
+                let { listingData = [] } = await contentParse.parse(url);
+                this.mappingListingData(listingData, i);
+                let insertCount = await DataService.createDetail(listingData, count => {
+                  newLogs.push(`Download ${url}, count=${count}`)
+                  DataService.createList({pageUrl:url});
+                });
+                if(insertCount === 0 && item.skip) {
+                  break;
                 }
             }
         }
-        mylogs.push("Done.")
-        this.setState(({logs})=>{
-            logs = [...logs, ...mylogs];
-            return {logs};
-        });
+        newLogs.push("Done.")
+        this.showLogs(newLogs);
+    }
+
+    async mappingListingData(listingData, pageNo) {
+      listingData.forEach(item => {
+        let detailId = item.contentIds[0];
+        item.detailId = detailId
+        item.detailType = item.contentIds[1];
+        item.detailOrder = /^[0-9]+$/.test(detailId) ? detailId: HashCode(detailId);
+        item.detailTitle = item.title
+        item.detailTitle = item.title
+        item.detailUrl = item.url
+        item.readFlag = 0;
+        item.localFlag = 0;
+        item.tagId = 0;
+        item.pageNo = pageNo;
+        item.keyword = '@@@@' 
+      });
+    }
+
+
+    showLogs(newLogs) {
+      this.setState(({logs})=>{
+        logs = [...logs, ...newLogs, '---------------------------'];
+        return {logs};
+      });
     }
 
     open() {
