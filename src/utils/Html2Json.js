@@ -2,19 +2,21 @@ import NextFunMap from './NextFunMap';
 
 class Html2Json {
 
-  static htmlToJson(html, dataRule, removeImg) {
-    let dom = this.htmlToDom(html, removeImg);
-    return this.domToJson(dom, dataRule)
+  static htmlToJson(html, url, dataRule, removeImg) {
+    let dom = this.htmlToDom(html, url, removeImg);
+    return this.domToJson(dom, url, dataRule)
   }
 
-  static htmlToDom(html, removeImg) {
+  static htmlToDom(html, url, removeImg) {
     html = this.trimHtmlTag(html, removeImg);
     let dom = document.createElement('div');
-    dom.innerHTML = html;
+    //    document.getElementById("nowUrl").setAttribute('href', contentUrl);
+    //    <base id="nowUrl" href="" target="_blank"/>
+    dom.innerHTML = `<base href=${url}/>` + html;
     return dom;
   }
 
-  static domToJson(dom, dataRule) {
+  static domToJson(dom, url, dataRule) {
     if (!dataRule || !dom) {
       return {};
     }
@@ -25,8 +27,17 @@ class Html2Json {
         let [selector, func] = dataRule.split('@');
         data = NextFunMap[func](this.$s(selector, dom))
       } else if (dataRule.includes('#')) {
-        let [_, pageFieldName] = dataRule.split('#');
-        //@next page
+        let param = dataRule.substring(1);
+        let nextUrl = url.replace(new RegExp(`${param}=([0-9]+)`), (a, b) => a + (parseInt(b) + 1));
+        if (nextUrl !== url) {
+          data = nextUrl;
+        }
+        // let matching = url.match(`${param}=([0-9]+)`);
+        // if(matching) {
+        //   let pageStr = matching[0]
+        //   let nextPageNo = parseInt(matching[1]) + 1;
+        //   data = url.replace(pageStr, `${param}=${nextPageNo}`);
+        // }
       } else if (dataRule.includes('/')) {
         let [selector, attr] = dataRule.split('/');
         let subDom = this.$s(selector, dom);
@@ -40,12 +51,12 @@ class Html2Json {
     } else if (typeOfRule.includes('Array')) {
       let [selector, arrayRule] = dataRule;
       let doms = this.$(selector, dom)
-      let data = [...doms].map((it) => this.domToJson(it, arrayRule));
+      let data = [...doms].map((it) => this.domToJson(it, url, arrayRule));
       return data;
     } else if (typeOfRule.includes('Object')) {
       let data = {};
       for (let key in dataRule) {
-        data[key] = this.domToJson(dom, dataRule[key])
+        data[key] = this.domToJson(dom, url, dataRule[key])
       }
       return data;
     }

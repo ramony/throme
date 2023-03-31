@@ -46,14 +46,12 @@ class ContentParse {
     let htmlData = await HttpAdaptor.getHtml(contentUrl, params.encoding);
     let html = htmlData.data;
 
-    document.getElementById("nowUrl").setAttribute('href', contentUrl);
-
     let dataRule = rule.dataRule;
     let responseData;
     if (dataRule === 'json') {
       responseData = JSON.parse(html).data;
     } else {
-      responseData = Html2Json.htmlToJson(html, dataRule);
+      responseData = Html2Json.htmlToJson(html, contentUrl, dataRule);
     }
     //console.log('responseData : ' + JSON.stringify(responseData));
 
