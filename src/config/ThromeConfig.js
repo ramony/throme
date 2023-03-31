@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const NoTextTransform = { textTransform: "none"};
 const SmallText = { width: "80px" };
 
-const ThromeTheme = createTheme({
+const theme = createTheme({
     palette: {
         primary: {
             light: '#909090',
@@ -13,4 +13,4 @@ const ThromeTheme = createTheme({
     },
 });
 
-export { NoTextTransform, SmallText, ThromeTheme }
+export { NoTextTransform, SmallText, theme }

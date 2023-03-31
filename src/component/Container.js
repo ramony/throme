@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import ConfigLoad from './ConfigLoad';
-import ContentParse from './ContentParse';
+import ConfigLoad from '../service/ConfigLoad';
+import ContentParse from '../service/ContentParse';
 
 import Listing from './Listing';
 import Content from './Content';
 import ActionButtons from './ActionButtons';
-import DataService from './DataService';
+import DataService from '../service/DataService';
 
 import './Container.css';
 

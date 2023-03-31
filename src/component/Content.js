@@ -1,6 +1,6 @@
 import './Content.css';
 import { Button, ButtonGroup } from '@mui/material';
-import {NoTextTransform} from './InputStyles';
+import {NoTextTransform} from '../config/ThromeConfig';
 
 const Content = ({ contentData, onDelete, onClose, onLike}) => {
   return (

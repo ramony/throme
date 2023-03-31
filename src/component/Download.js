@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { SmallText, NoTextTransform } from './InputStyles';
+import { SmallText, NoTextTransform } from '../config/ThromeConfig';
 
 import Paper from '@mui/material/Paper';
-import ConfigLoad from './ConfigLoad';
-import ContentParse from './ContentParse';
+import ConfigLoad from '../service/ConfigLoad';
+import ContentParse from '../service/ContentParse';
 
 import './Download.css';
 

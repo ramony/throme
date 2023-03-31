@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import './ActionButtons.css';
 import Loading from './Loading';
 import Download from './Download';
-import {NoTextTransform} from './InputStyles';
+import {NoTextTransform} from '../config/ThromeConfig';
 
 import { Button, ButtonGroup } from '@mui/material';
 

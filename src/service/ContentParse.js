@@ -1,6 +1,6 @@
-import RuleMatcher from './RuleMatcher';
+import RuleMatcher from '../utils/RuleMatcher';
 import HttpAdaptor from './HttpAdaptor';
-import Html2Json from './Html2Json';
+import Html2Json from '../utils/Html2Json';
 import DataService from './DataService';
 
 class ContentParse {
