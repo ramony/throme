@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
+
+import './Download.css';
 import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { SmallText, NoTextTransform } from '../config/ThromeConfig';
-
 import Paper from '@mui/material/Paper';
+
+import { SmallText, NoTextTransform } from '../config/ThromeConfig';
 import ConfigLoad from '../service/ConfigLoad';
 import ContentParse from '../service/ContentParse';
 
-import './Download.css';
 
 class Download extends Component {
     constructor(props) {
