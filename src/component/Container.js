@@ -62,7 +62,11 @@ class Container extends Component {
       } else {
         if(!append) {
           //if new content, reset scrollTop value.
-          document.getElementsByClassName("Content").scrollTop = 0;
+          try {
+            document.getElementsByClassName("Content")[0].scrollTop = 0;
+          } catch(e) {
+
+          }
         }
       }
     });

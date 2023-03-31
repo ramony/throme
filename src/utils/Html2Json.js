@@ -10,9 +10,8 @@ class Html2Json {
   static htmlToDom(html, url, removeImg) {
     html = this.trimHtmlTag(html, removeImg);
     let dom = document.createElement('div');
-    //    document.getElementById("nowUrl").setAttribute('href', contentUrl);
-    //    <base id="nowUrl" href="" target="_blank"/>
-    dom.innerHTML = `<base href=${url}/>` + html;
+    document.getElementsByTagName("base")[0].setAttribute('href', url);
+    dom.innerHTML = html;
     return dom;
   }
 
@@ -28,16 +27,10 @@ class Html2Json {
         data = NextFunMap[func](this.$s(selector, dom))
       } else if (dataRule.includes('#')) {
         let param = dataRule.substring(1);
-        let nextUrl = url.replace(new RegExp(`${param}=([0-9]+)`), (a, b) => a + (parseInt(b) + 1));
+        let nextUrl = url.replace(new RegExp(`(${param}=)([0-9]+)`), (_, a, b) => a + (parseInt(b) + 1));
         if (nextUrl !== url) {
           data = nextUrl;
         }
-        // let matching = url.match(`${param}=([0-9]+)`);
-        // if(matching) {
-        //   let pageStr = matching[0]
-        //   let nextPageNo = parseInt(matching[1]) + 1;
-        //   data = url.replace(pageStr, `${param}=${nextPageNo}`);
-        // }
       } else if (dataRule.includes('/')) {
         let [selector, attr] = dataRule.split('/');
         let subDom = this.$s(selector, dom);
