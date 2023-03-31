@@ -53,10 +53,17 @@ class Container extends Component {
       this.setState(state => {
         return append ? this.mergeData(state, result) : result;
       })
-      if (result?.autoDisplayList) {
-        result.listingData.forEach(item => {
-          this.handleUrl(item.url, true);
-        });
+      if(result.listFlag) {
+        if (result?.autoDisplayList) {
+          result.listingData.forEach(item => {
+            this.handleUrl(item.url, true);
+          });
+        }
+      } else {
+        if(!append) {
+          //if new content, reset scrollTop value.
+          document.getElementsByClassName("Content").scrollTop = 0;
+        }
       }
     });
   }
