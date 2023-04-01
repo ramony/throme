@@ -43,7 +43,7 @@ class Download extends Component {
         }
         let rules = await ConfigLoad.loadRules();
         let contentParse = new ContentParse(rules);
-        const newLogs = ["Start job"];
+        this.addLogs("Start job");
         for (let item of downloadList) {
             if (!item.checked) {
                 continue;
@@ -53,7 +53,7 @@ class Download extends Component {
                 let { listingData = [] } = await contentParse.parse(url);
                 this.mappingListingData(listingData, i);
                 let insertCount = await DataService.createDetail(listingData, count => {
-                  newLogs.push(`Download ${url}, count=${count}`)
+                  this.addLogs(`Download ${url}, count=${count}`)
                   DataService.createList({pageUrl:url});
                 });
                 if(insertCount === 0 && item.skip) {
@@ -61,8 +61,7 @@ class Download extends Component {
                 }
             }
         }
-        newLogs.push("Done.")
-        this.showLogs(newLogs);
+        this.addLogs("Done.")
     }
 
     async mappingListingData(listingData, pageNo) {
@@ -82,10 +81,16 @@ class Download extends Component {
       });
     }
 
+    async markAllReadWithSameKeyword() {
+        DataService.markAllReadWithSameKeyword(count => {
+           this.addLogs('processCount:' + count);
+        });
+    }
 
-    showLogs(newLogs) {
+
+    addLogs(newLog) {
       this.setState(({logs})=>{
-        logs = [...logs, ...newLogs, '---------------------------'];
+        logs = [...logs, newLog];
         return {logs};
       });
     }
@@ -144,7 +149,8 @@ class Download extends Component {
                 <div className='center'>
                     <ButtonGroup variant="contained">
                         <Button onClick={() => this.startDownload()} sx={NoTextTransform}>Download</Button>
-                        <Button onClick={() => this.close()} sx={NoTextTransform}>Close</Button>
+                        <Button onClick={() => this.startDownload()} sx={NoTextTransform}>Sync</Button>
+                        <Button onClick={() => this.markAllReadWithSameKeyword()} sx={NoTextTransform}>Close</Button>
                     </ButtonGroup>
                 </div>
             </Dialog>

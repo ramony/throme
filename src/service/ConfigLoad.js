@@ -6,7 +6,7 @@ const ConfigLoad = {
         if (!this.rules) {
             let rules = [];
             for (let config of Paths.rules) {
-                let fileRules = await HttpClient.getJSON(`${config}.json`);
+                let fileRules = await HttpClient.getJSON(config);
                 if (!fileRules.success) {
                     console.log('Fail to load rule config');
                     return;

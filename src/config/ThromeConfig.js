@@ -13,10 +13,12 @@ const theme = createTheme({
     },
 });
 
+const DataFolder = "configData";
+
 const Paths = {
-    entry : 'configData/entry.json',
-    rules: ["configData/ruleConfig"],
-    download: 'configData/download.json'
+  entry : `${DataFolder}/entry.json`,
+  rules: [`${DataFolder}/ruleConfig.json`],
+  download: `${DataFolder}/download.json`
 }
 
 export { NoTextTransform, SmallText, theme, Paths }
