@@ -56,7 +56,7 @@ class Container extends Component {
       if(result.listFlag) {
         if (result?.autoDisplayList) {
           result.listingData.forEach(item => {
-            this.handleUrl(item.url, true);
+            //this.handleUrl(item.url, true);
           });
         }
       } else {

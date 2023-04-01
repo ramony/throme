@@ -10,6 +10,7 @@ import ConfigLoad from '../service/ConfigLoad';
 import ContentParse from '../service/ContentParse';
 import DataService from '../service/DataService';
 import {HashCode} from '@/utils/Common';
+import Unsafe from '../utils/Unsafe';
 
 class Download extends Component {
     constructor(props) {
@@ -64,11 +65,12 @@ class Download extends Component {
         this.addLogs("Done.")
     }
 
-    async mappingListingData(listingData, pageNo) {
+    async mappingListingData(listingData, pageNo, contentParse) {
       listingData.forEach(item => {
-        let detailId = item.contentIds[0];
+        let {contentIds} = contentParse.queryContentIds(item.url)
+        let detailId = contentIds[0];
         item.detailId = detailId
-        item.detailType = item.contentIds[1];
+        item.detailType = contentIds[1];
         item.detailOrder = /^[0-9]+$/.test(detailId) ? detailId: HashCode(detailId);
         item.detailTitle = item.title
         item.detailTitle = item.title
@@ -77,7 +79,7 @@ class Download extends Component {
         item.localFlag = 0;
         item.tagId = 0;
         item.pageNo = pageNo;
-        item.keyword = '@@@@' 
+        item.keyword = Unsafe.getKeyword(item.title)
       });
     }
 
@@ -149,8 +151,8 @@ class Download extends Component {
                 <div className='center'>
                     <ButtonGroup variant="contained">
                         <Button onClick={() => this.startDownload()} sx={NoTextTransform}>Download</Button>
-                        <Button onClick={() => this.startDownload()} sx={NoTextTransform}>Sync</Button>
-                        <Button onClick={() => this.markAllReadWithSameKeyword()} sx={NoTextTransform}>Close</Button>
+                        <Button onClick={() => this.markAllReadWithSameKeyword()} sx={NoTextTransform}>Sync</Button>
+                        <Button onClick={() => this.close()} sx={NoTextTransform}>Close</Button>
                     </ButtonGroup>
                 </div>
             </Dialog>

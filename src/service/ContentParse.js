@@ -3,6 +3,7 @@ import DataService from './DataService';
 
 import Html2Json from '../utils/Html2Json';
 import RuleMatcher from '../utils/RuleMatcher';
+import Unsafe from '../utils/Unsafe';
 
 class ContentParse {
 
@@ -39,6 +40,22 @@ class ContentParse {
     return this.sendRequest(contentUrl, urlRule);
   }
 
+  async queryContentIds(contentUrl) {
+    contentUrl = this.filterUrl(contentUrl);
+
+    if (!contentUrl) {
+      console.log('contentUrl is null');
+      return;
+    }
+    console.log('queryContentIds:' + contentUrl);
+
+    let urlRule = this.ruleMatcher.match(contentUrl)
+    if (!urlRule.rule) {
+      return null;
+    }
+    return urlRule.contentIds;
+  }
+
   async sendRequest(contentUrl, urlRule) {
     let rule = urlRule.rule;
     let params = rule.params;
@@ -66,11 +83,11 @@ class ContentParse {
   }
 
   processListingData(list) {
-    list.forEach(it => {
-      if (it['postId']) {
-        if (it['url']) {
+    list.forEach(item => {
+      if (item['postId']) {
+        if (item['url']) {
           //hack
-          it['url'] += '?postId=' + it['postId'];
+          item['url'] += '?postId=' + item['postId'];
         }
       }
     })
@@ -78,18 +95,11 @@ class ContentParse {
   }
 
   processContentData(list, contentUrl, contentIds) {
-    list.forEach(it => {
-      it.contentIds = contentIds;
-      it.contentIdString = contentIds.reverse().join('-');
-      it.contentUrl = contentUrl;
-      if(it.title) {
-        //let keyword = window.GetVideoKeyword?(it.title)
-        try{
-          it.downloaded = window.ValidateTitleIfExist(it.title);
-        } catch(e){
-
-        }
-      }
+    list.forEach(item => {
+      item.contentIds = contentIds;
+      item.contentIdString = contentIds.reverse().join('-');
+      item.contentUrl = contentUrl;
+      item.downloaded = Unsafe.validateTitleIfExist(item.title);
     })
     return list;
   }
