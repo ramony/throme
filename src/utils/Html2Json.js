@@ -2,15 +2,21 @@ import NextFunMap from './NextFunMap';
 
 class Html2Json {
 
-  static htmlToJson(html, url, dataRule, removeImg) {
-    let dom = this.htmlToDom(html, url, removeImg);
+  static htmlToJson(html, url, rule) {
+    let {dataRule, htmlReplace} = rule
+    let dom = this.htmlToDom(html, url, htmlReplace);
     return this.domToJson(dom, url, dataRule)
   }
 
-  static htmlToDom(html, url, removeImg) {
-    html = this.trimHtmlTag(html, removeImg);
+  static htmlToDom(html, url, htmlReplace) {
+    html = this.trimHtmlTag(html, null);
     let dom = document.createElement('div');
     document.getElementsByTagName("base")[0].setAttribute('href', url);
+    if(htmlReplace) {
+        for(let it of htmlReplace) {
+            html = html.replace(it[0], it[1]);
+        }
+    }
     dom.innerHTML = html;
     return dom;
   }

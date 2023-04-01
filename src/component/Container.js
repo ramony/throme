@@ -25,7 +25,7 @@ class Container extends Component {
     // see document: https://www.imooc.com/wenda/detail/700135
     if (!this._Mounted) {
       this.loadConfig().then(
-        () => this.handleUrl('entry.html')
+        () => this.handleUrl(ConfigLoad.loadEntryPath())
       )
       this._Mounted = true;
     }

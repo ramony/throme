@@ -117,7 +117,7 @@ class Download extends Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Checked</TableCell>
-                                <TableCell>Name</TableCell>
+                                <TableCell>Title</TableCell>
                                 <TableCell>From</TableCell>
                                 <TableCell>To</TableCell>
                                 <TableCell>Skip</TableCell>
@@ -126,7 +126,7 @@ class Download extends Component {
                         <TableBody>
                             {downloadList.map((row, index) => (
                                 <TableRow
-                                    key={row.name}
+                                    key={row.title}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell><Checkbox value={row.checked} onChange={(e) => this.changeRow(index, 'checked', e)} variant="outlined" /></TableCell>
                                     <TableCell>{row.url}</TableCell>

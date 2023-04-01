@@ -49,9 +49,9 @@ class ContentParse {
     let dataRule = rule.dataRule;
     let responseData;
     if (dataRule === 'json') {
-      responseData = JSON.parse(html).data;
+      responseData = JSON.parse(html);
     } else {
-      responseData = Html2Json.htmlToJson(html, contentUrl, dataRule);
+      responseData = Html2Json.htmlToJson(html, contentUrl, rule);
     }
     //console.log('responseData : ' + JSON.stringify(responseData));
 
@@ -82,6 +82,14 @@ class ContentParse {
       it.contentIds = contentIds;
       it.contentIdString = contentIds.reverse().join('-');
       it.contentUrl = contentUrl;
+      if(it.title) {
+        //let keyword = window.GetVideoKeyword?(it.title)
+        try{
+          it.downloaded = window.ValidateTitleIfExist(it.title);
+        } catch(e){
+
+        }
+      }
     })
     return list;
   }

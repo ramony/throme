@@ -13,4 +13,10 @@ const theme = createTheme({
     },
 });
 
-export { NoTextTransform, SmallText, theme }
+const Paths = {
+    entry : 'configData/entry.json',
+    rules: ["configData/ruleConfig"],
+    download: 'configData/download.json'
+}
+
+export { NoTextTransform, SmallText, theme, Paths }

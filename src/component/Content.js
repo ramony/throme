@@ -13,7 +13,7 @@ const Content = ({ contentData, onDelete, onClose, onLike}) => {
               <ButtonGroup variant="contained">
                 <Button onClick={() => onDelete(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</Button>
                 <Button onClick={() => onClose(index)} sx={NoTextTransform}>Close {item.contentIdString}</Button>
-                <Button onClick={() => onLike(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</Button>
+                { item.downloaded ? <Button onClick={() => onLike(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</Button> : <></>}
               </ButtonGroup>
             </div>
           }
