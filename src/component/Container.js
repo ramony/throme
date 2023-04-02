@@ -62,11 +62,7 @@ class Container extends Component {
       } else {
         if(!append) {
           //if new content, reset scrollTop value.
-          try {
-            document.getElementsByClassName("Content")[0].scrollTop = 0;
-          } catch(e) {
-
-          }
+          document.getElementsByClassName("Content")[0].scrollTop = 0;
         }
       }
     });
@@ -84,7 +80,7 @@ class Container extends Component {
     }
   }
 
-  nextFn() {
+  onNextFn() {
     let { listingNext } = this.state;
     if (this.nextUrlVisited.has(listingNext)) {
       return;
@@ -94,11 +90,17 @@ class Container extends Component {
     this.handleUrl(listingNext, true);
   }
 
-  openFn() {
+  onOpenFn() {
     let url = prompt('Open URL:')
     if (url) {
       this.handleUrl(url);
     }
+  }
+
+  onResetFn() {
+    //To reset base url so that we can reload local entry.json data.
+    document.getElementsByTagName("base")[0].setAttribute('href', '')
+    this.handleUrl(ConfigLoad.loadEntryPath());
   }
 
   onContentClose(index) {
@@ -125,9 +127,9 @@ class Container extends Component {
     return (
       <div className="Container">
         <div className="Left-Box">
-          <ActionButtons nextFn={() => this.nextFn()} loading={loading} openFn={() => this.openFn()} />
+          <ActionButtons nextFn={() => this.onNextFn()} openFn={() => this.onOpenFn()} resetFn={()=>this.onResetFn()} loading={loading}/>
           <Listing listingData={listingData}
-            onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.nextFn()} />
+            onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.onNextFn()} />
         </div>
         <div className="Right-Box">
           <Content contentData={contentData} onDelete={(index, item) => this.onContentDelete(index, item)}
