@@ -6,9 +6,9 @@ const SmallText = { width: "80px" };
 const theme = createTheme({
     palette: {
         primary: {
-            light: '#909090',
-            main: '#909090',
-            dark: '#808080'
+            light: '#C0C0C0',
+            main: '#B0B0B0',
+            dark: '#A0A0A0'
         },
     },
 });

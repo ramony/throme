@@ -14,7 +14,7 @@ class Html2Json {
     document.getElementsByTagName("base")[0].setAttribute('href', url);
     if (htmlReplace) {
       for (let it of htmlReplace) {
-        html = html.replace(new RegExp(it[0],'gi'), it[1]);
+        html = html.replace(new RegExp(it[0], 'gi'), it[1]);
       }
     }
     dom.innerHTML = html;
@@ -104,10 +104,14 @@ class Html2Json {
       let [selector2, hideTags] = selector.split("!");
       let result = this.queryAll(selector2, dom);
       console.log(result)
-      result.forEach(it => it.querySelectorAll(hideTags).forEach(item => item.outerHTML = ''))
+      result.forEach(it => it.querySelectorAll(hideTags).forEach(item => {
+         if (item.children.length === 0) { 
+          item.outerHTML = '' 
+        } 
+      }))
       return result;
     }
-    if(selector.includes('$')) {
+    if (selector.includes('$')) {
       return [dom];
     }
     return dom.querySelectorAll(selector);;

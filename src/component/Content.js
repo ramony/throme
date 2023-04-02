@@ -5,6 +5,7 @@ import {NoTextTransform} from '../config/ThromeConfig';
 const Content = ({ contentData, onDelete, onClose, onLike}) => {
   return (
     <div className="Content">
+      <div class="Content-Tips">{contentData.length}</div>
       {
         contentData.map((item, index) => {
           let actions = null;

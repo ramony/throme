@@ -51,7 +51,7 @@ class Container extends Component {
         return;
       }
       this.setState(state => {
-        return append ? this.mergeData(state, result) : result;
+        return append ? this.mergeData(state, result) : this.buildData(result);
       })
       if(result.listFlag) {
         if (result?.autoDisplayList) {
@@ -77,6 +77,15 @@ class Container extends Component {
       let { contentData } = result
       contentData = [...state.contentData, ...contentData]
       return { contentData }
+    }
+  }
+
+  buildData(result) {
+    if (result.listFlag) {
+      let { listingData, listingNext } = result
+      return { listingData, listingNext, contentData:[] }
+    } else {
+      return result;
     }
   }
 

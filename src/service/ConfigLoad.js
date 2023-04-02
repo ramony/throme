@@ -30,6 +30,12 @@ const ConfigLoad = {
     },
     loadEntryPath() {
         return Paths.entry;
+    },
+    isDataProxy() {
+        if(localStorage.getItem("chromeFlag")) {
+            return false;
+        }
+        return true;
     }
 }
 
