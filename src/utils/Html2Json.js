@@ -14,7 +14,7 @@ class Html2Json {
     document.getElementsByTagName("base")[0].setAttribute('href', url);
     if(htmlReplace) {
         for(let it of htmlReplace) {
-            html = html.replace(it[0], it[1]);
+            html = html.replaceAll(it[0], it[1]);
         }
     }
     dom.innerHTML = html;
@@ -30,27 +30,28 @@ class Html2Json {
       let data;
       if (dataRule.includes('@')) {
         let [selector, func] = dataRule.split('@');
-        data = NextFunMap[func](this.$s(selector, dom))
+        data = NextFunMap[func](this.queryAll(selector, dom))
       } else if (dataRule.includes('#')) {
         let param = dataRule.substring(1);
+        // pageNo=4 => pageNo=5
         let nextUrl = url.replace(new RegExp(`(${param}=)([0-9]+)`), (_, a, b) => a + (parseInt(b) + 1));
         if (nextUrl !== url) {
           data = nextUrl;
         }
       } else if (dataRule.includes('/')) {
         let [selector, attr] = dataRule.split('/');
-        let subDom = this.$s(selector, dom);
+        let subDom = this.queryAll(selector, dom);
         data = this.getData(subDom, attr)
       } else {
         let selector = dataRule;
-        let subDom = this.$s(selector, dom);
+        let subDom = this.queryAll(selector, dom);
         data = this.getData(subDom, 'html');
       }
       return data;
     } else if (typeOfRule.includes('Array')) {
       let [selector, arrayRule] = dataRule;
-      let doms = this.$(selector, dom)
-      let data = [...doms].map((it) => this.domToJson(it, url, arrayRule));
+      let domList = this.queryAll(selector, dom)
+      let data = [...domList].map((it) => this.domToJson(it, url, arrayRule));
       return data;
     } else if (typeOfRule.includes('Object')) {
       let data = {};
@@ -66,12 +67,11 @@ class Html2Json {
       return '';
     }
     let node;
-    if (Object.prototype.toString.call(dom).includes('NodeList')) {
-      let [firstNode] = [...dom];
-      if (firstNode === undefined) {
+    if (dom.length != undefined) {
+      if (dom.length == 0) {
         return '';
       }
-      node = firstNode
+      node = dom[0];
     } else {
       node = dom;
     }
@@ -89,22 +89,15 @@ class Html2Json {
     return data;
   }
 
-  static $s(selector, dom) {
-    if (selector === '' || selector === '$') {
+  static queryAll(selector, dom) {
+    if (!dom || selector === '' || selector === '$') {
       return dom;
     }
-    return this.$(selector, dom)
-  }
-
-  static $(a, b) {
-    let result;
-    if (b) {
-      result = b.querySelectorAll(a);
-    } else {
-      console.log('$:' + a)
-      result = document.querySelectorAll(a);
+    if(selector.includes(":first")) {
+        let [prefix, suffix] = selector.split(":first");
+        return this.queryAll(suffix, dom.querySelector(prefix));
     }
-    return result;
+    return dom.querySelectorAll(selector);
   }
 
   static trimHtmlTag(html, removeImg) {

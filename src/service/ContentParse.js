@@ -70,7 +70,7 @@ class ContentParse {
     } else {
       responseData = Html2Json.htmlToJson(html, contentUrl, rule);
     }
-    //console.log('responseData : ' + JSON.stringify(responseData));
+    console.log('responseData : ' + JSON.stringify(responseData));
 
     if (rule.target === 'listing') {
       let listingData = this.processListingData(responseData.list);

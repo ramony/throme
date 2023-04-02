@@ -28,7 +28,7 @@ class Download extends Component {
 
     async loadConfig() {
         let config = await ConfigLoad.loadDownloads();
-        let { list = [], defaultRange= [1 , 10], filterOutKeywords = []} = config;
+        let { list = [], defaultRange= [1 , 3], filterOutKeywords = []} = config;
         let [from, to] = defaultRange;
         let downloadList = list.map(item => ({ ...item, checked: false, from, to, skip: true }));
         this.setState({ downloadList })
@@ -52,7 +52,7 @@ class Download extends Component {
             for (let i = item.from; i < item.to; i++) {
                 let url = item.url.replace("{pageNo}", i);
                 let { listingData = [] } = await contentParse.parse(url);
-                this.mappingListingData(listingData, i);
+                await this.mappingListingData(listingData, i, contentParse);
                 let insertCount = await DataService.createDetail(listingData, count => {
                   this.addLogs(`Download ${url}, count=${count}`)
                   DataService.createList({pageUrl:url});
@@ -66,8 +66,8 @@ class Download extends Component {
     }
 
     async mappingListingData(listingData, pageNo, contentParse) {
-      listingData.forEach(item => {
-        let {contentIds} = contentParse.queryContentIds(item.url)
+      for(let item of listingData) {
+        let contentIds = await contentParse.queryContentIds(item.url)
         let detailId = contentIds[0];
         item.detailId = detailId
         item.detailType = contentIds[1];
@@ -80,7 +80,7 @@ class Download extends Component {
         item.tagId = 0;
         item.pageNo = pageNo;
         item.keyword = Unsafe.getKeyword(item.title)
-      });
+      };
     }
 
     async markAllReadWithSameKeyword() {
@@ -88,7 +88,6 @@ class Download extends Component {
            this.addLogs('processCount:' + count);
         });
     }
-
 
     addLogs(newLog) {
       this.setState(({logs})=>{
