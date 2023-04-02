@@ -3,7 +3,7 @@ import NextFunMap from './NextFunMap';
 class Html2Json {
 
   static htmlToJson(html, url, rule) {
-    let {dataRule, htmlReplace} = rule
+    let { dataRule, htmlReplace } = rule
     let dom = this.htmlToDom(html, url, htmlReplace);
     return this.domToJson(dom, url, dataRule)
   }
@@ -12,10 +12,10 @@ class Html2Json {
     html = this.trimHtmlTag(html, null);
     let dom = document.createElement('div');
     document.getElementsByTagName("base")[0].setAttribute('href', url);
-    if(htmlReplace) {
-        for(let it of htmlReplace) {
-            html = html.replaceAll(it[0], it[1]);
-        }
+    if (htmlReplace) {
+      for (let it of htmlReplace) {
+        html = html.replace(new RegExp(it[0],'gi'), it[1]);
+      }
     }
     dom.innerHTML = html;
     return dom;
@@ -67,8 +67,8 @@ class Html2Json {
       return '';
     }
     let node;
-    if (dom.length != undefined) {
-      if (dom.length == 0) {
+    if (dom.length !== undefined) {
+      if (dom.length === 0) {
         return '';
       }
       node = dom[0];
@@ -90,14 +90,27 @@ class Html2Json {
   }
 
   static queryAll(selector, dom) {
-    if (!dom || selector === '' || selector === '$') {
+    if (!dom) {
       return dom;
     }
-    if(selector.includes(":first")) {
-        let [prefix, suffix] = selector.split(":first");
-        return this.queryAll(suffix, dom.querySelector(prefix));
+    if (selector === '') {
+      return [dom];
     }
-    return dom.querySelectorAll(selector);
+    if (selector.includes(":first")) {
+      let [prefix, suffix] = selector.split(":first");
+      return this.queryAll(suffix, dom.querySelector(prefix));
+    }
+    if (selector.includes("!")) {
+      let [selector2, hideTags] = selector.split("!");
+      let result = this.queryAll(selector2, dom);
+      console.log(result)
+      result.forEach(it => it.querySelectorAll(hideTags).forEach(item => item.outerHTML = ''))
+      return result;
+    }
+    if(selector.includes('$')) {
+      return [dom];
+    }
+    return dom.querySelectorAll(selector);;
   }
 
   static trimHtmlTag(html, removeImg) {

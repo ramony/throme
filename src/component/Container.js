@@ -65,7 +65,7 @@ class Container extends Component {
           document.getElementsByClassName("Content")[0].scrollTop = 0;
         }
       }
-    });
+    }).catch(e=>alert(e));
   }
 
   mergeData(state, result) {
