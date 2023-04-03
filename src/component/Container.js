@@ -42,7 +42,6 @@ class Container extends Component {
     }
     this.setState({ loading: true })
     this.contentParse.parse(url, append).then(result => {
-      this.setState({ loading: false })
       if(!result) {
         return;
       }
@@ -56,7 +55,7 @@ class Container extends Component {
       if(result.listFlag) {
         if (result?.autoDisplayList) {
           result.listingData.forEach(item => {
-            //this.handleUrl(item.url, true);
+            this.handleUrl(item.url, true);
           });
         }
       } else {
@@ -65,7 +64,8 @@ class Container extends Component {
           document.getElementsByClassName("Content")[0].scrollTop = 0;
         }
       }
-    }).catch(e=>alert(e));
+    }).catch(e=>alert(e))
+    .finally(()=>this.setState({ loading: false }));
   }
 
   mergeData(state, result) {

@@ -39,7 +39,16 @@
   opacity: 0.6;
 }
 
+.Content-Button-Box {
+  width: 100%;
+  min-height: 30px;
+  vertical-align: middle;
+  line-height: 30px;
+}
+
 .Content-Button-Box > * {
-  margin-left: 20px;
+  margin-left: 12px;
   cursor: pointer;
+  float: right;
+  color: gray;
 }

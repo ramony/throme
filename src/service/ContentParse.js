@@ -97,7 +97,7 @@ class ContentParse {
   processContentData(list, contentUrl, contentIds) {
     list.forEach(item => {
       item.contentIds = contentIds;
-      item.contentIdString = contentIds.reverse().join('-');
+      item.contentIdString = [...contentIds].reverse().join('-');
       item.contentUrl = contentUrl;
       item.downloaded = Unsafe.validateTitleIfExist(item.title);
     })

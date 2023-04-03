@@ -1,5 +1,4 @@
 import './Content.css';
-import { Button, ButtonGroup } from '@mui/material';
 import {NoTextTransform} from '../config/ThromeConfig';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -13,14 +12,14 @@ const Content = ({ contentData, onDelete, onClose, onLike}) => {
         contentData.map((item, index) => {
           let actions = null;
           if (item.contentIdString) {
-            actions = <div>
+            actions = 
               <div className="Content-Button-Box">
-                <div>{item.contentIdString}</div>
-                <DeleteForeverIcon onClick={() => onDelete(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</DeleteForeverIcon>
                 <ClearIcon onClick={() => onClose(index)} sx={NoTextTransform}>Close {item.contentIdString}</ClearIcon>
+                <DeleteForeverIcon onClick={() => onDelete(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</DeleteForeverIcon>
                 { item.downloaded ? <GradeIcon onClick={() => onLike(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</GradeIcon> : <></>}
+                <span>{item.contentIdString}</span>
               </div>
-            </div>
+            
           }
           return (
             <div className="Content-Item">
