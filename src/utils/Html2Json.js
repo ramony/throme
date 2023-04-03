@@ -63,19 +63,10 @@ class Html2Json {
   }
 
   static getData(dom, attr) {
-    if (!dom) {
+    if (dom.length === 0) {
       return '';
     }
-    let node;
-    if (dom.length !== undefined) {
-      if (dom.length === 0) {
-        return '';
-      }
-      node = dom[0];
-    } else {
-      node = dom;
-    }
-
+    let node = dom[0];
     let data;
     if (attr === 'text') {
       data = node.innerText;
@@ -91,7 +82,7 @@ class Html2Json {
 
   static queryAll(selector, dom) {
     if (!dom) {
-      return dom;
+      return [];
     }
     if (selector === '') {
       return [dom];
