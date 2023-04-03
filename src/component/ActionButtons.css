@@ -2,3 +2,8 @@
       text-align: center;
       padding: 2px;
 }
+
+.Action-Button-Box > *{
+      margin-left: 20px;
+      cursor: pointer;
+}

@@ -38,3 +38,8 @@
   line-height: 30px;
   opacity: 0.6;
 }
+
+.Content-Button-Box > * {
+  margin-left: 20px;
+  cursor: pointer;
+}

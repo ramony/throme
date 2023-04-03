@@ -1,6 +1,9 @@
 import './Content.css';
 import { Button, ButtonGroup } from '@mui/material';
 import {NoTextTransform} from '../config/ThromeConfig';
+import ClearIcon from '@mui/icons-material/Clear';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import GradeIcon from '@mui/icons-material/Grade';
 
 const Content = ({ contentData, onDelete, onClose, onLike}) => {
   return (
@@ -11,11 +14,12 @@ const Content = ({ contentData, onDelete, onClose, onLike}) => {
           let actions = null;
           if (item.contentIdString) {
             actions = <div>
-              <ButtonGroup variant="contained">
-                <Button onClick={() => onDelete(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</Button>
-                <Button onClick={() => onClose(index)} sx={NoTextTransform}>Close {item.contentIdString}</Button>
-                { item.downloaded ? <Button onClick={() => onLike(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</Button> : <></>}
-              </ButtonGroup>
+              <div className="Content-Button-Box">
+                <div>{item.contentIdString}</div>
+                <DeleteForeverIcon onClick={() => onDelete(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</DeleteForeverIcon>
+                <ClearIcon onClick={() => onClose(index)} sx={NoTextTransform}>Close {item.contentIdString}</ClearIcon>
+                { item.downloaded ? <GradeIcon onClick={() => onLike(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</GradeIcon> : <></>}
+              </div>
             </div>
           }
           return (

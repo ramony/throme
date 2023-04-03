@@ -7,6 +7,11 @@ import {NoTextTransform} from '../config/ThromeConfig';
 
 import { Button, ButtonGroup } from '@mui/material';
 
+import DownloadIcon from '@mui/icons-material/Download';
+import HomeIcon from '@mui/icons-material/Home';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import AddIcon from '@mui/icons-material/Add';
+
 const ActionButtons = ({ nextFn, openFn, resetFn, loading }) => {
   const downloadRef = useRef(null);
   function handleDownload() {
@@ -15,12 +20,12 @@ const ActionButtons = ({ nextFn, openFn, resetFn, loading }) => {
   return (
     <div className='ActionButtons'>
       <Loading visible={loading} />
-        <ButtonGroup variant="contained" >
-          <Button onClick={() => nextFn()} sx={NoTextTransform}>Next</Button>
-          <Button onClick={() => openFn()} sx={NoTextTransform}>Open</Button>
-          <Button onClick={() => resetFn()} sx={NoTextTransform}>Reset</Button>
-          <Button onClick={handleDownload} sx={NoTextTransform}>Download</Button>
-        </ButtonGroup>
+      <div className='Action-Button-Box'>
+        <HomeIcon onClick={() => resetFn()} sx={NoTextTransform}>Reset</HomeIcon>
+        <AddIcon onClick={() => openFn()} sx={NoTextTransform}>Open</AddIcon>
+        <NavigateNextIcon onClick={() => nextFn()} sx={NoTextTransform}>Next</NavigateNextIcon>
+        <DownloadIcon onClick={handleDownload} sx={NoTextTransform}>Download</DownloadIcon>
+      </div>
       <Download ref={downloadRef} />
     </div>
   )
