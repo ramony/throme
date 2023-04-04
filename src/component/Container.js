@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import ConfigLoad from './ConfigLoad';
-import ContentParse from './ContentParse';
 
 import Listing from './Listing';
 import Content from './Content';
 import ActionButtons from './ActionButtons';
-import DataService from './DataService';
+
+import DataService from '../service/DataService';
+import ConfigLoad from '../service/ConfigLoad';
+import ContentParse from '../service/ContentParse';
 
 import './Container.css';
 
@@ -24,7 +25,7 @@ class Container extends Component {
     // see document: https://www.imooc.com/wenda/detail/700135
     if (!this._Mounted) {
       this.loadConfig().then(
-        () => this.handleUrl('entry.html')
+        () => this.handleUrl(ConfigLoad.loadEntryPath())
       )
       this._Mounted = true;
     }
@@ -41,7 +42,6 @@ class Container extends Component {
     }
     this.setState({ loading: true })
     this.contentParse.parse(url, append).then(result => {
-      this.setState({ loading: false })
       if(!result) {
         return;
       }
@@ -50,14 +50,23 @@ class Container extends Component {
         return;
       }
       this.setState(state => {
-        return append ? this.mergeData(state, result) : result;
+        return append ? this.mergeData(state, result) : this.buildData(result);
       })
-      if (result?.autoDisplayList) {
-        result.listingData.forEach(item => {
-          this.handleUrl(item.url, true);
-        });
+      if(result.listFlag) {
+        if (result?.autoDisplayList) {
+          console.log('auto display count:', result.listingData.length);
+          result.listingData.forEach(item => {
+            this.handleUrl(item.url, true);
+          });
+        }
+      } else {
+        if(!append) {
+          //if new content, reset scrollTop value.
+          document.getElementsByClassName("Content")[0].scrollTop = 0;
+        }
       }
-    });
+    }).catch(e=>alert(e))
+    .finally(()=>this.setState({ loading: false }));
   }
 
   mergeData(state, result) {
@@ -72,7 +81,16 @@ class Container extends Component {
     }
   }
 
-  nextFn() {
+  buildData(result) {
+    if (result.listFlag) {
+      let { listingData, listingNext } = result
+      return { listingData, listingNext, contentData:[] }
+    } else {
+      return result;
+    }
+  }
+
+  onNextFn() {
     let { listingNext } = this.state;
     if (this.nextUrlVisited.has(listingNext)) {
       return;
@@ -82,11 +100,17 @@ class Container extends Component {
     this.handleUrl(listingNext, true);
   }
 
-  openFn() {
+  onOpenFn() {
     let url = prompt('Open URL:')
     if (url) {
       this.handleUrl(url);
     }
+  }
+
+  onResetFn() {
+    //To reset base url so that we can reload local entry.json data.
+    document.getElementsByTagName("base")[0].setAttribute('href', '')
+    this.handleUrl(ConfigLoad.loadEntryPath());
   }
 
   onContentClose(index) {
@@ -113,9 +137,9 @@ class Container extends Component {
     return (
       <div className="Container">
         <div className="Left-Box">
-          <ActionButtons nextFn={() => this.nextFn()} loading={loading} openFn={() => this.openFn()} />
+          <ActionButtons nextFn={() => this.onNextFn()} openFn={() => this.onOpenFn()} resetFn={()=>this.onResetFn()} loading={loading}/>
           <Listing listingData={listingData}
-            onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.nextFn()} />
+            onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.onNextFn()} />
         </div>
         <div className="Right-Box">
           <Content contentData={contentData} onDelete={(index, item) => this.onContentDelete(index, item)}

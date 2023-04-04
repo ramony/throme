@@ -1,7 +1,9 @@
-import RuleMatcher from './RuleMatcher';
 import HttpAdaptor from './HttpAdaptor';
-import Html2Json from './Html2Json';
 import DataService from './DataService';
+
+import Html2Json from '../utils/Html2Json';
+import RuleMatcher from '../utils/RuleMatcher';
+import Unsafe from '../utils/Unsafe';
 
 class ContentParse {
 
@@ -38,6 +40,22 @@ class ContentParse {
     return this.sendRequest(contentUrl, urlRule);
   }
 
+  async queryContentIds(contentUrl) {
+    contentUrl = this.filterUrl(contentUrl);
+
+    if (!contentUrl) {
+      console.log('contentUrl is null');
+      return;
+    }
+    console.log('queryContentIds:' + contentUrl);
+
+    let urlRule = this.ruleMatcher.match(contentUrl)
+    if (!urlRule.rule) {
+      return null;
+    }
+    return urlRule.contentIds;
+  }
+
   async sendRequest(contentUrl, urlRule) {
     let rule = urlRule.rule;
     let params = rule.params;
@@ -45,16 +63,14 @@ class ContentParse {
     let htmlData = await HttpAdaptor.getHtml(contentUrl, params.encoding);
     let html = htmlData.data;
 
-    document.getElementById("nowUrl").setAttribute('href', contentUrl);
-
     let dataRule = rule.dataRule;
     let responseData;
     if (dataRule === 'json') {
-      responseData = JSON.parse(html).data;
+      responseData = JSON.parse(html);
     } else {
-      responseData = Html2Json.htmlToJson(html, dataRule);
+      responseData = Html2Json.htmlToJson(html, contentUrl, rule);
     }
-    //console.log('responseData : ' + JSON.stringify(responseData));
+    console.log('responseData : ' + JSON.stringify(responseData));
 
     if (rule.target === 'listing') {
       let listingData = this.processListingData(responseData.list);
@@ -67,11 +83,11 @@ class ContentParse {
   }
 
   processListingData(list) {
-    list.forEach(it => {
-      if (it['postId']) {
-        if (it['url']) {
+    list.forEach(item => {
+      if (item['postId']) {
+        if (item['url']) {
           //hack
-          it['url'] += '?postId=' + it['postId'];
+          item['url'] += '?postId=' + item['postId'];
         }
       }
     })
@@ -79,10 +95,11 @@ class ContentParse {
   }
 
   processContentData(list, contentUrl, contentIds) {
-    list.forEach(it => {
-      it.contentIds = contentIds;
-      it.contentIdString = contentIds.reverse().join('-');
-      it.contentUrl = contentUrl;
+    list.forEach(item => {
+      item.contentIds = contentIds;
+      item.contentIdString = [...contentIds].reverse().join('-');
+      item.contentUrl = contentUrl;
+      item.downloaded = Unsafe.validateTitleIfExist(item.title);
     })
     return list;
   }

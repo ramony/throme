@@ -1,11 +1,10 @@
-import HttpClient from './HttpClient';
-
-const UseProxy = true;
+import HttpClient from '../utils/HttpClient';
+import ConfigLoad from '../service/ConfigLoad';
 
 const HttpAdaptor = {
 
   async getHtml(endpoint, encoding) {
-    if (UseProxy && endpoint.includes("http")) {
+    if (ConfigLoad.isDataProxy() && endpoint.includes("http")) {
       endpoint = "http://localhost:8888/302?url=" + encodeURIComponent(endpoint);
     }
     return HttpClient.getHtml(endpoint, encoding);

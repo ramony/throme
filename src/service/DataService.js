@@ -1,9 +1,9 @@
-import HttpClient from './HttpClient';
+import HttpClient from '../utils/HttpClient';
 
 const API_HOST = 'http://localhost:30080/api/v1/';
 
 const LocalCache = {
-  Marked(key) {
+  marked(key) {
     if (key) {
       localStorage.setItem(key, 1)
     }
@@ -25,12 +25,12 @@ const DataService = {
   },
 
   async markReadByDetailId(detailId, detailType) {
-    LocalCache.Marked(DetailKeyFun(detailId, detailType));
+    LocalCache.marked(DetailKeyFun(detailId, detailType));
     return await HttpClient.postJSON(API_HOST + 'detail/markReadByDetailId', { detailId, detailType });
   },
 
   async markScore(detailId, detailType, score) {
-    LocalCache.Marked(DetailKeyFun(detailId, detailType));
+    LocalCache.marked(DetailKeyFun(detailId, detailType));
     return await HttpClient.postJSON(API_HOST + 'detail/markScore', { detailId, detailType, score });
   },
 
