@@ -1,3 +1,8 @@
+const CreateExp = linkPattern=> {
+	linkPattern = linkPattern.replace("?","\\?");
+	new RegExp('^' + linkPattern + '$')
+}
+
 class RuleMatcher {
 	constructor(rules) {
 		this.rules = rules;
@@ -10,7 +15,7 @@ class RuleMatcher {
 				if (linkPattern === contentUrl) {
 					return { rule, contentIds };
 				}
-				let matching = contentUrl.match(new RegExp('^' + linkPattern + '$'));
+				let matching = contentUrl.match(CreateExp(linkPattern));
 				if (matching != null) {
 					let contentId = matching[1];
 					if (rule?.params?.idPrefix) {

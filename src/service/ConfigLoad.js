@@ -32,6 +32,7 @@ const ConfigLoad = {
         return Paths.entry;
     },
     isDataProxy() {
+        //If no chromeFlag is set, use http proxy.
         if(localStorage.getItem("chromeFlag")) {
             return false;
         }

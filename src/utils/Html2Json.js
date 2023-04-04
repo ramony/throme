@@ -34,7 +34,7 @@ class Html2Json {
       } else if (dataRule.includes('#')) {
         let param = dataRule.substring(1);
         // pageNo=4 => pageNo=5
-        let nextUrl = url.replace(new RegExp(`(${param}=)([0-9]+)`), (_, a, b) => a + (parseInt(b) + 1));
+        let nextUrl = url.replace(new RegExp(`(${param})([0-9]+)`), (_, a, b) => a + (parseInt(b) + 1));
         if (nextUrl !== url) {
           data = nextUrl;
         }
@@ -96,9 +96,9 @@ class Html2Json {
       let result = this.queryAll(selector2, dom);
       console.log(result)
       result.forEach(it => it.querySelectorAll(hideTags).forEach(item => {
-         if (item.children.length === 0) { 
+         //if (item.children.length === 0) { 
           item.outerHTML = '' 
-        } 
+        //} 
       }))
       return result;
     }

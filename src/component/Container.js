@@ -54,6 +54,7 @@ class Container extends Component {
       })
       if(result.listFlag) {
         if (result?.autoDisplayList) {
+          console.log('auto display count:', result.listingData.length);
           result.listingData.forEach(item => {
             this.handleUrl(item.url, true);
           });
