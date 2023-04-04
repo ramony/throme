@@ -30,7 +30,7 @@ class Download extends Component {
         let config = await ConfigLoad.loadDownloads();
         let { list = [], defaultRange= [1 , 3], filterOutKeywords = []} = config;
         let [from, to] = defaultRange;
-        let downloadList = list.map(item => ({ ...item, checked: false, from, to, skip: true }));
+        let downloadList = list.map(item => ({ checked: false, from, to, skip: true, ...item }));
         this.setState({ downloadList })
         this.filterOutKeywords = filterOutKeywords;
     }

@@ -17,6 +17,14 @@ const NextFunMap = {
   findLast2(nodelist) {
     let elements = [...nodelist]
     return elements.at(-2)?.['href'];;
+  },
+  findOnUrl(url, param) {
+    //pageIndex=5 => pageIndex=6
+    let nextUrl = url.replace(new RegExp(`(${param})([0-9]+)`), (_, a, b) => a + (parseInt(b) + 1));
+    if (nextUrl !== url) {
+      return nextUrl;
+    }
+    return null;
   }
 }
 

@@ -29,14 +29,12 @@ class Html2Json {
     if (typeOfRule.includes('String')) {
       let data;
       if (dataRule.includes('@')) {
-        let [selector, func] = dataRule.split('@');
-        data = NextFunMap[func](this.queryAll(selector, dom))
-      } else if (dataRule.includes('#')) {
-        let param = dataRule.substring(1);
-        // pageNo=4 => pageNo=5
-        let nextUrl = url.replace(new RegExp(`(${param})([0-9]+)`), (_, a, b) => a + (parseInt(b) + 1));
-        if (nextUrl !== url) {
-          data = nextUrl;
+        if (dataRule.includes('#')) {
+          let [, param] = dataRule.split('@#');
+          data = NextFunMap['findOnUrl'](url, param)
+        } else {
+          let [selector, func] = dataRule.split('@');
+          data = NextFunMap[func](this.queryAll(selector, dom))
         }
       } else if (dataRule.includes('/')) {
         let [selector, attr] = dataRule.split('/');
@@ -96,8 +94,8 @@ class Html2Json {
       let result = this.queryAll(selector2, dom);
       console.log(result)
       result.forEach(it => it.querySelectorAll(hideTags).forEach(item => {
-         //if (item.children.length === 0) { 
-          item.outerHTML = '' 
+        //if (item.children.length === 0) { 
+        item.outerHTML = ''
         //} 
       }))
       return result;
