@@ -16,7 +16,6 @@ class Download extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openFlag: false,
             downloadList: [],
             logs:["Log Console"]
         };
@@ -96,14 +95,6 @@ class Download extends Component {
       });
     }
 
-    open() {
-        this.setState({ openFlag: true })
-    }
-
-    close() {
-        this.setState({ openFlag: false })
-    }
-
     changeRow(index, keyName, e) {
         let value = e.target.value;
         this.setState((state) => {
@@ -114,9 +105,10 @@ class Download extends Component {
     }
 
     render() {
-        const { openFlag, downloadList, logs } = this.state;
+        const { downloadList, logs } = this.state;
+        const { open, setOpen } = this.props;
         return (
-            <Dialog onClose={() => false} open={openFlag} maxWidth={'1'}>
+            <Dialog open={open} maxWidth={'1'}>
                 <DialogTitle>Download It!</DialogTitle>
                 <TableContainer component={Paper}>
                     <Table aria-label="table">
@@ -151,7 +143,7 @@ class Download extends Component {
                     <ButtonGroup variant="contained">
                         <Button onClick={() => this.startDownload()} sx={NoTextTransform}>Download</Button>
                         <Button onClick={() => this.markAllReadWithSameKeyword()} sx={NoTextTransform}>Sync</Button>
-                        <Button onClick={() => this.close()} sx={NoTextTransform}>Close</Button>
+                        <Button onClick={() => setOpen(false)} sx={NoTextTransform}>Close</Button>
                     </ButtonGroup>
                 </div>
             </Dialog>

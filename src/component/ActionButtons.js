@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 
 import './ActionButtons.css';
 import Loading from './Loading';
@@ -11,10 +11,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import AddIcon from '@mui/icons-material/Add';
 
 const ActionButtons = ({ nextFn, openFn, resetFn, loading }) => {
-  const downloadRef = useRef(null);
-  function handleDownload() {
-    downloadRef.current.open();
-  }
+  const [open, setOpen] = useState(false);
   return (
     <div className='ActionButtons'>
       <Loading visible={loading} />
@@ -22,9 +19,9 @@ const ActionButtons = ({ nextFn, openFn, resetFn, loading }) => {
         <HomeIcon onClick={() => resetFn()} sx={NoTextTransform}>Reset</HomeIcon>
         <AddIcon onClick={() => openFn()} sx={NoTextTransform}>Open</AddIcon>
         <NavigateNextIcon onClick={() => nextFn()} sx={NoTextTransform}>Next</NavigateNextIcon>
-        <DownloadIcon onClick={handleDownload} sx={NoTextTransform}>Download</DownloadIcon>
+        <DownloadIcon onClick={()=>setOpen(true)} sx={NoTextTransform}>Download</DownloadIcon>
       </div>
-      <Download ref={downloadRef} />
+      <Download setOpen={setOpen} open={open}/>
     </div>
   )
 
