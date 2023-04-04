@@ -1,6 +1,6 @@
 const CreateExp = linkPattern => {
   linkPattern = linkPattern.replace("?", "\\?");
-  new RegExp('^' + linkPattern + '$')
+  return new RegExp('^' + linkPattern + '$')
 }
 
 class RuleMatcher {
