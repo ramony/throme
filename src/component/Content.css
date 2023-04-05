@@ -7,11 +7,15 @@
   box-sizing: border-box;
 }
 
+.Content img {
+  border-radius: 8px;
+}
+
 .Content-Item {
   background-color: #E3EDCD;
   margin: 20px 0px;
   padding: 3px 8px 3px 8px;
-  width: 98%;
+  width: calc(100% - 14px);
   word-break: break-all;
   border-radius: 5px;
   box-shadow: 0px 0px 10px 0px #F6C
@@ -27,7 +31,7 @@
 
 .Content-Tips {
   position: absolute;
-  top: 10px;
+  top: 14px;
   right: 50px;
   color: black;
   width: 30px;
