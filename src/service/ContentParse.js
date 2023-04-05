@@ -66,7 +66,7 @@ class ContentParse {
     let dataRule = rule.dataRule;
     let responseData;
     if (dataRule === 'json') {
-      responseData = JSON.parse(html);
+      responseData = JSON.parse(html).data;
     } else {
       responseData = Html2Json.htmlToJson(html, contentUrl, rule);
     }
