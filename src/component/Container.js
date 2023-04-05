@@ -15,7 +15,8 @@ class Container extends Component {
     super(props);
     this.state = {
       listingData: [],
-      contentData: []
+      contentData: [],
+      autoDisplay: false
     }
     this.nextUrlVisited = new Set()
   }
@@ -53,7 +54,7 @@ class Container extends Component {
         return append ? this.mergeData(state, result) : this.buildData(result);
       })
       if (result.listFlag) {
-        if (result?.autoDisplayList) {
+        if (this.state.autoDisplay && result?.autoDisplayList) {
           console.log('auto display count:', result.listingData.length);
           result.listingData.forEach(item => {
             setTimeout(() => this.handleUrl(item.url, true), 1)
@@ -132,12 +133,16 @@ class Container extends Component {
     this.onContentClose(index);
   }
 
+  onSetAutoDisplay(value) {
+    this.setState({ autoDisplay: value })
+  }
+
   render() {
-    let { listingData, contentData, loading } = this.state;
+    let { listingData, contentData, loading, autoDisplay } = this.state;
     return (
       <div className="Container">
         <div className="Left-Box">
-          <ActionButtons nextFn={() => this.onNextFn()} openFn={() => this.onOpenFn()} resetFn={() => this.onResetFn()} loading={loading} />
+          <ActionButtons nextFn={() => this.onNextFn()} openFn={() => this.onOpenFn()} resetFn={() => this.onResetFn()} loading={loading} autoDisplay={autoDisplay} setAutoDisplay={(v) => this.onSetAutoDisplay(v)} />
           <Listing listingData={listingData}
             onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.onNextFn()} />
         </div>
