@@ -1,6 +1,6 @@
 import './Loading.css';
 
-const Loading = ({ visible } ) => {
+const Loading = ({ visible }) => {
   if (!visible) {
     return <></>
   }

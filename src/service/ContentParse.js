@@ -8,11 +8,11 @@ import Unsafe from '../utils/Unsafe';
 class ContentParse {
 
   constructor(rules) {
-    this.ruleMatcher = new RuleMatcher(rules||[]);
+    this.ruleMatcher = new RuleMatcher(rules || []);
   }
 
   checkUrlRead(contentIds) {
-    if(!contentIds) {
+    if (!contentIds) {
       return false;
     }
     return DataService.contentExistLocal(...contentIds)
@@ -29,7 +29,7 @@ class ContentParse {
 
     let urlRule = this.ruleMatcher.match(contentUrl)
     if (!urlRule.rule) {
-      return {unMatched:true};
+      return { unMatched: true };
     }
 
     if (this.checkUrlRead(urlRule.contentIds) && append) {
@@ -75,7 +75,7 @@ class ContentParse {
     if (rule.target === 'listing') {
       let listingData = this.processListingData(responseData.list);
       let listingNext = responseData.next
-      return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay};
+      return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay };
     } else {
       let contentData = this.processContentData(responseData.list, contentUrl, urlRule.contentIds);
       return { contentData }

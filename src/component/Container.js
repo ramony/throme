@@ -42,31 +42,31 @@ class Container extends Component {
     }
     this.setState({ loading: true })
     this.contentParse.parse(url, append).then(result => {
-      if(!result) {
+      if (!result) {
         return;
       }
-      if(result.unMatched) {
+      if (result.unMatched) {
         console.log('No rule for url', url);
         return;
       }
       this.setState(state => {
         return append ? this.mergeData(state, result) : this.buildData(result);
       })
-      if(result.listFlag) {
+      if (result.listFlag) {
         if (result?.autoDisplayList) {
           console.log('auto display count:', result.listingData.length);
           result.listingData.forEach(item => {
-            this.handleUrl(item.url, true);
+            setTimeout(() => this.handleUrl(item.url, true), 1)
           });
         }
       } else {
-        if(!append) {
+        if (!append) {
           //if new content, reset scrollTop value.
           document.getElementsByClassName("Content")[0].scrollTop = 0;
         }
       }
-    }).catch(e=>alert(e))
-    .finally(()=>this.setState({ loading: false }));
+    }).catch(e => console.error(e))
+      .finally(() => this.setState({ loading: false }));
   }
 
   mergeData(state, result) {
@@ -84,7 +84,7 @@ class Container extends Component {
   buildData(result) {
     if (result.listFlag) {
       let { listingData, listingNext } = result
-      return { listingData, listingNext, contentData:[] }
+      return { listingData, listingNext, contentData: [] }
     } else {
       return result;
     }
@@ -137,7 +137,7 @@ class Container extends Component {
     return (
       <div className="Container">
         <div className="Left-Box">
-          <ActionButtons nextFn={() => this.onNextFn()} openFn={() => this.onOpenFn()} resetFn={()=>this.onResetFn()} loading={loading}/>
+          <ActionButtons nextFn={() => this.onNextFn()} openFn={() => this.onOpenFn()} resetFn={() => this.onResetFn()} loading={loading} />
           <Listing listingData={listingData}
             onItemClick={(url) => this.handleUrl(url)} onScrollToBottom={() => this.onNextFn()} />
         </div>
