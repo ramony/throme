@@ -9,7 +9,7 @@ class Html2Json {
   }
 
   static htmlToDom(html, url, htmlReplace) {
-    html = this.trimHtmlTag(html, null);
+    html = this.trimHtmlTag(html);
     let dom = document.createElement('div');
     document.getElementsByTagName("base")[0].setAttribute('href', url);
     if (htmlReplace) {
@@ -106,7 +106,7 @@ class Html2Json {
     return dom.querySelectorAll(selector);;
   }
 
-  static trimHtmlTag(html, removeImg) {
+  static trimHtmlTag(html) {
     html = html.replace(/<meta[^>]+>/ig, '');
     html = html.replace(/<link[^>]+>/ig, '');
     html = html.replace(/<base[^>]+>/ig, '');
@@ -114,9 +114,7 @@ class Html2Json {
     html = html.replace(/<script[^>]*>[\d\D]*?<\/script>/ig, '');
     html = html.replace(/<iframe[^>]*>[\d\D]*?<\/iframe>/ig, '');
     html = html.replace(/<!--[\d\D]*?-->/g, '');
-    if (removeImg) {
-      html = html.replace(/<img[^>]+>/ig, '');
-    }
+
     return html;
   }
 
