@@ -9,8 +9,8 @@ import { useRef } from 'react'
 
 function useThromeLoad(dispatch, state) {
   console.log('useThromeLoad')
-
   const data = useRef({ nextUrlVisitSet: new Set() });
+
   async function loadConfig() {
     console.log('loadConfig invoked');
     let rules = await ConfigLoad.loadRules()

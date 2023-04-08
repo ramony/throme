@@ -13,7 +13,7 @@ const Content = (props) => {
 
   return (
     <div className="Content">
-      <div class="Content-Tips">{contentData.length}</div>
+      <div className="Content-Tips">{contentData.length}</div>
       {
         contentData.map((item, index) => {
           let actions = null;
@@ -27,7 +27,7 @@ const Content = (props) => {
               </div>
           }
           return (
-            <div className="Content-Item">
+            <div className="Content-Item" key={item.title}>
               {actions}
               <div className="Content-Title">{item.title}</div>
               <div className="Content-Detail" dangerouslySetInnerHTML={{ __html: item.content }}></div>

@@ -9,16 +9,12 @@ function Listing({ loadAction }) {
   const [hover, setHover] = useState({});
   const [clickedItem, setClickItem] = useState("");
 
-  function hoveKey(index) {
-    return 'hoveKey-' + index;
-  }
-
   function mouseOver(index) {
-    setHover({ [hoveKey(index)]: '1' })
+    setHover({ [index]: '1' })
   }
 
   function mouseOut(index) {
-    setHover({ [hoveKey(index)]: '' })
+    setHover({ [index]: '' })
   }
 
   function itemClick(item, index) {
@@ -42,7 +38,7 @@ function Listing({ loadAction }) {
     if (index % 2 === 0) {
       classes.push('Listing-Item-Even');
     }
-    if (hover[hoveKey(index)]) {
+    if (hover[index]) {
       classes.push('Listing-Item-Hover')
     }
     if (clickedItem === item.url + index) {

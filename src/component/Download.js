@@ -137,7 +137,7 @@ class Download extends Component {
           </Table>
         </TableContainer>
         <div className='console'>
-          {logs.map(log => <div>{log}</div>)}
+          {logs.map(log => <div key={log}>{log}</div>)}
         </div>
         <div className='center'>
           <ButtonGroup variant="contained">
