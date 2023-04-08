@@ -7,7 +7,7 @@ import DataService from '../service/DataService';
 import ContentParse from '../service/ContentParse';
 import { useRef } from 'react'
 
-function useThromeLoad(dispatch, state) {
+function useThromeLoad(dispatch) {
   console.log('useThromeLoad')
   const data = useRef({ nextUrlVisitSet: new Set() });
 
@@ -38,7 +38,8 @@ function useThromeLoad(dispatch, state) {
       }
       dispatch(handleUrlPrimary({ result, append }))
       if (result.listFlag) {
-        if (state.autoDisplay && result?.autoDisplayList) {
+        data.current.listingNext = result.listingNext;
+        if (data.current.autoDisplay && result?.autoDisplayList) {
           console.log('auto display count:', result.listingData.length);
           result.listingData.forEach(item => {
             setTimeout(() => handleUrl(item.url, true), 1)
@@ -55,8 +56,7 @@ function useThromeLoad(dispatch, state) {
   }
 
   function handleNext() {
-    let { nextUrlVisitSet } = data.current
-    let { listingNext } = state;
+    let { nextUrlVisitSet, listingNext } = data.current
     if (nextUrlVisitSet.has(listingNext)) {
       return;
     }
@@ -82,6 +82,7 @@ function useThromeLoad(dispatch, state) {
   }
 
   function setAutoDisplay(value) {
+    data.current.autoDisplay = value;
     dispatch(setAutoDisplayPrimary(value));
   }
 

@@ -27,7 +27,7 @@ const Content = (props) => {
               </div>
           }
           return (
-            <div className="Content-Item" key={item.title}>
+            <div className="Content-Item" key={index}>
               {actions}
               <div className="Content-Title">{item.title}</div>
               <div className="Content-Detail" dangerouslySetInnerHTML={{ __html: item.content }}></div>

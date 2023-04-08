@@ -70,8 +70,7 @@ class ContentParse {
     } else {
       responseData = Html2Json.htmlToJson(html, contentUrl, rule);
     }
-    console.log('responseData : ' + responseData.length);
-
+    console.log('responseData list size: ' + responseData.list.length);
     if (rule.target === 'listing') {
       let listingData = this.processListingData(responseData.list);
       let listingNext = responseData.next
