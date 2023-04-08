@@ -2,42 +2,46 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const mergeData = (state, result) => {
   if (result.listFlag) {
-    let { listingData, listingNext } = result
-    listingData = [...state.listingData, ...listingData]
-    return { listingData, listingNext }
+    state.listingData.push(...result.listingData);
+    state.listingNext = result.listingNext;
   } else {
-    let { contentData } = result
-    contentData = [...state.contentData, ...contentData]
-    return { contentData }
+    state.contentData.push(...result.contentData)
   }
 }
 
-const buildData = (result) => {
+const buildData = (state, result) => {
   if (result.listFlag) {
-    let { listingData, listingNext } = result
-    return { listingData, listingNext, contentData: [] }
+    state.listingData = [...result.listingData];
+    state.listingNext = result.listingNext;
+    state.contentData = []
   } else {
-    return result;
+    state.contentData = [...result.contentData];
   }
 }
 
 export const thromeSlice = createSlice({
   name: 'throme',
   initialState: {
-    listingData: []
+    listingData: [],
+    contentData: [],
   },
   reducers: {
-    handleData: (state, { payload }) => {
+    handleUrl: (state, { payload }) => {
       let { result, append } = payload;
-      let ret = append ? mergeData(state, result) : buildData(result);
-      return ret;
+      append ? mergeData(state, result) : buildData(state, result);
     },
-    handleLoading(state, status) {
-      return state
+    handleLoading(state, { payload }) {
+      state.loading = payload;
+    },
+    closeContent(state, { payload }) {
+      state.contentData.splice(payload, 1)
+    },
+    setAutoDisplay(state, { payload }) {
+      state.autoDisplay = payload;
     }
   }
 })
 
-export const { handleData, handleLoading } = thromeSlice.actions
+export const { handleUrl, handleLoading, closeContent, setAutoDisplay } = thromeSlice.actions
 
 export default thromeSlice.reducer

@@ -1,77 +1,75 @@
-import React, { Component } from 'react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+
 import './Listing.css';
 
-class Listing extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
+function Listing({ loadAction }) {
+
+  const listingData = useSelector(state => state.throme.listingData)
+  const [hover, setHover] = useState({});
+  const [clickedItem, setClickItem] = useState("");
+
+  function hoveKey(index) {
+    return 'hoveKey-' + index;
   }
 
-  componentDidMount() {
-
+  function mouseOver(index) {
+    setHover({ [hoveKey(index)]: '1' })
   }
 
-  mouseOver(index) {
-    this.setState({ [this.hoveKey(index)]: '1' })
+  function mouseOut(index) {
+    setHover({ [hoveKey(index)]: '' })
   }
 
-  mouseOut(index) {
-    this.setState({ [this.hoveKey(index)]: '' })
+  function itemClick(item, index) {
+    loadAction.handleUrl(item.url)
+    setClickItem(item.url + index)
   }
 
-  itemClick(item, index) {
-    this.props.onItemClick(item.url)
-    this.setState({ clickKey: item.url + index })
-  }
-
-  scroll(e) {
+  function scroll(e) {
     let element = e.target;
     let top = element.scrollTop;
     let height = element.clientHeight;
     let scrollHeight = element.scrollHeight;
     if (top + height >= scrollHeight - 400) {
-      this.props.onScrollToBottom()
+      //this.props.onScrollToBottom()
+      loadAction.handleNext()
     }
   }
 
-  calcClassName(index, item) {
+  function calcClassName(index, item) {
     let classes = ['Listing-Round-Angle Listing-Item']
     if (index % 2 === 0) {
       classes.push('Listing-Item-Even');
     }
-    if (this.state[this.hoveKey(index)]) {
+    if (hover[hoveKey(index)]) {
       classes.push('Listing-Item-Hover')
     }
-    if (this.state.clickKey === item.url + index) {
+    if (clickedItem === item.url + index) {
       classes.push('Listing-Item-Click')
     }
     return classes.join(' ')
   }
 
-  hoveKey(index) {
-    return 'hoveKey-' + index;
-  }
-
-  openUrl(e, url) {
+  function openUrl(e, url) {
     e.preventDefault()
     console.log(url)
     window.open(url, '_blank');
   }
 
-  render() {
-    return (
-      <div className="Listing" onScroll={(e) => this.scroll(e)}>
-        {
-          this.props.listingData.map((item, index) => {
-            let className = this.calcClassName(index, item)
-            return <div className={className} key={index}
-              onMouseOver={() => this.mouseOver(index)} onMouseOut={() => this.mouseOut(index)}
-              onClick={() => this.itemClick(item, index)} onContextMenu={(e) => this.openUrl(e, item.url)}>{item.title}</div>
-          })
-        }
-      </div>
-    )
-  }
+  return (
+    <div className="Listing" onScroll={(e) => scroll(e)}>
+      {
+        listingData.map((item, index) => {
+          let className = calcClassName(index, item)
+          return <div className={className} key={index}
+            onMouseOver={() => mouseOver(index)} onMouseOut={() => mouseOut(index)}
+            onClick={() => itemClick(item, index)} onContextMenu={(e) => openUrl(e, item.url)}>{item.title}</div>
+        })
+      }
+    </div>
+  )
+
 
 }
 

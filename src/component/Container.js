@@ -1,45 +1,32 @@
-import { useRef, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import Listing from './Listing';
-
-import { handleUrlAction } from '../app/thromeAction';
+import { useThromeLoad } from '../app/thromeAction';
 import Content from './Content';
 import ActionButtons from './ActionButtons';
-
-import DataService from '../service/DataService';
-import ConfigLoad from '../service/ConfigLoad';
-import ContentParse from '../service/ContentParse';
+import Listing from './Listing';
 
 import './Container.css';
 
 function Container(props) {
-  const nextUrlVisited = useRef(new Set());
-  const contentParse = useRef(null);
-  const throme = useSelector(state => state.throme)
-  const dispatch = useDispatch()
+  const state = useSelector(state => state.throme)
+  const dispatch = useDispatch();
+  const loadAction = useThromeLoad(dispatch, state);
 
   useEffect(() => {
-    ConfigLoad.loadRules().then(rules => {
-      contentParse.current = new ContentParse(rules);
-      dispatch(handleUrlAction(ConfigLoad.loadEntryPath(), false, contentParse.current))
+    loadAction.loadConfig().then(rules => {
+      loadAction.handleEntry()
     })
   }, []);
 
   return (
     <div className="Container">
       <div className="Left-Box">
-        <ActionButtons />
-
-        {
-          (throme.listingData || []).map((item, index) => {
-            //let className = this.calcClassName(index, item)
-            return <div>{item.title}</div>
-          })
-        }
+        <ActionButtons loadAction={loadAction} />
+        <Listing loadAction={loadAction} />
       </div>
       <div className="Right-Box">
-
+        <Content />
       </div>
     </div>
   )

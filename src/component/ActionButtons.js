@@ -4,6 +4,8 @@ import './ActionButtons.css';
 import Loading from './Loading';
 import Download from './Download';
 
+import { useSelector } from 'react-redux'
+
 import { NoTextTransform } from '../config/ThromeConfig';
 import { Switch } from '@mui/material';
 
@@ -12,20 +14,19 @@ import HomeIcon from '@mui/icons-material/Home';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import AddIcon from '@mui/icons-material/Add';
 
-const ActionButtons = ({ nextFn, openFn, resetFn, loading, autoDisplay, setAutoDisplay }) => {
+const ActionButtons = ({ loadAction }) => {
   const [open, setOpen] = useState(false);
-  function setAutoDisplayIt(e) {
-    setAutoDisplay(e.target.checked);
-  }
+  const thromeState = useSelector(state => state.throme);
+  const { resetLink, openLink, handleNext, setAutoDisplay } = loadAction
   return (
     <div className='ActionButtons'>
-      <Loading visible={loading} />
+      <Loading visible={thromeState.loading} />
       <div className='Action-Button-Box'>
-        <HomeIcon onClick={() => resetFn()} sx={NoTextTransform}>Reset</HomeIcon>
-        <AddIcon onClick={() => openFn()} sx={NoTextTransform}>Open</AddIcon>
-        <NavigateNextIcon onClick={() => nextFn()} sx={NoTextTransform}>Next</NavigateNextIcon>
+        <HomeIcon onClick={resetLink} sx={NoTextTransform}>Reset</HomeIcon>
+        <AddIcon onClick={openLink} sx={NoTextTransform}>Open</AddIcon>
+        <NavigateNextIcon onClick={handleNext} sx={NoTextTransform}>Next</NavigateNextIcon>
         <DownloadIcon onClick={() => setOpen(true)} sx={NoTextTransform}>Download</DownloadIcon>
-        <Switch checked={autoDisplay} onChange={setAutoDisplayIt} size="small" />
+        <Switch checked={thromeState.autoDisplay} onChange={(e) => setAutoDisplay(e.target.checked)} size="small" />
       </div>
       <Download setOpen={setOpen} open={open} />
     </div>
