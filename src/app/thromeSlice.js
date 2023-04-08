@@ -1,24 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const mergeData = (state, result) => {
-  if (result.listFlag) {
-    state.listingData.push(...result.listingData);
-    state.listingNext = result.listingNext;
-  } else {
-    state.contentData.push(...result.contentData)
-  }
-}
-
-const buildData = (state, result) => {
-  if (result.listFlag) {
-    state.listingData = [...result.listingData];
-    state.listingNext = result.listingNext;
-    state.contentData = []
-  } else {
-    state.contentData = [...result.contentData];
-  }
-}
-
 export const thromeSlice = createSlice({
   name: 'throme',
   initialState: {
@@ -28,7 +9,21 @@ export const thromeSlice = createSlice({
   reducers: {
     handleUrl: (state, { payload }) => {
       let { result, append } = payload;
-      append ? mergeData(state, result) : buildData(state, result);
+      if (result.listFlag) {
+        if (append) {
+          state.listingData.push(...result.listingData);
+        } else {
+          state.listingData = [...result.listingData];
+          state.contentData = []
+        }
+        state.listingNext = result.listingNext;
+      } else {
+        if (append) {
+          state.contentData.push(...result.contentData)
+        } else {
+          state.contentData = [...result.contentData];
+        }
+      }
     },
     handleLoading(state, { payload }) {
       state.loading = payload;
