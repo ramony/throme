@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 
 import { useThromeLoad } from '../app/thromeAction';
 import Content from './Content';
@@ -9,8 +8,7 @@ import Listing from './Listing';
 import './Container.css';
 
 function Container(props) {
-  const dispatch = useDispatch();
-  const loadAction = useThromeLoad(dispatch);
+  const loadAction = useThromeLoad();
 
   useEffect(() => {
     loadAction.loadConfig().then(rules => {

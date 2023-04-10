@@ -6,9 +6,11 @@ import ConfigLoad from '../service/ConfigLoad';
 import DataService from '../service/DataService';
 import ContentParse from '../service/ContentParse';
 import { useRef } from 'react'
+import { useDispatch } from 'react-redux'
 
-function useThromeLoad(dispatch) {
+function useThromeLoad() {
   console.log('useThromeLoad')
+  const dispatch = useDispatch();
   const data = useRef({ nextUrlVisitSet: new Set() });
 
   async function loadConfig() {
