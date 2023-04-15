@@ -61,19 +61,26 @@ class ContentParse {
     let params = rule.params;
 
     let htmlData = await HttpAdaptor.getHtml(contentUrl, params.encoding);
-    let html = htmlData.data;
-
-    let dataRule = rule.dataRule;
+    let isListUrl = rule.target === 'listing';
     let responseData;
-    if (dataRule === 'json') {
-      responseData = JSON.parse(html).data;
+    let { success } = htmlData;
+    if (success) {
+      let html = htmlData.data;
+      let dataRule = rule.dataRule;
+      document.getElementsByTagName("base")[0].setAttribute('href', contentUrl);
+      if (dataRule === 'json') {
+        responseData = JSON.parse(html).data;
+      } else {
+        responseData = Html2Json.htmlToJson(html, contentUrl, rule);
+      }
+      console.log('responseData list size: ' + responseData.list.length);
     } else {
-      responseData = Html2Json.htmlToJson(html, contentUrl, rule);
+      let list = [{ "title": "Can't visit " + contentUrl + ", error:" + htmlData.errMsg }];
+      responseData = { list }
     }
-    console.log('responseData list size: ' + responseData.list.length);
-    if (rule.target === 'listing') {
+    if (isListUrl) {
       let listingData = this.processListingData(responseData.list);
-      let listingNext = responseData.next
+      let listingNext = this.convertUrl(responseData.next);
       return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay };
     } else {
       let contentData = this.processContentData(responseData.list, contentUrl, urlRule.contentIds);
@@ -115,6 +122,18 @@ class ContentParse {
     }
     return contentUrl;
   }
+
+
+  convertUrl(parsedUrl) {
+    if (!/^http/.test(parsedUrl)) {
+      var a = document.createElement('a');
+      //$(document.body).append(a);
+      a.setAttribute('href', parsedUrl);
+      parsedUrl = a.href;
+    }
+    return parsedUrl;
+  }
+
 
 }
 
