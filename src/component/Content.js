@@ -1,10 +1,14 @@
-import './Content.css';
-import { NoTextTransform } from '../config/ThromeConfig';
+import { observer } from 'mobx-react';
+
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import GradeIcon from '@mui/icons-material/Grade';
-import { observer } from 'mobx-react';
-import { store, storeFns } from '../app/store';
+
+import { store, storeFns } from '@/app/store';
+import { NoTextTransform } from '@/config/ThromeConfig';
+
+import '@/component/Content.css';
+
 
 const Content = observer(() => {
   const { closeContent, removeContent, likeContent } = storeFns;

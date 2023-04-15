@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { observer } from 'mobx-react';
-import { store } from '../app/store';
 
-import './Listing.css';
+import { store } from '@/app/store';
+
+import '@/component/Listing.css';
 
 const Listing = observer(() => {
 

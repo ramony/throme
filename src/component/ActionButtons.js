@@ -1,18 +1,20 @@
 import { useState } from 'react';
+import { observer } from 'mobx-react';
 
-import './ActionButtons.css';
-import Loading from './Loading';
-import Download from './Download';
-
-import { NoTextTransform } from '../config/ThromeConfig';
 import { Switch } from '@mui/material';
-
 import DownloadIcon from '@mui/icons-material/Download';
 import HomeIcon from '@mui/icons-material/Home';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import AddIcon from '@mui/icons-material/Add';
-import { observer } from 'mobx-react';
-import { store, storeFns } from '../app/store';
+
+import '@/component/ActionButtons.css';
+
+import { store, storeFns } from '@/app/store';
+import { NoTextTransform } from '@/config/ThromeConfig';
+
+import Loading from '@/component/Loading';
+import Download from '@/component/Download';
+
 
 const ActionButtons = observer(() => {
   const [open, setOpen] = useState(false);

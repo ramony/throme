@@ -4,11 +4,12 @@ import Content from './Content';
 import ActionButtons from './ActionButtons';
 import Listing from './Listing';
 
-import './Container.css';
+import '@/component/Container.css';
 
-import { store } from '../app/store';
+import { store } from '@/app/store';
 
 function Container() {
+
   useEffect(() => {
     store.loadConfig().then(() => {
       store.handleEntry()
