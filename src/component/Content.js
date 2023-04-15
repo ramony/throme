@@ -9,7 +9,6 @@ import { NoTextTransform } from '@/config/ThromeConfig';
 
 import '@/component/Content.css';
 
-
 const Content = observer(() => {
   const { closeContent, removeContent, likeContent } = storeFns;
   const { contentData } = store;

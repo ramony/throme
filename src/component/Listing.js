@@ -1,15 +1,15 @@
-import { useState } from 'react'
 import { observer } from 'mobx-react';
 
 import { store } from '@/app/store';
+import { useLocal } from '@/app/appUse';
 
 import '@/component/Listing.css';
 
 const Listing = observer(() => {
 
   const { listingData } = store;
-  const [hover, setHover] = useState({});
-  const [clickedItem, setClickItem] = useState("");
+  const [hover, setHover] = useLocal({});
+  const [clickedItem, setClickItem] = useLocal("");
   function mouseOver(index) {
     setHover({ [index]: '1' })
   }

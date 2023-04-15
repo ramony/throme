@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { observer } from 'mobx-react';
 
 import { Switch } from '@mui/material';
@@ -10,6 +9,8 @@ import AddIcon from '@mui/icons-material/Add';
 import '@/component/ActionButtons.css';
 
 import { store, storeFns } from '@/app/store';
+import { useLocal } from '@/app/appUse';
+
 import { NoTextTransform } from '@/config/ThromeConfig';
 
 import Loading from '@/component/Loading';
@@ -17,18 +18,17 @@ import Download from '@/component/Download';
 
 
 const ActionButtons = observer(() => {
-  const [open, setOpen] = useState(false);
-  const localStore = store;
+  const [open, setOpen] = useLocal(false);
   let { resetLink, openLink, handleNext, setAutoDisplay } = storeFns
   return (
     <div className='ActionButtons'>
-      <Loading visible={localStore.loading} />
+      <Loading visible={store.loading} />
       <div className='Action-Button-Box'>
         <HomeIcon onClick={resetLink} sx={NoTextTransform}>Reset</HomeIcon>
         <AddIcon onClick={openLink} sx={NoTextTransform}>Open</AddIcon>
         <NavigateNextIcon onClick={handleNext} sx={NoTextTransform}>Next</NavigateNextIcon>
         <DownloadIcon onClick={() => setOpen(true)} sx={NoTextTransform}>Download</DownloadIcon>
-        <Switch checked={localStore.autoDisplay} onChange={(e) => setAutoDisplay(e.target.checked)} size="small" />
+        <Switch checked={store.autoDisplay} onChange={(e) => setAutoDisplay(e.target.checked)} size="small" />
       </div>
       <Download setOpen={setOpen} open={open} />
     </div>
