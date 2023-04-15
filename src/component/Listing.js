@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { observer } from 'mobx-react';
+import { store } from '../app/store';
 
 import './Listing.css';
 
-function Listing({ loadAction }) {
+const Listing = observer(() => {
 
-  const listingData = useSelector(state => state.throme.listingData)
+  const { listingData } = store;
   const [hover, setHover] = useState({});
   const [clickedItem, setClickItem] = useState("");
-
   function mouseOver(index) {
     setHover({ [index]: '1' })
   }
@@ -18,7 +18,7 @@ function Listing({ loadAction }) {
   }
 
   function itemClick(item, index) {
-    loadAction.handleUrl(item.url)
+    store.handleUrl(item.url)
     setClickItem(item.url + index)
   }
 
@@ -29,7 +29,7 @@ function Listing({ loadAction }) {
     let scrollHeight = element.scrollHeight;
     if (top + height >= scrollHeight - 400) {
       //this.props.onScrollToBottom()
-      loadAction.handleNext()
+      store.handleNext()
     }
   }
 
@@ -66,7 +66,6 @@ function Listing({ loadAction }) {
     </div>
   )
 
-
-}
+})
 
 export default Listing

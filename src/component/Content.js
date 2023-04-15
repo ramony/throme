@@ -3,14 +3,12 @@ import { NoTextTransform } from '../config/ThromeConfig';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import GradeIcon from '@mui/icons-material/Grade';
-import { useSelector, useDispatch } from 'react-redux'
-import { useThromeContent } from '../app/thromeAction';
+import { observer } from 'mobx-react';
+import { store, storeFns } from '../app/store';
 
-const Content = (props) => {
-  const dispatch = useDispatch();
-  const contentData = useSelector(state => state.throme.contentData)
-  const contentAction = useThromeContent(dispatch);
-
+const Content = observer(() => {
+  const { closeContent, removeContent, likeContent } = storeFns;
+  const { contentData } = store;
   return (
     <div className="Content">
       <div className="Content-Tips">{contentData.length}</div>
@@ -20,9 +18,9 @@ const Content = (props) => {
           if (item.contentIdString) {
             actions =
               <div className="Content-Button-Box">
-                <ClearIcon onClick={() => contentAction.closeContent(index)} sx={NoTextTransform}>Close {item.contentIdString}</ClearIcon>
-                <DeleteForeverIcon onClick={() => contentAction.removeContent(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</DeleteForeverIcon>
-                {item.downloaded ? <GradeIcon onClick={() => contentAction.likeContent(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</GradeIcon> : <></>}
+                <ClearIcon onClick={() => closeContent(index)} sx={NoTextTransform}>Close {item.contentIdString}</ClearIcon>
+                <DeleteForeverIcon onClick={() => removeContent(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</DeleteForeverIcon>
+                {item.downloaded ? <GradeIcon onClick={() => likeContent(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</GradeIcon> : <></>}
                 <span onClick={() => window.open(item.contentUrl)}>{item.contentIdString}</span>
               </div>
           }
@@ -38,6 +36,6 @@ const Content = (props) => {
     </div>
   )
 
-}
+})
 
 export default Content

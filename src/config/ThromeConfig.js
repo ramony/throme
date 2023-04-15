@@ -16,7 +16,7 @@ const theme = createTheme({
 const DataFolder = "configData";
 
 const Paths = {
-  entry: `${DataFolder}/entry.json`,
+  entry: `${DataFolder}/entry-test.json`,
   rules: [`${DataFolder}/ruleConfig.json`],
   download: `${DataFolder}/download.json`
 }

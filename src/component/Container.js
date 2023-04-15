@@ -1,26 +1,25 @@
 import { useEffect } from 'react'
 
-import { useThromeLoad } from '../app/thromeAction';
 import Content from './Content';
 import ActionButtons from './ActionButtons';
 import Listing from './Listing';
 
 import './Container.css';
 
-function Container(props) {
-  const loadAction = useThromeLoad();
+import { store } from '../app/store';
 
+function Container() {
   useEffect(() => {
-    loadAction.loadConfig().then(rules => {
-      loadAction.handleEntry()
+    store.loadConfig().then(() => {
+      store.handleEntry()
     })
   }, []);
 
   return (
     <div className="Container">
       <div className="Left-Box">
-        <ActionButtons loadAction={loadAction} />
-        <Listing loadAction={loadAction} />
+        <ActionButtons />
+        <Listing />
       </div>
       <div className="Right-Box">
         <Content />

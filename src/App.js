@@ -11,7 +11,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <Container />
       </ThemeProvider>
-
     </div>
   );
 }
