@@ -3,6 +3,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import ConfigLoad from '@/service/ConfigLoad';
 import DataService from '@/service/DataService';
 import ContentParse from '@/service/ContentParse';
+import { buildClassMethods } from '@/utils/ClassUtils';
 
 class Store {
 
@@ -47,7 +48,7 @@ class Store {
         console.log('No rule for url', url);
         return;
       }
-      this.handleUrlData(result, append);
+      runInAction(() => this.handleUrlData(result, append))
       if (result.listFlag) {
         this.listingNext = result.listingNext;
         if (this.autoDisplay && result?.autoDisplayList) {
@@ -82,7 +83,6 @@ class Store {
       }
     }
   }
-
 
   handleNext() {
     let { nextUrlVisitSet, listingNext } = this;
@@ -136,15 +136,6 @@ class Store {
 }
 
 const store = new Store();
-function createStoreFunctions() {
-  var object = {}
-  for (let key of Object.getOwnPropertyNames(Store.prototype)) {
-    if (key !== 'constructor') {
-      object[key] = store[key].bind(store);
-    }
-  }
-  return object;
-}
+const storeFns = buildClassMethods(Store.prototype, store);
 
-const storeFns = createStoreFunctions();
 export { store, storeFns };
