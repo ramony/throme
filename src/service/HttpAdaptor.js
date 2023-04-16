@@ -1,5 +1,5 @@
-import HttpClient from '../utils/HttpClient';
-import ConfigLoad from '../service/ConfigLoad';
+import HttpClient from '@/utils/HttpClient';
+import ConfigLoad from '@/service/ConfigLoad';
 
 const HttpAdaptor = {
 

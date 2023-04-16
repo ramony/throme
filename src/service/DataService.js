@@ -1,4 +1,4 @@
-import HttpClient from '../utils/HttpClient';
+import HttpClient from '@/utils/HttpClient';
 
 const API_HOST = 'http://localhost:30080/api/v1/';
 

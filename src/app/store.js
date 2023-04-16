@@ -1,7 +1,8 @@
-import ConfigLoad from '../service/ConfigLoad';
-import DataService from '../service/DataService';
-import ContentParse from '../service/ContentParse';
 import { makeAutoObservable, runInAction } from "mobx";
+
+import ConfigLoad from '@/service/ConfigLoad';
+import DataService from '@/service/DataService';
+import ContentParse from '@/service/ContentParse';
 
 class Store {
 

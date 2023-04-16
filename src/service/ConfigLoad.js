@@ -1,5 +1,5 @@
-import HttpClient from '../utils/HttpClient';
-import { Paths } from '../config/ThromeConfig';
+import HttpClient from '@/utils/HttpClient';
+import { Paths } from '@/config/ThromeConfig';
 
 const ConfigLoad = {
   async loadRules() {

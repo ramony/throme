@@ -1,9 +1,9 @@
-import HttpAdaptor from './HttpAdaptor';
-import DataService from './DataService';
+import HttpAdaptor from '@/service/HttpAdaptor';
+import DataService from '@/service/DataService';
 
-import Html2Json from '../utils/Html2Json';
-import RuleMatcher from '../utils/RuleMatcher';
-import Unsafe from '../utils/Unsafe';
+import Html2Json from '@/utils/Html2Json';
+import RuleMatcher from '@/utils/RuleMatcher';
+import Unsafe from '@/utils/Unsafe';
 
 class ContentParse {
 

@@ -1,4 +1,4 @@
-import NextFunMap from './NextFunMap';
+import NextFunMap from '@/utils/NextFunMap';
 
 class Html2Json {
 
