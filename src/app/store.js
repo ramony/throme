@@ -3,7 +3,6 @@ import { makeAutoObservable, runInAction } from "mobx";
 import ConfigLoad from '@/service/ConfigLoad';
 import DataService from '@/service/DataService';
 import ContentParse from '@/service/ContentParse';
-import { buildClassMethods } from '@/utils/ClassUtils';
 
 class Store {
 
@@ -135,7 +134,4 @@ class Store {
 
 }
 
-const store = new Store();
-const storeFns = buildClassMethods(Store.prototype, store);
-
-export { store, storeFns };
+export { Store };

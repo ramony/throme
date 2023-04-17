@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 
 import Content from './Content';
 import ActionButtons from './ActionButtons';
@@ -6,14 +6,17 @@ import Listing from './Listing';
 
 import '@/component/Container.css';
 
-import { store } from '@/app/store';
+import AppContext from '@/app/appContext';
 
 function Container() {
+
+  const store = useContext(AppContext);
 
   useEffect(() => {
     store.loadConfig().then(() => {
       store.handleEntry()
-    })
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

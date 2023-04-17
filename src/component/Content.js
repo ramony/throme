@@ -4,14 +4,17 @@ import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import GradeIcon from '@mui/icons-material/Grade';
 
-import { store, storeFns } from '@/app/store';
+import { useContext } from "react"
+import AppContext from '@/app/appContext';
+
 import { NoTextTransform } from '@/config/ThromeConfig';
 
 import '@/component/Content.css';
 
 const Content = observer(() => {
-  const { closeContent, removeContent, likeContent } = storeFns;
-  const { contentData } = store;
+  const store = useContext(AppContext);
+  const { closeContent, removeContent, likeContent } = store;
+  const { contentData } = useContext(AppContext);
   return (
     <div className="Content">
       <div className="Content-Tips">{contentData.length}</div>

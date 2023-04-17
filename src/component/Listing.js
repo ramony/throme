@@ -1,15 +1,16 @@
 import { observer } from 'mobx-react';
 
-import { store } from '@/app/store';
-import { useLocal } from '@/app/appUse';
+import AppContext from '@/app/appContext';
+import { useState, useContext } from "react"
 
 import '@/component/Listing.css';
 
 const Listing = observer(() => {
 
-  const { listingData } = store;
-  const [hover, setHover] = useLocal({});
-  const [clickedItem, setClickItem] = useLocal("");
+  const store = useContext(AppContext);
+  const [hover, setHover] = useState({});
+  const [clickedItem, setClickItem] = useState("");
+
   function mouseOver(index) {
     setHover({ [index]: '1' })
   }
@@ -57,7 +58,7 @@ const Listing = observer(() => {
   return (
     <div className="Listing" onScroll={(e) => scroll(e)}>
       {
-        listingData.map((item, index) => {
+        store.listingData.map((item, index) => {
           let className = calcClassName(index, item)
           return <div className={className} key={index}
             onMouseOver={() => mouseOver(index)} onMouseOut={() => mouseOut(index)}
