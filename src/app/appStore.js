@@ -4,7 +4,7 @@ import ConfigLoad from '@/service/ConfigLoad';
 import DataService from '@/service/DataService';
 import ContentParse from '@/service/ContentParse';
 
-class Store {
+class AppStore {
 
   listingData = [];
 
@@ -134,4 +134,4 @@ class Store {
 
 }
 
-export { Store };
+export { AppStore };

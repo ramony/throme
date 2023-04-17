@@ -1,20 +1,19 @@
+import { useContext } from "react"
 import { observer } from 'mobx-react';
+
+import AppContext from '@/app/appContext';
+import { NoTextTransform } from '@/config/ThromeConfig';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import GradeIcon from '@mui/icons-material/Grade';
 
-import { useContext } from "react"
-import AppContext from '@/app/appContext';
-
-import { NoTextTransform } from '@/config/ThromeConfig';
-
 import '@/component/Content.css';
 
 const Content = observer(() => {
-  const store = useContext(AppContext);
-  const { closeContent, removeContent, likeContent } = store;
-  const { contentData } = useContext(AppContext);
+  const appStore = useContext(AppContext);
+  const { contentData, closeContent, removeContent, likeContent } = appStore;
+
   return (
     <div className="Content">
       <div className="Content-Tips">{contentData.length}</div>

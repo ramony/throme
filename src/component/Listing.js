@@ -1,13 +1,13 @@
+import { useState, useContext } from "react"
 import { observer } from 'mobx-react';
 
 import AppContext from '@/app/appContext';
-import { useState, useContext } from "react"
 
 import '@/component/Listing.css';
 
 const Listing = observer(() => {
 
-  const store = useContext(AppContext);
+  const appStore = useContext(AppContext);
   const [hover, setHover] = useState({});
   const [clickedItem, setClickItem] = useState("");
 
@@ -20,7 +20,7 @@ const Listing = observer(() => {
   }
 
   function itemClick(item, index) {
-    store.handleUrl(item.url)
+    appStore.handleUrl(item.url)
     setClickItem(item.url + index)
   }
 
@@ -31,7 +31,7 @@ const Listing = observer(() => {
     let scrollHeight = element.scrollHeight;
     if (top + height >= scrollHeight - 400) {
       //this.props.onScrollToBottom()
-      store.handleNext()
+      appStore.handleNext()
     }
   }
 
@@ -58,7 +58,7 @@ const Listing = observer(() => {
   return (
     <div className="Listing" onScroll={(e) => scroll(e)}>
       {
-        store.listingData.map((item, index) => {
+        appStore.listingData.map((item, index) => {
           let className = calcClassName(index, item)
           return <div className={className} key={index}
             onMouseOver={() => mouseOver(index)} onMouseOut={() => mouseOut(index)}

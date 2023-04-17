@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Store } from '@/app/store'
+import { AppStore } from '@/app/appStore'
 import AppContext from '@/app/appContext'
 import { buildClassMethods } from '@/utils/ClassUtils';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const store = new Store();
-buildClassMethods(Store.prototype, store);
+const appStore = new AppStore();
+buildClassMethods(AppStore.prototype, appStore);
 
 root.render(
   <React.StrictMode>
-    <AppContext.Provider value={store}>
+    <AppContext.Provider value={appStore}>
       <App />
     </AppContext.Provider>
   </React.StrictMode>
