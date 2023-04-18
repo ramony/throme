@@ -1,5 +1,5 @@
-import HttpClient from '../utils/HttpClient';
-import { Paths } from '../config/ThromeConfig';
+import HttpClient from '@/utils/HttpClient';
+import { Paths } from '@/config/ThromeConfig';
 
 const ConfigLoad = {
   async loadRules() {
@@ -32,11 +32,10 @@ const ConfigLoad = {
     return Paths.entry;
   },
   isDataProxy() {
-    //If no chromeFlag is set, use http proxy.
-    if (localStorage.getItem("chromeFlag")) {
-      return false;
+    if (this.dataProxyFlag == undefined) {
+      this.dataProxyFlag = window.location.href.indexOf("chrome-extension://") == -1 ? true : false;
     }
-    return true;
+    return this.dataProxyFlag;
   }
 }
 

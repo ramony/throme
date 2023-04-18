@@ -1,4 +1,4 @@
-import './Loading.css';
+import '@/component/Loading.css';
 
 const Loading = ({ visible }) => {
   if (!visible) {

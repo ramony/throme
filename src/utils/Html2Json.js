@@ -1,4 +1,4 @@
-import NextFunMap from './NextFunMap';
+import NextFunMap from '@/utils/NextFunMap';
 
 class Html2Json {
 
@@ -11,7 +11,6 @@ class Html2Json {
   static htmlToDom(html, url, htmlReplace) {
     html = this.trimHtmlTag(html);
     let dom = document.createElement('div');
-    document.getElementsByTagName("base")[0].setAttribute('href', url);
     if (htmlReplace) {
       for (let it of htmlReplace) {
         html = html.replace(new RegExp(it[0], 'gi'), it[1]);
@@ -34,7 +33,7 @@ class Html2Json {
           data = NextFunMap['findOnUrl'](url, param)
         } else {
           let [selector, func] = dataRule.split('@');
-          data = NextFunMap[func](this.queryAll(selector, dom))
+          data = NextFunMap[func](this.queryAll(selector, dom));
         }
       } else if (dataRule.includes('/')) {
         let [selector, attr] = dataRule.split('/');
@@ -92,11 +91,8 @@ class Html2Json {
     if (selector.includes("!")) {
       let [selector2, hideTags] = selector.split("!");
       let result = this.queryAll(selector2, dom);
-      console.log(result)
       result.forEach(it => it.querySelectorAll(hideTags).forEach(item => {
-        //if (item.children.length === 0) { 
         item.outerHTML = ''
-        //} 
       }))
       return result;
     }
