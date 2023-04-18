@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 
 import DownloadStore from '@/app/downloadStore';
 import { SmallText, NoTextTransform } from '../config/ThromeConfig';
-import { buildClassMethods } from '@/utils/ClassUtils';
 
 import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -12,11 +11,7 @@ import '@/component/Download.css';
 
 const Download = observer((props) => {
 
-  const [downloadStore] = useState(() => {
-    let store = new DownloadStore();
-    buildClassMethods(DownloadStore.prototype, store);
-    return store;
-  })
+  const [downloadStore] = useState(() => new DownloadStore());
 
   useEffect(() => {
     downloadStore.loadConfig();

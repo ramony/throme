@@ -5,6 +5,7 @@ import ContentParse from '@/service/ContentParse';
 import DataService from '@/service/DataService';
 import { hashCode } from '@/utils/StringUtils';
 import Unsafe from '@/utils/Unsafe';
+import { bindClassMethods } from '@/utils/ClassUtils';
 
 class DownloadStore {
 
@@ -16,6 +17,7 @@ class DownloadStore {
 
   constructor() {
     makeAutoObservable(this);
+    bindClassMethods(this);
   }
 
   async loadConfig() {

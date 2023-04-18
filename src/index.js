@@ -5,11 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppStore } from '@/app/appStore'
 import AppContext from '@/app/appContext'
-import { buildClassMethods } from '@/utils/ClassUtils';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const appStore = new AppStore();
-buildClassMethods(AppStore.prototype, appStore);
 
 root.render(
   <React.StrictMode>

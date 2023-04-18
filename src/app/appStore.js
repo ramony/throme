@@ -3,6 +3,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import ConfigLoad from '@/service/ConfigLoad';
 import DataService from '@/service/DataService';
 import ContentParse from '@/service/ContentParse';
+import { bindClassMethods } from '@/utils/ClassUtils';
 
 class AppStore {
 
@@ -19,7 +20,8 @@ class AppStore {
   nextUrlVisitSet = new Set();
 
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this);
+    bindClassMethods(this);
   }
 
   async loadConfig() {
