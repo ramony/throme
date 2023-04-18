@@ -1,11 +1,11 @@
 import HttpClient from '@/utils/HttpClient';
-import { Paths } from '@/config/ThromeConfig';
+import { DataPaths } from '@/config/DataConfig';
 
 const ConfigLoad = {
   async loadRules() {
     if (!this.rules) {
       let rules = [];
-      for (let config of Paths.rules) {
+      for (let config of DataPaths.rules) {
         let fileRules = await HttpClient.getJSON(config);
         if (!fileRules.success) {
           console.log('Fail to load rule config');
@@ -19,7 +19,7 @@ const ConfigLoad = {
   },
   async loadDownloads() {
     if (!this.downloads) {
-      let config = await HttpClient.getJSON(Paths.download);
+      let config = await HttpClient.getJSON(DataPaths.download);
       if (!config.success) {
         console.log('Fail to load download config');
         return { list: [] };
@@ -29,7 +29,7 @@ const ConfigLoad = {
     return this.downloads;
   },
   loadEntryPath() {
-    return Paths.entry;
+    return DataPaths.entry;
   },
   isDataProxy() {
     if (this.dataProxyFlag === undefined) {

@@ -1,8 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-const NoTextTransform = { textTransform: "none" };
-const SmallText = { width: "80px" };
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -11,14 +8,18 @@ const theme = createTheme({
       dark: '#A0A0A0'
     },
   },
+  components: {
+    // Name of the component
+    MuiButton: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          textTransform: 'none',
+        },
+      },
+    },
+  }
 });
 
-const DataFolder = "configData";
-
-const Paths = {
-  entry: `${DataFolder}/entry.json`,
-  rules: [`${DataFolder}/ruleConfig.json`],
-  download: `${DataFolder}/download.json`
-}
-
-export { NoTextTransform, SmallText, theme, Paths }
+export { theme }

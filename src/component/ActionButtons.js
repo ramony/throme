@@ -2,7 +2,6 @@ import { useState, useContext } from "react"
 import { observer } from 'mobx-react';
 
 import AppContext from '@/app/appContext';
-import { NoTextTransform } from '@/config/ThromeConfig';
 
 import { Switch } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -23,10 +22,10 @@ const ActionButtons = observer(() => {
   return (
     <div className='ActionButtons'>
       <div className='Action-Button-Box'>
-        <HomeIcon onClick={resetLink} sx={NoTextTransform}>Reset</HomeIcon>
-        <AddIcon onClick={openLink} sx={NoTextTransform}>Open</AddIcon>
-        <NavigateNextIcon onClick={handleNext} sx={NoTextTransform}>Next</NavigateNextIcon>
-        <DownloadIcon onClick={() => setOpen(true)} sx={NoTextTransform}>Download</DownloadIcon>
+        <HomeIcon onClick={resetLink} >Reset</HomeIcon>
+        <AddIcon onClick={openLink}>Open</AddIcon>
+        <NavigateNextIcon onClick={handleNext} >Next</NavigateNextIcon>
+        <DownloadIcon onClick={() => setOpen(true)} >Download</DownloadIcon>
         <Switch checked={autoDisplay} onChange={(e) => setAutoDisplay(e.target.checked)} size="small" />
       </div>
       <Download setOpen={setOpen} open={open} />

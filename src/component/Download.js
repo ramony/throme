@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import { observer } from 'mobx-react';
 
 import DownloadStore from '@/app/downloadStore';
-import { SmallText, NoTextTransform } from '../config/ThromeConfig';
 
 import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -12,6 +11,8 @@ import '@/component/Download.css';
 const Download = observer((props) => {
 
   const [downloadStore] = useState(() => new DownloadStore());
+
+  const SmallText = { width: "80px" };
 
   useEffect(() => {
     downloadStore.loadConfig();
@@ -44,7 +45,9 @@ const Download = observer((props) => {
                 <TableCell><Checkbox defaultChecked={row.checked} onChange={(e) => changeChecked(index, 'checked', e)} variant="outlined" /></TableCell>
                 <TableCell>{row.url}</TableCell>
                 <TableCell><TextField defaultValue={row.from} size="small" sx={SmallText} variant="outlined" /></TableCell>
-                <TableCell><TextField defaultValue={row.to} onChange={(e) => changeText(index, 'to', e)} size="small" sx={SmallText} variant="outlined" /></TableCell>
+                <TableCell>
+                  <TextField defaultValue={row.to} onChange={(e) => changeText(index, 'to', e)} size="small" sx={SmallText} variant="outlined" />
+                </TableCell>
                 <TableCell><Switch checked={row.skip} /></TableCell>
               </TableRow>
             ))}
@@ -56,9 +59,9 @@ const Download = observer((props) => {
       </div>
       <div className='center'>
         <ButtonGroup variant="contained">
-          <Button onClick={() => startDownload()} sx={NoTextTransform}>Download</Button>
-          <Button onClick={() => markAllReadWithSameKeyword()} sx={NoTextTransform}>Sync</Button>
-          <Button onClick={() => setOpen(false)} sx={NoTextTransform}>Close</Button>
+          <Button onClick={() => startDownload()} >Download</Button>
+          <Button onClick={() => markAllReadWithSameKeyword()} >Sync</Button>
+          <Button onClick={() => setOpen(false)} >Close</Button>
         </ButtonGroup>
       </div>
     </Dialog>

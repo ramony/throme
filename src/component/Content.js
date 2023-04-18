@@ -2,7 +2,6 @@ import { useContext } from "react"
 import { observer } from 'mobx-react';
 
 import AppContext from '@/app/appContext';
-import { NoTextTransform } from '@/config/ThromeConfig';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -23,9 +22,9 @@ const Content = observer(() => {
           if (item.contentIdString) {
             actions =
               <div className="Content-Button-Box">
-                <ClearIcon onClick={() => closeContent(index)} sx={NoTextTransform}>Close {item.contentIdString}</ClearIcon>
-                <DeleteForeverIcon onClick={() => removeContent(index, item)} sx={NoTextTransform}>Delete {item.contentIdString}</DeleteForeverIcon>
-                {item.downloaded ? <GradeIcon onClick={() => likeContent(index, item)} sx={NoTextTransform}>Like {item.contentIdString}</GradeIcon> : <></>}
+                <ClearIcon onClick={() => closeContent(index)} >Close {item.contentIdString}</ClearIcon>
+                <DeleteForeverIcon onClick={() => removeContent(index, item)} >Delete {item.contentIdString}</DeleteForeverIcon>
+                {item.downloaded ? <GradeIcon onClick={() => likeContent(index, item)}>Like {item.contentIdString}</GradeIcon> : <></>}
                 <span onClick={() => window.open(item.contentUrl)}>{item.contentIdString}</span>
               </div>
           }
