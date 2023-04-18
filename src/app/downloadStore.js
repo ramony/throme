@@ -3,7 +3,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import ConfigLoad from '@/service/ConfigLoad';
 import ContentParse from '@/service/ContentParse';
 import DataService from '@/service/DataService';
-import { HashCode } from '@/utils/Common';
+import { hashCode } from '@/utils/StringUtils';
 import Unsafe from '@/utils/Unsafe';
 
 class DownloadStore {
@@ -65,7 +65,7 @@ class DownloadStore {
       let detailId = contentIds[0];
       item.detailId = detailId
       item.detailType = contentIds[1];
-      item.detailOrder = /^[0-9]+$/.test(detailId) ? detailId : HashCode(detailId);
+      item.detailOrder = /^[0-9]+$/.test(detailId) ? detailId : hashCode(detailId);
       item.detailTitle = item.title
       item.detailTitle = item.title
       item.detailUrl = item.url
