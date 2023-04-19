@@ -30,12 +30,6 @@ const ConfigLoad = {
   },
   loadEntryPath() {
     return DataPaths.entry;
-  },
-  isDataProxy() {
-    if (this.dataProxyFlag === undefined) {
-      this.dataProxyFlag = window.location.href.indexOf("chrome-extension://") === -1 ? true : false;
-    }
-    return this.dataProxyFlag;
   }
 }
 

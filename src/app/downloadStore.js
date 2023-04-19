@@ -6,18 +6,20 @@ import DataService from '@/service/DataService';
 import { hashCode } from '@/utils/StringUtils';
 import Unsafe from '@/utils/Unsafe';
 import { bindClassMethods } from '@/utils/ClassUtils';
+import { nanoid } from 'nanoid'
 
 class DownloadStore {
 
   downloadList = [];
 
-  logs = ["Log Console"];
+  logs = [];
 
   filterOutKeywords = []
 
   constructor() {
     makeAutoObservable(this);
     bindClassMethods(this);
+    this.addLogs("Log Console");
   }
 
   async loadConfig() {
@@ -86,7 +88,7 @@ class DownloadStore {
   }
 
   addLogs(newLog) {
-    this.logs.push(newLog);
+    this.logs.push({ log: newLog, key: nanoid() });
   }
 
   changeText(index, keyName, e) {

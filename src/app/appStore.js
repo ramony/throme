@@ -34,14 +34,17 @@ class AppStore {
     this.handleUrl(ConfigLoad.loadEntryPath());
   }
 
-  handleUrl(url, append) {
+  async handleUrl(urls, append) {
     console.log('handleUrl invoked');
-    if (!url || !this.contentParse) {
+    if (!urls || !this.contentParse) {
       return;
     }
-    runInAction(() => this.loading = true)
-
-    this.contentParse.parse(url, append).then(result => {
+    if (!Object.prototype.toString.call(urls).includes('Array')) {
+      urls = [urls];
+    }
+    runInAction(() => this.loading = true);
+    for (let url of urls) {
+      let result = await this.contentParse.parse(url, append);
       if (!result) {
         return;
       }
@@ -54,9 +57,8 @@ class AppStore {
         this.listingNext = result.listingNext;
         if (this.autoDisplay && result?.autoDisplayList) {
           console.log('auto display count:', result.listingData.length);
-          result.listingData.forEach(item => {
-            setTimeout(async () => this.handleUrl(item.url, true), 1)
-          });
+          const itemUrls = result.listingData.map(item => item.url);
+          setTimeout(async () => this.handleUrl(itemUrls, true), 1)
         }
       } else {
         if (!append) {
@@ -64,8 +66,8 @@ class AppStore {
           document.getElementsByClassName("Content")[0].scrollTop = 0;
         }
       }
-    }).catch(e => console.error(e))
-      .finally(() => runInAction(() => this.loading = false));
+    }
+    runInAction(() => this.loading = false);
   }
 
   handleUrlData(result, append) {
@@ -120,6 +122,10 @@ class AppStore {
 
   closeContent(index) {
     this.contentData.splice(index, 1)
+  }
+
+  closeAllContent() {
+    this.contentData = [];
   }
 
   removeContent(index, item) {

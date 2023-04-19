@@ -55,7 +55,7 @@ const Download = observer((props) => {
         </Table>
       </TableContainer>
       <div className='console'>
-        {logs.map(log => <div key={log}>{log}</div>)}
+        {logs.map(logItem => <div key={logItem.key}>{logItem.log}</div>)}
       </div>
       <div className='center'>
         <ButtonGroup variant="contained">

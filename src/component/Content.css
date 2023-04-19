@@ -42,6 +42,7 @@
   vertical-align: middle;
   line-height: 30px;
   opacity: 0.6;
+  cursor: pointer;
 }
 
 .Content-Button-Box {

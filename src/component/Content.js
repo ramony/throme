@@ -11,11 +11,11 @@ import '@/component/Content.css';
 
 const Content = observer(() => {
   const appStore = useContext(AppContext);
-  const { contentData, closeContent, removeContent, likeContent } = appStore;
+  const { contentData, closeContent, closeAllContent, removeContent, likeContent } = appStore;
 
   return (
     <div className="Content">
-      <div className="Content-Tips">{contentData.length}</div>
+      <div className="Content-Tips" onDoubleClick={closeAllContent}>{contentData.length}</div>
       {
         contentData.map((item, index) => {
           let actions = null;

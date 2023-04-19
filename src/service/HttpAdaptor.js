@@ -1,10 +1,14 @@
 import HttpClient from '@/utils/HttpClient';
-import ConfigLoad from '@/service/ConfigLoad';
+
+const needHttpProxy = (endpoint) => {
+  let extensionFlag = window.location.href.indexOf("chrome-extension://") !== -1
+  return !extensionFlag && endpoint.includes("http");
+}
 
 const HttpAdaptor = {
 
   async getHtml(endpoint, encoding) {
-    if (ConfigLoad.isDataProxy() && endpoint.includes("http")) {
+    if (needHttpProxy(endpoint)) {
       endpoint = "http://localhost:8888/302?url=" + encodeURIComponent(endpoint);
     }
     return HttpClient.getHtml(endpoint, encoding);
@@ -12,4 +16,4 @@ const HttpAdaptor = {
 
 }
 
-export default HttpAdaptor
+export default HttpAdaptor;
