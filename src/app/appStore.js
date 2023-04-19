@@ -43,31 +43,33 @@ class AppStore {
       urls = [urls];
     }
     runInAction(() => this.loading = true);
-    for (let url of urls) {
-      let result = await this.contentParse.parse(url, append);
-      if (!result) {
-        return;
+    await Promise.all(urls.map(url => this.handleUrlInner(url, append)));
+    runInAction(() => this.loading = false);
+  }
+
+  async handleUrlInner(url, append) {
+    let result = await this.contentParse.parse(url, append);
+    if (!result) {
+      return;
+    }
+    if (result.unMatched) {
+      console.log('No rule for url', url);
+      return;
+    }
+    runInAction(() => this.handleUrlData(result, append))
+    if (result.listFlag) {
+      this.listingNext = result.listingNext;
+      if (this.autoDisplay && result?.autoDisplayList) {
+        console.log('auto display count:', result.listingData.length);
+        const itemUrls = result.listingData.map(item => item.url);
+        setTimeout(async () => this.handleUrl(itemUrls, true), 1)
       }
-      if (result.unMatched) {
-        console.log('No rule for url', url);
-        return;
-      }
-      runInAction(() => this.handleUrlData(result, append))
-      if (result.listFlag) {
-        this.listingNext = result.listingNext;
-        if (this.autoDisplay && result?.autoDisplayList) {
-          console.log('auto display count:', result.listingData.length);
-          const itemUrls = result.listingData.map(item => item.url);
-          setTimeout(async () => this.handleUrl(itemUrls, true), 1)
-        }
-      } else {
-        if (!append) {
-          //if new content, reset scrollTop value.
-          document.getElementsByClassName("Content")[0].scrollTop = 0;
-        }
+    } else {
+      if (!append) {
+        //if new content, reset scrollTop value.
+        document.getElementsByClassName("Content")[0].scrollTop = 0;
       }
     }
-    runInAction(() => this.loading = false);
   }
 
   handleUrlData(result, append) {
