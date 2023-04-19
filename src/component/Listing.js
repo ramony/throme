@@ -60,7 +60,7 @@ const Listing = observer(() => {
       {
         appStore.listingData.map((item, index) => {
           let className = calcClassName(index, item)
-          return <div className={className} key={index}
+          return <div className={className} key={item.key}
             onMouseOver={() => mouseOver(index)} onMouseOut={() => mouseOut(index)}
             onClick={() => itemClick(item, index)} onContextMenu={(e) => openUrl(e, item.url)}>{item.title}</div>
         })

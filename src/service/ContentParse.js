@@ -4,6 +4,7 @@ import DataService from '@/service/DataService';
 import Html2Json from '@/utils/Html2Json';
 import RuleMatcher from '@/utils/RuleMatcher';
 import Unsafe from '@/utils/Unsafe';
+import { nanoid } from 'nanoid'
 
 class ContentParse {
 
@@ -90,6 +91,7 @@ class ContentParse {
 
   processListingData(list) {
     list.forEach(item => {
+      item.key = nanoid();
       if (item['postId']) {
         if (item['url']) {
           //hack
@@ -102,6 +104,7 @@ class ContentParse {
 
   processContentData(list, contentUrl, contentIds) {
     list.forEach(item => {
+      item.key = nanoid();
       item.contentIds = contentIds;
       item.contentIdString = [...contentIds].reverse().join('-');
       item.contentUrl = contentUrl;

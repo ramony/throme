@@ -29,7 +29,7 @@ const Content = observer(() => {
               </div>
           }
           return (
-            <div className="Content-Item" key={index}>
+            <div className="Content-Item" key={item.key}>
               {actions}
               <div className="Content-Title">{item.title}</div>
               <div className="Content-Detail" dangerouslySetInnerHTML={{ __html: item.content }}></div>
