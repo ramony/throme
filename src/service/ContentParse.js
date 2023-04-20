@@ -1,7 +1,7 @@
 import HttpAdaptor from '@/service/HttpAdaptor';
 import DataService from '@/service/DataService';
 
-import Html2Json from '@/utils/Html2Json';
+import { htmlToJson } from '@/utils/HtmlToJson';
 import RuleMatcher from '@/utils/RuleMatcher';
 import Unsafe from '@/utils/Unsafe';
 import { nanoid } from 'nanoid'
@@ -72,7 +72,7 @@ class ContentParse {
       if (dataRule === 'json') {
         responseData = JSON.parse(html).data;
       } else {
-        responseData = Html2Json.htmlToJson(html, contentUrl, rule);
+        responseData = htmlToJson(html, contentUrl, rule);
       }
       console.log('responseData list size: ' + responseData.list.length);
     } else {
