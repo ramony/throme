@@ -52,7 +52,7 @@ class DownloadStore {
         let { listingData = [] } = await contentParse.parse(url);
         await this.mappingListingData(listingData, i, contentParse);
         let insertCount = await DataService.createDetail(listingData, count => {
-          this.addLogs(`Done ${url}, count=${count}`)
+          this.addLogs(`Done ${url}, count=${count.data}`)
           DataService.createList({ pageUrl: url });
         });
         if (insertCount === 0 && item.skip) {

@@ -53,7 +53,7 @@ const DataService = {
     if (result.success) {
       callback(result.data);
     }
-    return result.data | 0;
+    return result.data.data | 0;
   },
 
   async createList(requestBody) {
