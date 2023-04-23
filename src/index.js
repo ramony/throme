@@ -3,18 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AppStore } from '@/app/appStore'
-import AppContext from '@/app/appContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const appStore = new AppStore();
 
 root.render(
-  <React.StrictMode>
-    <AppContext.Provider value={appStore}>
-      <App />
-    </AppContext.Provider>
-  </React.StrictMode>
+  <App />
 );
 
 // If you want to start measuring performance in your app, pass a function
