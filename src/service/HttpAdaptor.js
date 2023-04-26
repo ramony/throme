@@ -1,8 +1,8 @@
 import HttpClient from '@/utils/HttpClient';
 
 const needHttpProxy = (endpoint) => {
-  let extensionFlag = window.location.href.indexOf("chrome-extension://") !== -1
-  return !extensionFlag && endpoint.includes("http");
+  let { href } = window.location;
+  return !href.includes("chrome-extension://") && endpoint.includes("http");
 }
 
 const HttpAdaptor = {

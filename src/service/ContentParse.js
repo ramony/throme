@@ -117,10 +117,10 @@ class ContentParse {
     if (!contentUrl) {
       return null;
     }
-    if (contentUrl.indexOf('javascript') === 0) {
+    if (contentUrl.startsWith('javascript')) {
       return null;
     }
-    if (contentUrl.indexOf('#') !== -1) {
+    if (contentUrl.includes('#')) {
       contentUrl = contentUrl.substr(0, contentUrl.indexOf('#'))
     }
     return contentUrl;
@@ -130,7 +130,6 @@ class ContentParse {
   convertUrl(parsedUrl) {
     if (!/^http/.test(parsedUrl)) {
       var a = document.createElement('a');
-      //$(document.body).append(a);
       a.setAttribute('href', parsedUrl);
       parsedUrl = a.href;
     }
