@@ -19,6 +19,19 @@ class ContentParse {
     return DataService.contentExistLocal(...contentIds)
   }
 
+  match(contentUrl) {
+    contentUrl = this.filterUrl(contentUrl);
+
+    if (!contentUrl) {
+      console.log('contentUrl is null');
+      return false;
+    }
+    console.log('parse contentUrl:' + contentUrl);
+
+    let urlRule = this.ruleMatcher.match(contentUrl)
+    return !!urlRule.rule;
+  }
+
   async parse(contentUrl, append) {
     contentUrl = this.filterUrl(contentUrl);
 

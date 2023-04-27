@@ -2,10 +2,11 @@ import HttpClient from '@/utils/HttpClient';
 import { DataPaths } from '@/config/DataConfig';
 
 const ConfigLoad = {
-  async loadRules() {
+  async loadRules(path) {
     if (!this.rules) {
+      let thePath = path || DataPaths.rules;
       let rules = [];
-      for (let config of DataPaths.rules) {
+      for (let config of thePath) {
         let fileRules = await HttpClient.getJSON(config);
         if (!fileRules.success) {
           console.log('Fail to load rule config');
@@ -29,6 +30,10 @@ const ConfigLoad = {
     return this.downloads;
   },
   loadEntryPath() {
+    let { href } = window.location;
+    if (!href.includes("chrome-extension") && !href.includes("localhost")) {
+      return href;
+    }
     return DataPaths.entry;
   }
 }

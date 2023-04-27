@@ -8,8 +8,23 @@
     }
   },
   "background": {
-    "scripts": []
+    "scripts": [
+      "background.js"
+    ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "static/js/main.js"
+      ],
+      "css": [
+        "static/css/main.css"
+      ]
+    }
+  ],
   "icons": {
     "16": "logo512.png",
     "48": "logo512.png",

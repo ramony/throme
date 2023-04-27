@@ -24,10 +24,11 @@ class AppStore {
     bindClassMethods(this);
   }
 
-  async loadConfig() {
+  async loadConfig(path) {
     console.log('loadConfig invoked');
-    let rules = await ConfigLoad.loadRules()
+    let rules = await ConfigLoad.loadRules(path)
     this.contentParse = new ContentParse(rules);
+    return this.contentParse;
   }
 
   handleEntry() {
