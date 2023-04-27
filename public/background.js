@@ -21,12 +21,11 @@ const getJSON = async (endpoint) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const type = request.type
   if (type == 'loadConfig') {
-    sendResponse((async () => {
+    (async () => {
       let data = await getJSON("configData/ruleConfig.json")
       console.log(JSON.stringify(data))
-      //sendResponse(data);
-      //sendResponse('inner data');
-      return data;
-    }));
+      sendResponse(data.data);
+    })();
+    return true;
   }
 })

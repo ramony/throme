@@ -24,9 +24,9 @@ class AppStore {
     bindClassMethods(this);
   }
 
-  async loadConfig(path) {
+  async loadConfig(embedRules) {
     console.log('loadConfig invoked');
-    let rules = await ConfigLoad.loadRules(path)
+    let rules = embedRules || await ConfigLoad.loadRules()
     this.contentParse = new ContentParse(rules);
     return this.contentParse;
   }

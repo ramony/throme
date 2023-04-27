@@ -81,7 +81,11 @@ class ContentParse {
     if (success) {
       let html = htmlData.data;
       let dataRule = rule.dataRule;
-      document.getElementsByTagName("base")[0].setAttribute('href', contentUrl);
+      try {
+        document.getElementsByTagName("base")[0].setAttribute('href', contentUrl);
+      } catch (e) {
+
+      }
       if (dataRule === 'json') {
         responseData = JSON.parse(html).data;
       } else {

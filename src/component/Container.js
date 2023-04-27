@@ -7,12 +7,12 @@ import ActionButtons from '@/component/ActionButtons';
 import Listing from '@/component/Listing';
 import '@/component/Container.css';
 
-function Container() {
+function Container(props) {
 
   const appStore = useContext(AppContext);
 
   useEffect(() => {
-    appStore.loadConfig().then(() => {
+    appStore.loadConfig(props.embedRules).then(() => {
       appStore.handleEntry()
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

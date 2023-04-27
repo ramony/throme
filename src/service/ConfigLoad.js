@@ -2,9 +2,9 @@ import HttpClient from '@/utils/HttpClient';
 import { DataPaths } from '@/config/DataConfig';
 
 const ConfigLoad = {
-  async loadRules(path) {
+  async loadRules() {
     if (!this.rules) {
-      let thePath = path || DataPaths.rules;
+      let thePath = DataPaths.rules;
       let rules = [];
       for (let config of thePath) {
         let fileRules = await HttpClient.getJSON(config);

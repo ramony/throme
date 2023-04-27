@@ -10,7 +10,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { AppStore } from '@/app/appStore'
 import AppContext from '@/app/appContext'
 
-function App() {
+function App(props) {
   const [appStore] = useState(new AppStore());
 
   return (
@@ -18,7 +18,7 @@ function App() {
       <AppContext.Provider value={appStore}>
         <ThemeProvider theme={theme}>
           <div className="App">
-            <Container />
+            <Container {...props} />
           </div>
         </ThemeProvider>
       </AppContext.Provider>
