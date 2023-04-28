@@ -5,7 +5,7 @@ const Loading = ({ visible }) => {
     return <></>
   }
   return (
-    <figure>
+    <figure className="loading">
       <div className="dot white"></div>
       <div className="dot"></div>
       <div className="dot"></div>
