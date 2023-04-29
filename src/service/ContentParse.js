@@ -128,6 +128,9 @@ class ContentParse {
 
 
   convertUrl(parsedUrl) {
+    if (!parsedUrl) {
+      return null;
+    }
     if (!/^http/.test(parsedUrl)) {
       var a = document.createElement('a');
       a.setAttribute('href', parsedUrl);

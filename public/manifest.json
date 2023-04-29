@@ -10,6 +10,11 @@
   "background": {
     "scripts": []
   },
+  "icons": {
+    "16": "logo512.png",
+    "48": "logo512.png",
+    "128": "logo512.png"
+  },
   "description": "__MSG_description__",
   "permissions": [
     "notifications",

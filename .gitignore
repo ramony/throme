@@ -105,4 +105,6 @@ dist
 
 .idea
 /public/configdata/*.json
+/public/thirdparty/*.js
+
 .DS_Store
