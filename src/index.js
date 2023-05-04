@@ -22,13 +22,13 @@ chrome.runtime.sendMessage({
   let rootEle = document.getElementById('root');
   if (!rootEle) {
     rootEle = document.getElementsByTagName('body')[0];
+    rootEle.style.padding = "10px"
   }
   console.log('matched', rootEle)
   const root = ReactDOM.createRoot(rootEle);
   root.render(
     <App embedRules={embedRules} />
   );
-
 })
 
 
