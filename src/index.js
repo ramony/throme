@@ -24,6 +24,7 @@ chrome.runtime.sendMessage({
     rootEle = document.getElementsByTagName('body')[0];
     rootEle.style.padding = "10px"
   }
+  document.getElementsByTagName('body')[0].classList.add("thromeClazz");
   console.log('matched', rootEle)
   const root = ReactDOM.createRoot(rootEle);
   root.render(
