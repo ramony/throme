@@ -48,10 +48,12 @@ const DataService = {
     }
   },
 
-  async createDetail(requestBody, callback) {
+  async createDetail(requestBody, callback, errorCallback) {
     var result = await HttpClient.postJSON(API_HOST + 'detail/createDetail', requestBody);
     if (result.success) {
       callback(result.data);
+    } else {
+      errorCallback(result.errMsg);
     }
     return result.data.data | 0;
   },

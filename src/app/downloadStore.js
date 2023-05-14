@@ -54,6 +54,8 @@ class DownloadStore {
         let insertCount = await DataService.createDetail(listingData, count => {
           this.addLogs(`Done ${url}, count=${count.data}`)
           DataService.createList({ pageUrl: url });
+        }, (errMsg) => {
+          this.addLogs(`Error to fetch ${url}, errMsg: ${errMsg}`)
         });
         if (insertCount === 0 && item.skip) {
           break;

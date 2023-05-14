@@ -4,7 +4,7 @@
 
 .console {
   background-color: #444;
-  height: 200px;
+  min-height: 600px;
   width: 100%;
   overflow-y: scroll;
   padding: 11px;

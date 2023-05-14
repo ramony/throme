@@ -24,7 +24,7 @@ const Download = observer((props) => {
   console.log('render download');
 
   return (
-    <Dialog open={open} maxWidth={'1'}>
+    <Dialog open={open} fullScreen={true} maxWidth={'1'}>
       <DialogTitle>Download It!</DialogTitle>
       <TableContainer component={Paper}>
         <Table aria-label="table">
