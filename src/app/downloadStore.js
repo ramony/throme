@@ -24,7 +24,7 @@ class DownloadStore {
 
   async loadConfig() {
     let config = await ConfigLoad.loadDownloads();
-    let { list = [], defaultRange = [1, 3], filterOutKeywords = [] } = config;
+    let { list = [], defaultRange = [1, 100], filterOutKeywords = [] } = config;
     let [from, to] = defaultRange;
     runInAction(() => {
       this.downloadList = list.map(item => ({ checked: false, from, to, skip: true, ...item }));

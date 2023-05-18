@@ -42,13 +42,19 @@ const Download = observer((props) => {
               <TableRow
                 key={row.title}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell><Checkbox defaultChecked={row.checked} onChange={(e) => changeChecked(index, 'checked', e)} variant="outlined" /></TableCell>
+                <TableCell>
+                  <Checkbox defaultChecked={row.checked} onChange={(e) => changeChecked(index, 'checked', e)} variant="outlined" />
+                </TableCell>
                 <TableCell>{row.url}</TableCell>
-                <TableCell><TextField defaultValue={row.from} size="small" sx={SmallText} variant="outlined" /></TableCell>
+                <TableCell>
+                  <TextField defaultValue={row.from} onChange={(e) => changeText(index, 'from', e)} size="small" sx={SmallText} variant="outlined" />
+                </TableCell>
                 <TableCell>
                   <TextField defaultValue={row.to} onChange={(e) => changeText(index, 'to', e)} size="small" sx={SmallText} variant="outlined" />
                 </TableCell>
-                <TableCell><Switch checked={row.skip} /></TableCell>
+                <TableCell>
+                  <Switch defaultChecked={row.skip} onChange={(e) => changeChecked(index, 'skip', e)} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
