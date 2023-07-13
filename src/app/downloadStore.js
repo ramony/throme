@@ -50,7 +50,7 @@ class DownloadStore {
         let url = item.url.replace("{pageNo}", i);
         // this.addLogs(`Start to download ${url}`)
         let { listingData = [] } = await contentParse.parse(url);
-        await this.mappingListingData(listingData, i, contentParse);
+        listingData = this.filterListingData(listingData, i, contentParse);
         let insertCount = await DataService.createDetail(listingData, count => {
           this.addLogs(`Done ${url}, count=${count.data}`)
           DataService.createList({ pageUrl: url });
@@ -65,12 +65,16 @@ class DownloadStore {
     this.addLogs("Done.")
   }
 
-  async mappingListingData(listingData, pageNo, contentParse) {
+  filterListingData(listingData, pageNo, contentParse) {
+    var result = [];
     for (let item of listingData) {
-      let contentIds = await contentParse.queryContentIds(item.url)
+      let contentIds = contentParse.queryContentIds(item.url)
+      if (!contentIds) {
+        continue;
+      }
       let detailId = contentIds[0];
-      item.detailId = detailId
       item.detailType = contentIds[1];
+      item.detailId = detailId
       item.detailOrder = /^[0-9]+$/.test(detailId) ? detailId : hashCode(detailId);
       item.detailTitle = item.title
       item.detailTitle = item.title
@@ -79,8 +83,10 @@ class DownloadStore {
       item.localFlag = 0;
       item.tagId = 0;
       item.pageNo = pageNo;
-      item.keyword = Unsafe.getKeyword(item.title)
+      item.keyword = Unsafe.getKeyword(item.title);
+      result.push(item);
     };
+    return result;
   }
 
   async markAllReadWithSameKeyword() {

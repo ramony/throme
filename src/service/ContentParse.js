@@ -41,7 +41,7 @@ class ContentParse {
     return this.sendRequest(contentUrl, urlRule);
   }
 
-  async queryContentIds(contentUrl) {
+  queryContentIds(contentUrl) {
     contentUrl = this.filterUrl(contentUrl);
 
     if (!contentUrl) {
