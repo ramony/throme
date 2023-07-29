@@ -1,4 +1,4 @@
-import NextFunMap from '@/utils/NextFunMap';
+import { nextFunMap, findOnUrl } from '@/utils/NextFunMap';
 
 function htmlToJson(html, url, rule) {
   let { dataRule, htmlReplace } = rule
@@ -25,22 +25,37 @@ function domToJson(dom, url, dataRule) {
   let typeOfRule = Object.prototype.toString.call(dataRule);
   if (typeOfRule.includes('String')) {
     let data;
-    if (dataRule.includes('@')) {
-      if (dataRule.includes('#')) {
-        let [, param] = dataRule.split('@#');
-        data = NextFunMap['findOnUrl'](url, param)
-      } else {
-        let [selector, func] = dataRule.split('@');
-        data = NextFunMap[func](queryAll(selector, dom));
-      }
-    } else if (dataRule.includes('/')) {
-      let [selector, attr] = dataRule.split('/');
-      let subDom = queryAll(selector, dom);
-      data = getData(subDom, attr)
+    if (dataRule.includes('%')) {
+      let [, param] = dataRule.split('%');
+      data = findOnUrl(url, param)
     } else {
-      let selector = dataRule;
+      let [selector, funName, attr] = splitRule(dataRule);
       let subDom = queryAll(selector, dom);
-      data = getData(subDom, 'html');
+      if (funName != null) {
+        let funMap = { ...nextFunMap, ...window.funMap };
+        let fun = funMap[funName];
+        if (fun) {
+          subDom = fun(subDom);
+        }
+      }
+      if (attr) {
+        data = getData(subDom, attr);
+      } else {
+        data = subDom;
+      }
+      // if (dataRule.includes('/')) {
+      //   let [selector, attr] = dataRule.split('/');
+      //   let subDom = queryAll(selector, dom);
+      //   data = getData(subDom, attr)
+      // } else if (dataRule.includes('@')) {
+      //   let [selector, func] = dataRule.split('@');
+      //   let funMap = { ...nextFunMap, ...window.funMap };
+      //   data = funMap[func](queryAll(selector, dom));
+      // } else {
+      //   let selector = dataRule;
+      //   let subDom = queryAll(selector, dom);
+      //   data = getData(subDom, 'html');
+      // }
     }
     return data;
   } else if (typeOfRule.includes('Array')) {
@@ -55,6 +70,20 @@ function domToJson(dom, url, dataRule) {
     }
     return data;
   }
+}
+
+function splitRule(rule) {
+  let [selector, funName, attr] = [rule, null, null];
+  if (selector.includes("/")) {
+    [selector, attr] = selector.split("/");
+  }
+  if (selector.includes("@")) {
+    [selector, funName] = selector.split("@");
+  }
+  if (funName == null && attr == null) {
+    attr = "html";
+  }
+  return [selector, funName, attr];
 }
 
 function getData(dom, attr) {

@@ -3,7 +3,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import ConfigLoad from '@/service/ConfigLoad';
 import ContentParse from '@/service/ContentParse';
 import DataService from '@/service/DataService';
-import { hashCode } from '@/utils/StringUtils';
+import { toBigInt } from '@/utils/StringUtils';
 import Unsafe from '@/utils/Unsafe';
 import { bindClassMethods } from '@/utils/ClassUtils';
 import { nanoid } from 'nanoid'
@@ -50,7 +50,7 @@ class DownloadStore {
         let url = item.url.replace("{pageNo}", i);
         // this.addLogs(`Start to download ${url}`)
         let { listingData = [] } = await contentParse.parse(url);
-        listingData = this.filterListingData(listingData, i, contentParse);
+        listingData = this.filterListingData(listingData, i, contentParse, item.skipTitleKeyword);
         let insertCount = await DataService.createDetail(listingData, count => {
           this.addLogs(`Done ${url}, count=${count.data}`)
           DataService.createList({ pageUrl: url });
@@ -65,18 +65,23 @@ class DownloadStore {
     this.addLogs("Done.")
   }
 
-  filterListingData(listingData, pageNo, contentParse) {
+  filterListingData(listingData, pageNo, contentParse, skipTitleKeyword) {
     var result = [];
     for (let item of listingData) {
       let contentIds = contentParse.queryContentIds(item.url)
       if (!contentIds) {
         continue;
       }
+      if (skipTitleKeyword && item.title.includes(skipTitleKeyword)) {
+        console.log('skip ' + item.title);
+        continue;
+      }
       let detailId = contentIds[0];
       item.detailType = contentIds[1];
       item.detailId = detailId
-      item.detailOrder = /^[0-9]+$/.test(detailId) ? detailId : hashCode(detailId);
-      item.detailTitle = item.title
+      //item.detailOrder = /^[0-9]+$/.test(detailId) ? detailId : hashCode(detailId);
+      let detailOrder = toBigInt(detailId);
+      item.detailOrder = detailOrder
       item.detailTitle = item.title
       item.detailUrl = item.url
       item.readFlag = 0;
@@ -90,8 +95,8 @@ class DownloadStore {
   }
 
   async markAllReadWithSameKeyword() {
-    DataService.markAllReadWithSameKeyword(count => {
-      this.addLogs('processCount:' + count);
+    DataService.markAllReadWithSameKeyword(res => {
+      this.addLogs('processCount:' + res.data);
     });
   }
 

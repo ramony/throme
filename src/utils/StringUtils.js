@@ -20,4 +20,13 @@ const hashCode = (value) => {
   return r;
 }
 
-export { randRepeat, hashCode }
+
+const toBigInt = (value) => {
+  let result = value.replace(/[^0-9]+/g, '')
+  if (result.length > 19) {
+    result = result.substr(0, 19)
+  }
+  return result;
+}
+
+export { randRepeat, hashCode, toBigInt }
