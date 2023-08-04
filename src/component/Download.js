@@ -6,7 +6,7 @@ import DownloadStore from '@/app/downloadStore';
 import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import '@/component/Download.css';
+import '@/style/Download.css';
 
 const Download = observer((props) => {
 

@@ -7,9 +7,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import GradeIcon from '@mui/icons-material/Grade';
 
-import '@/component/Content.css';
+import '@/style/Detail.css';
 
-const Content = observer(() => {
+const Detail = observer(() => {
   const appStore = useContext(AppContext);
   const { contentData, closeContent, closeAllContent, removeContent, likeContent } = appStore;
 
@@ -43,4 +43,4 @@ const Content = observer(() => {
 
 })
 
-export default Content
+export default Detail

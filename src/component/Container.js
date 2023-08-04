@@ -2,10 +2,10 @@ import { useEffect, useContext } from 'react'
 
 import AppContext from '@/app/appContext';
 
-import Content from '@/component/Content';
+import Detail from '@/component/Detail';
 import ActionButtons from '@/component/ActionButtons';
 import Listing from '@/component/Listing';
-import '@/component/Container.css';
+import '@/style/Container.css';
 
 function Container() {
 
@@ -25,7 +25,7 @@ function Container() {
         <Listing />
       </div>
       <div className="Right-Box">
-        <Content />
+        <Detail />
       </div>
     </div>
   )

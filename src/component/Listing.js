@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 
 import AppContext from '@/app/appContext';
 
-import '@/component/Listing.css';
+import '@/style/Listing.css';
 
 const Listing = observer(() => {
 

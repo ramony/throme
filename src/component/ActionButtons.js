@@ -10,7 +10,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import AddIcon from '@mui/icons-material/Add';
 import Loading from '@/component/Loading';
 import Download from '@/component/Download';
-import '@/component/ActionButtons.css';
+import '@/style/ActionButtons.css';
 
 const ActionButtons = observer(() => {
 
