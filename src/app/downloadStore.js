@@ -6,7 +6,7 @@ import DataService from '@/service/DataService';
 import { toBigInt } from '@/utils/StringUtils';
 import Unsafe from '@/utils/Unsafe';
 import { bindClassMethods } from '@/utils/ClassUtils';
-import { nanoid } from 'nanoid'
+// import { nanoid } from 'nanoid'
 
 class DownloadStore {
 
@@ -101,7 +101,7 @@ class DownloadStore {
   }
 
   addLogs(newLog) {
-    this.logs.push({ log: newLog, key: nanoid() });
+    this.logs.push(newLog);
   }
 
   changeText(index, keyName, e) {

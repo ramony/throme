@@ -9,7 +9,7 @@
 }
 
 .Left-Box {
-  width: calc(30% - 4px);
+  width: 30%;
   height: 100%;
   float: left;
   overflow-y: hidden;

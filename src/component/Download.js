@@ -24,7 +24,7 @@ const Download = observer((props) => {
   console.log('render download');
 
   return (
-    <Dialog open={open} fullScreen={true} maxWidth={'1'}>
+    <Dialog open={open} fullScreen={false} maxWidth={'1'}>
       <DialogTitle>Download It!</DialogTitle>
       <TableContainer component={Paper}>
         <Table aria-label="table">
@@ -60,9 +60,9 @@ const Download = observer((props) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <div className='console'>
-        {logs.map(logItem => <div key={logItem.key}>{logItem.log}</div>)}
-      </div>
+      <textarea className='console'>
+        {logs.join('\n')}
+      </textarea>
       <div className='center'>
         <ButtonGroup variant="contained">
           <Button onClick={() => startDownload()} >Download</Button>
