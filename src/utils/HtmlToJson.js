@@ -43,25 +43,19 @@ function domToJson(dom, url, dataRule) {
       } else {
         data = subDom;
       }
-      // if (dataRule.includes('/')) {
-      //   let [selector, attr] = dataRule.split('/');
-      //   let subDom = queryAll(selector, dom);
-      //   data = getData(subDom, attr)
-      // } else if (dataRule.includes('@')) {
-      //   let [selector, func] = dataRule.split('@');
-      //   let funMap = { ...nextFunMap, ...window.funMap };
-      //   data = funMap[func](queryAll(selector, dom));
-      // } else {
-      //   let selector = dataRule;
-      //   let subDom = queryAll(selector, dom);
-      //   data = getData(subDom, 'html');
-      // }
     }
     return data;
   } else if (typeOfRule.includes('Array')) {
-    let [selector, arrayRule] = dataRule;
+    let [selector, arrayRule, extracFn] = dataRule;
     let domList = queryAll(selector, dom)
-    let data = [...domList].map((it) => domToJson(it, url, arrayRule));
+    extracFn = window.funMap?.[extracFn.replace(/@/, '')]
+    let data = [...domList].map((it) => {
+      let itData = domToJson(it, url, arrayRule);
+      if (extracFn) {
+        itData.extracFn = () => extracFn?.(itData)
+      }
+      return itData;
+    });
     return data;
   } else if (typeOfRule.includes('Object')) {
     let data = {};

@@ -1,3 +1,5 @@
+import { observable } from "mobx";
+
 import HttpAdaptor from '@/service/HttpAdaptor';
 import DataService from '@/service/DataService';
 
@@ -103,14 +105,15 @@ class ContentParse {
   }
 
   processContentData(list, contentUrl, contentIds) {
-    list.forEach(item => {
+    return observable(list).map(item => {
       item.key = nanoid();
       item.contentIds = contentIds;
       item.contentIdString = [...contentIds].reverse().join('-');
       item.contentUrl = contentUrl;
       item.downloaded = Unsafe.validateTitleIfExist(item.title);
+      item.extracFn?.((html) => { item.extraContent = html });
+      return item;
     })
-    return list;
   }
 
   filterUrl(contentUrl) {
