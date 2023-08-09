@@ -29,11 +29,11 @@ function domToJson(dom, url, dataRule) {
       let [, param] = dataRule.split('%');
       data = findOnUrl(url, param)
     } else {
-      let [selector, funName, attr] = splitRule(dataRule);
+      let [selector, fnName, attr] = splitRule(dataRule);
       let subDom = queryAll(selector, dom);
-      if (funName != null) {
+      if (fnName != null) {
         let funMap = { ...nextFunMap, ...window.funMap };
-        let fun = funMap[funName];
+        let fun = funMap[fnName];
         if (fun) {
           subDom = fun(subDom);
         }
@@ -52,7 +52,7 @@ function domToJson(dom, url, dataRule) {
     let data = [...domList].map((it) => {
       let itData = domToJson(it, url, arrayRule);
       if (extracFn) {
-        itData.extracFn = () => extracFn?.(itData)
+        itData.extracFn = (fn) => extracFn(itData).then(res => fn(res))
       }
       return itData;
     });
