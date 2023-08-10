@@ -59,8 +59,8 @@ function domToJson(dom, url, dataRule) {
     });
   } else if (typeOfRule.includes('Object')) {
     data = {};
-    for (let key in dataRule) {
-      data[key] = domToJson(dom, url, dataRule[key])
+    for (let [key, rule] of Object.entries(dataRule)) {
+      data[key] = domToJson(dom, url, rule)
     }
   }
   return data;
