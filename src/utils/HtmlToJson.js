@@ -23,8 +23,8 @@ function domToJson(dom, url, dataRule) {
     return {};
   }
   let typeOfRule = Object.prototype.toString.call(dataRule);
+  let data;
   if (typeOfRule.includes('String')) {
-    let data;
     if (dataRule.includes('%')) {
       let [, param] = dataRule.split('%');
       data = findOnUrl(url, param)
@@ -44,28 +44,26 @@ function domToJson(dom, url, dataRule) {
         data = subDom;
       }
     }
-    return data;
   } else if (typeOfRule.includes('Array')) {
     let [selector, arrayRule, extracFn] = dataRule;
     let domList = queryAll(selector, dom);
     if (extracFn) {
       extracFn = window.funMap?.[extracFn.replace(/@/, '')]
     }
-    let data = [...domList].map((it) => {
+    data = domList.map((it) => {
       let itData = domToJson(it, url, arrayRule);
       if (extracFn) {
         itData.extracFn = (fn) => extracFn(it, itData).then(res => fn(res))
       }
       return itData;
     });
-    return data;
   } else if (typeOfRule.includes('Object')) {
-    let data = {};
+    data = {};
     for (let key in dataRule) {
       data[key] = domToJson(dom, url, dataRule[key])
     }
-    return data;
   }
+  return data;
 }
 
 function splitRule(rule) {
@@ -122,7 +120,7 @@ function queryAll(selector, dom) {
   if (selector.includes('$')) {
     return [dom];
   }
-  return dom.querySelectorAll(selector);;
+  return [...dom.querySelectorAll(selector)];
 }
 
 function trimHtmlTag(html) {
