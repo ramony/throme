@@ -60,9 +60,13 @@ const Download = observer((props) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <textarea className='console'>
-        {logs.join('\n')}
-      </textarea>
+      <div className='console'>
+        {
+          logs.map((item) => {
+            return <div>{item}</div>
+          })
+        }
+      </div>
       <div className='center'>
         <ButtonGroup variant="contained">
           <Button onClick={() => startDownload()} >Download</Button>

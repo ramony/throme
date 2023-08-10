@@ -19,7 +19,7 @@ class DownloadStore {
   constructor() {
     makeAutoObservable(this);
     bindClassMethods(this);
-    this.addLogs("Log Console");
+    this.addLogs("Log Console:");
   }
 
   async loadConfig() {
