@@ -53,7 +53,8 @@ function domToJson(dom, url, dataRule) {
     data = domList.map((it) => {
       let itData = domToJson(it, url, arrayRule);
       if (extracFn) {
-        itData.extracFn = (fn) => extracFn(it, itData).then(res => fn(res))
+        let tempData = { ...itData }
+        itData.extracFn = (fn) => extracFn(it, tempData).then(res => fn(res))
       }
       return itData;
     });

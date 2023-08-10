@@ -28,11 +28,16 @@ const Detail = observer(() => {
                 <span onClick={() => window.open(item.contentUrl)}>{item.contentIdString}</span>
               </div>
           }
+          let extra = null;
+          if (item.extraContent) {
+            extra = <div className="Content-Extra" dangerouslySetInnerHTML={{ __html: item.extraContent }}></div>
+          }
           return (
             <div className="Content-Item" key={item.key}>
               {actions}
               <div className="Content-Title">{item.title}</div>
               <div className="Content-Detail" dangerouslySetInnerHTML={{ __html: item.content }}></div>
+              {extra}
               <div className="Content-Title">{item.title}</div>
               {actions}
             </div>)
