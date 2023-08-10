@@ -47,12 +47,14 @@ function domToJson(dom, url, dataRule) {
     return data;
   } else if (typeOfRule.includes('Array')) {
     let [selector, arrayRule, extracFn] = dataRule;
-    let domList = queryAll(selector, dom)
-    extracFn = window.funMap?.[extracFn.replace(/@/, '')]
+    let domList = queryAll(selector, dom);
+    if (extracFn) {
+      extracFn = window.funMap?.[extracFn.replace(/@/, '')]
+    }
     let data = [...domList].map((it) => {
       let itData = domToJson(it, url, arrayRule);
       if (extracFn) {
-        itData.extracFn = (fn) => extracFn(itData).then(res => fn(res))
+        itData.extracFn = (fn) => extracFn(it, itData).then(res => fn(res))
       }
       return itData;
     });
