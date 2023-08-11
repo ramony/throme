@@ -45,16 +45,16 @@ function domToJson(dom, url, dataRule) {
       }
     }
   } else if (typeOfRule.includes('Array')) {
-    let [selector, arrayRule, extracFn] = dataRule;
+    let [selector, arrayRule, interceptor] = dataRule;
     let domList = queryAll(selector, dom);
-    if (extracFn) {
-      extracFn = window.funMap?.[extracFn.replace(/@/, '')]
+    if (interceptor) {
+      interceptor = window.funMap?.[interceptor.replace(/@/, '')]
     }
     data = domList.map((it) => {
       let itData = domToJson(it, url, arrayRule);
-      if (extracFn) {
+      if (interceptor) {
         let tempData = { ...itData }
-        itData.extracFn = (fn) => extracFn(it, tempData).then(res => fn(res))
+        itData.interceptor = (fn, hfn) => interceptor(it, tempData, hfn).then(res => fn(res))
       }
       return itData;
     });

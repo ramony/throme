@@ -2,7 +2,7 @@ import { observable } from "mobx";
 
 import HttpAdaptor from '@/service/HttpAdaptor';
 import DataService from '@/service/DataService';
-
+import { extend } from '@/utils/Prototype';
 import { htmlToJson } from '@/utils/HtmlToJson';
 import RuleMatcher from '@/utils/RuleMatcher';
 import Unsafe from '@/utils/Unsafe';
@@ -81,14 +81,29 @@ class ContentParse {
       let list = [{ "title": "Can't visit " + contentUrl + ", error:" + htmlData.errMsg }];
       responseData = { list }
     }
+    let list = this.convertByInterceptor(responseData.list)
     if (isListUrl) {
-      let listingData = this.processListingData(responseData.list);
+      let listingData = this.processListingData(list);
       let listingNext = this.convertUrl(responseData.next);
       return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay };
     } else {
-      let contentData = this.processContentData(responseData.list, contentUrl, urlRule.contentIds);
+      let contentData = this.processContentData(list, contentUrl, urlRule.contentIds);
       return { contentData }
     }
+  }
+
+  convertByInterceptor(list) {
+    let fetchDataFromUrl = this.fetchDataFromUrl;
+    return observable(list).map(item => {
+      item.interceptor?.((idata) => { extend(item, idata) }, fetchDataFromUrl);
+      return item;
+    })
+  }
+
+  async fetchDataFromUrl(url, rule) {
+    let htmlData = await HttpAdaptor.getHtml(url, 'utf-8');
+    let responseData = htmlToJson(htmlData.data, url, rule);
+    return responseData;
   }
 
   processListingData(list) {
@@ -105,7 +120,7 @@ class ContentParse {
   }
 
   processContentData(list, contentUrl, contentIds) {
-    return observable(list).map(item => {
+    list.map(item => {
       item.key = nanoid();
       item.contentIds = contentIds;
       item.contentIdString = [...contentIds].reverse().join('-');
@@ -114,6 +129,7 @@ class ContentParse {
       item.extracFn?.((html) => { item.extraContent = html });
       return item;
     })
+    return list;
   }
 
   filterUrl(contentUrl) {
