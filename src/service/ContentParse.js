@@ -7,6 +7,7 @@ import { htmlToJson } from '@/utils/HtmlToJson';
 import RuleMatcher from '@/utils/RuleMatcher';
 import Unsafe from '@/utils/Unsafe';
 import { nanoid } from 'nanoid'
+import { fnParser } from '@/utils/FnParser';
 
 class ContentParse {
 
@@ -158,7 +159,17 @@ class ContentParse {
     return parsedUrl;
   }
 
-
+  async flatUrl(urls) {
+    let theUrls = await Promise.all(urls.map(async (url) => {
+      if (url.startsWith('@')) {
+        let [fnDef, arg] = fnParser(url);
+        return await fnDef(arg, this.fetchDataFromUrl);
+      } else {
+        return [url]
+      }
+    }));
+    return theUrls.flatMap(x => x);
+  }
 }
 
 export default ContentParse

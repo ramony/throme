@@ -20,7 +20,7 @@ const Listing = observer(() => {
   }
 
   function itemClick(item, index) {
-    appStore.handleUrl(item.url)
+    appStore.handleUrl(item.urlFn || item.url)
     setClickItem(item.url + index)
   }
 

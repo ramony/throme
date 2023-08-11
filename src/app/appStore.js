@@ -42,12 +42,15 @@ class AppStore {
     if (!Object.prototype.toString.call(urls).includes('Array')) {
       urls = [urls];
     }
+    urls = await this.contentParse.flatUrl(urls);
+
     runInAction(() => this.loading = true);
     await Promise.all(urls.map(url => this.handleUrlInner(url, append)));
     runInAction(() => this.loading = false);
   }
 
   async handleUrlInner(url, append) {
+    console.log('url', url)
     let result = await this.contentParse.parse(url, append);
     if (!result) {
       return;

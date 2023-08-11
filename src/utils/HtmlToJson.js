@@ -1,4 +1,5 @@
 import { nextFunMap, findOnUrl } from '@/utils/NextFunMap';
+import { fnParser } from '@/utils/FnParser';
 
 function htmlToJson(html, url, rule) {
   let { dataRule, htmlReplace } = rule
@@ -31,13 +32,13 @@ function domToJson(dom, url, dataRule) {
     } else {
       let [selector, fnName, attr] = splitRule(dataRule);
       let subDom = queryAll(selector, dom);
-      if (fnName != null) {
-        let funMap = { ...nextFunMap, ...window.funMap };
-        let fun = funMap[fnName];
-        if (fun) {
-          subDom = fun(subDom);
-        }
-      }
+      // if (fnName != null) {
+      //   let funMap = { ...nextFunMap, ...window.funMap };
+      //   let fun = funMap[fnName];
+      //   if (fun) {
+      //     subDom = fun(subDom);
+      //   }
+      // }
       if (attr) {
         data = getData(subDom, attr);
       } else {
@@ -47,14 +48,13 @@ function domToJson(dom, url, dataRule) {
   } else if (typeOfRule.includes('Array')) {
     let [selector, arrayRule, interceptor] = dataRule;
     let domList = queryAll(selector, dom);
-    if (interceptor) {
-      interceptor = window.funMap?.[interceptor.replace(/@/, '')]
-    }
+    let [fnDef, arg] = fnParser(interceptor);
+
     data = domList.map((it) => {
       let itData = domToJson(it, url, arrayRule);
-      if (interceptor) {
+      if (fnDef) {
         let tempData = { ...itData }
-        itData.interceptor = (fn, hfn) => interceptor(it, tempData, hfn).then(res => fn(res))
+        itData.interceptor = (fn, hfn) => fnDef(arg, it, tempData, hfn).then(res => fn(res))
       }
       return itData;
     });
