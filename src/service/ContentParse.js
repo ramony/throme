@@ -64,22 +64,19 @@ class ContentParse {
     let rule = urlRule.rule;
     let params = rule.params;
 
-    let htmlData = await HttpAdaptor.getHtml(contentUrl, params.encoding);
     let isListUrl = rule.target === 'listing';
     let responseData;
-    let { success } = htmlData;
+    let { data, success, errMsg } = await HttpAdaptor.getHtml(contentUrl, params.encoding);
     if (success) {
-      let html = htmlData.data;
-      let dataRule = rule.dataRule;
       document.getElementsByTagName("base")[0].setAttribute('href', contentUrl);
-      if (dataRule === 'json') {
-        responseData = JSON.parse(html).data;
+      if (rule.dataRule === 'json') {
+        responseData = JSON.parse(data).data;
       } else {
-        responseData = htmlToJson(html, contentUrl, rule);
+        responseData = htmlToJson(data, contentUrl, rule);
       }
       console.log('responseData', responseData.list.length, responseData);
     } else {
-      let list = [{ "title": "Can't visit " + contentUrl + ", error:" + htmlData.errMsg }];
+      let list = [{ "title": "Can't visit " + contentUrl + ", error:" + errMsg }];
       responseData = { list }
     }
     let list = this.convertByInterceptor(responseData.list)
@@ -127,7 +124,7 @@ class ContentParse {
       item.contentIdString = [...contentIds].reverse().join('-');
       item.contentUrl = contentUrl;
       item.downloaded = Unsafe.validateTitleIfExist(item.title);
-      item.extracFn?.((html) => { item.extraContent = html });
+      // item.extracFn?.((html) => { item.extraContent = html });
       return item;
     })
     return list;

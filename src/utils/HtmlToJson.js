@@ -50,7 +50,7 @@ function domToJson(dom, url, dataRule) {
     case 'Array':
       let [selector, arrayRule, interceptor] = dataRule;
       let domList = queryAll(selector, dom);
-      let [fnDef, arg] = fnParser(interceptor);
+      let [fnDef, ...arg] = fnParser(interceptor);
 
       data = domList.map((it) => {
         let itData = domToJson(it, url, arrayRule);
