@@ -43,9 +43,9 @@ class AppStore {
     if (!Object.prototype.toString.call(urls).includes('Array')) {
       urls = [urls];
     }
+    runInAction(() => this.loading = true);
     urls = await this.contentParse.flatUrl(urls);
     let uid = nanoid();
-    runInAction(() => this.loading = true);
     await Promise.all(urls.map(url => this.handleUrlInner(url, uid)));
     runInAction(() => this.loading = false);
   }

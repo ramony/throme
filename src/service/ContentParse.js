@@ -101,9 +101,9 @@ class ContentParse {
     })
   }
 
-  async fetchDataFromUrl(url, rule) {
+  async fetchDataFromUrl(url, dataRule) {
     let htmlData = await HttpAdaptor.getHtml(url, 'utf-8');
-    let responseData = htmlToJson(htmlData.data, url, rule);
+    let responseData = htmlToJson(htmlData.data, url, { dataRule });
     return responseData;
   }
 
