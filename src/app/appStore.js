@@ -4,6 +4,7 @@ import ConfigLoad from '@/service/ConfigLoad';
 import DataService from '@/service/DataService';
 import ContentParse from '@/service/ContentParse';
 import { bindClassMethods } from '@/utils/ClassUtils';
+import { nanoid } from 'nanoid'
 
 class AppStore {
 
@@ -34,7 +35,7 @@ class AppStore {
     this.handleUrl(ConfigLoad.loadEntryPath());
   }
 
-  async handleUrl(urls, append) {
+  async handleUrl(urls) {
     console.log('handleUrl invoked');
     if (!urls || !this.contentParse) {
       return;
@@ -43,53 +44,20 @@ class AppStore {
       urls = [urls];
     }
     urls = await this.contentParse.flatUrl(urls);
-
+    let uid = nanoid();
     runInAction(() => this.loading = true);
-    await Promise.all(urls.map(url => this.handleUrlInner(url, append)));
+    await Promise.all(urls.map(url => this.handleUrlInner(url, uid)));
     runInAction(() => this.loading = false);
   }
 
-  async handleUrlInner(url, append) {
-    console.log('url', url)
-    let result = await this.contentParse.parse(url, append);
-    if (!result) {
+  async handlePageUrl(url) {
+    console.log('handlePageUrl invoked');
+    if (!url || !this.contentParse) {
       return;
     }
-    if (result.unMatched) {
-      console.log('No rule for url', url);
-      return;
-    }
-    runInAction(() => this.handleUrlData(result, append))
-    if (result.listFlag) {
-      this.listingNext = result.listingNext;
-      if (this.autoDisplay && result?.autoDisplayList) {
-        console.log('auto display count:', result.listingData.length);
-        const itemUrls = result.listingData.map(item => item.url);
-        setTimeout(async () => this.handleUrl(itemUrls, true), 1)
-      }
-    } else {
-      if (!append) {
-        //if new content, reset scrollTop value.
-        document.getElementsByClassName("Content")[0].scrollTop = 0;
-      }
-    }
-  }
-
-  handleUrlData(result, append) {
-    if (result.listFlag) {
-      if (append) {
-        this.listingData.push(...result.listingData);
-      } else {
-        this.listingData = [...result.listingData];
-        this.contentData = []
-      }
-    } else {
-      if (append) {
-        this.contentData.push(...result.contentData)
-      } else {
-        this.contentData = [...result.contentData];
-      }
-    }
+    runInAction(() => this.loading = true);
+    await this.handleUrlInner(url, null);
+    runInAction(() => this.loading = false);
   }
 
   handleNext() {
@@ -103,7 +71,55 @@ class AppStore {
     nextUrlVisitSet.add(listingNext);
     console.log('handleNext invoked, url:', listingNext);
 
-    this.handleUrl(listingNext, true);
+    this.handlePageUrl(listingNext);
+  }
+
+  async handleUrlInner(url, uid) {
+    console.log('url', url)
+    let result = await this.contentParse.parse(url);
+    if (!result) {
+      return;
+    }
+    if (result.unMatched) {
+      console.log('No rule for url', url);
+      return;
+    }
+    if (result.listFlag) {
+      let append = uid == null || uid == this.listUid;
+      this.listUid = uid;
+      runInAction(() => this.handleListingData(result, append));
+      this.listingNext = result.listingNext;
+      if (this.autoDisplay && result?.autoDisplayList) {
+        console.log('auto display count:', result.listingData.length);
+        const itemUrls = result.listingData.map(item => item.url);
+        setTimeout(async () => this.handleUrl(itemUrls), 1)
+      }
+    } else {
+      let append = uid == null || uid == this.contentUid;
+      this.contentUid = uid;
+      runInAction(() => this.handleContentData(result, append))
+      if (!append) {
+        //if new content, reset scrollTop value.
+        document.getElementsByClassName("Content")[0].scrollTop = 0;
+      }
+    }
+  }
+
+  handleListingData(result, append) {
+    if (append) {
+      this.listingData.push(...result.listingData);
+    } else {
+      this.listingData = [...result.listingData];
+      this.contentData = []
+    }
+  }
+
+  handleContentData(result, append) {
+    if (append) {
+      this.contentData.push(...result.contentData)
+    } else {
+      this.contentData = [...result.contentData];
+    }
   }
 
   openLink() {
