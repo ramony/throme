@@ -1,5 +1,6 @@
 import { nextFunMap, findOnUrl } from '@/utils/NextFunMap';
 import { fnParser } from '@/utils/FnParser';
+import { getType } from '@/utils/Prototype';
 
 function htmlToJson(html, url, rule) {
   let { dataRule, htmlReplace } = rule
@@ -23,46 +24,51 @@ function domToJson(dom, url, dataRule) {
   if (!dataRule || !dom) {
     return {};
   }
-  let typeOfRule = Object.prototype.toString.call(dataRule);
+  let typeOfRule = getType(dataRule);
   let data;
-  if (typeOfRule.includes('String')) {
-    if (dataRule.includes('%')) {
-      let [, param] = dataRule.split('%');
-      data = findOnUrl(url, param)
-    } else {
-      let [selector, fnName, attr] = splitRule(dataRule);
-      let subDom = queryAll(selector, dom);
-      // if (fnName != null) {
-      //   let funMap = { ...nextFunMap, ...window.funMap };
-      //   let fun = funMap[fnName];
-      //   if (fun) {
-      //     subDom = fun(subDom);
-      //   }
-      // }
-      if (attr) {
-        data = getData(subDom, attr);
+  switch (typeOfRule) {
+    case 'String':
+      if (dataRule.includes('%')) {
+        let [, param] = dataRule.split('%');
+        data = findOnUrl(url, param)
       } else {
-        data = subDom;
+        let [selector, fnName, attr] = splitRule(dataRule);
+        let subDom = queryAll(selector, dom);
+        if (fnName != null) {
+          let fun = nextFunMap[fnName];
+          if (fun) {
+            subDom = fun(subDom);
+          }
+        }
+        if (attr) {
+          data = getData(subDom, attr);
+        } else {
+          data = subDom;
+        }
       }
-    }
-  } else if (typeOfRule.includes('Array')) {
-    let [selector, arrayRule, interceptor] = dataRule;
-    let domList = queryAll(selector, dom);
-    let [fnDef, arg] = fnParser(interceptor);
+      break;
+    case 'Array':
+      let [selector, arrayRule, interceptor] = dataRule;
+      let domList = queryAll(selector, dom);
+      let [fnDef, arg] = fnParser(interceptor);
 
-    data = domList.map((it) => {
-      let itData = domToJson(it, url, arrayRule);
-      if (fnDef) {
-        let tempData = { ...itData }
-        itData.interceptor = (fn, hfn) => fnDef(arg, it, tempData, hfn).then(res => fn(res))
+      data = domList.map((it) => {
+        let itData = domToJson(it, url, arrayRule);
+        if (fnDef) {
+          let tempData = { ...itData }
+          itData.interceptor = (fn, hfn) => fnDef(arg, it, tempData, hfn).then(res => fn(res))
+        }
+        return itData;
+      });
+      break;
+    case 'Object':
+      data = {};
+      for (let [key, rule] of Object.entries(dataRule)) {
+        data[key] = domToJson(dom, url, rule)
       }
-      return itData;
-    });
-  } else if (typeOfRule.includes('Object')) {
-    data = {};
-    for (let [key, rule] of Object.entries(dataRule)) {
-      data[key] = domToJson(dom, url, rule)
-    }
+      break;
+    default:
+      throw new Error('invalid type:' + typeOfRule);
   }
   return data;
 }

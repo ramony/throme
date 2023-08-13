@@ -8,6 +8,7 @@ import RuleMatcher from '@/utils/RuleMatcher';
 import Unsafe from '@/utils/Unsafe';
 import { nanoid } from 'nanoid'
 import { fnParser } from '@/utils/FnParser';
+import { getType } from '@/utils/Prototype';
 
 class ContentParse {
 
@@ -77,7 +78,7 @@ class ContentParse {
       } else {
         responseData = htmlToJson(html, contentUrl, rule);
       }
-      console.log('responseData list size: ' + responseData.list.length);
+      console.log('responseData', responseData.list.length, responseData);
     } else {
       let list = [{ "title": "Can't visit " + contentUrl + ", error:" + htmlData.errMsg }];
       responseData = { list }
@@ -161,7 +162,7 @@ class ContentParse {
 
   async flatUrl(urls) {
     let theUrls = await Promise.all(urls.map(async (url) => {
-      if (url.startsWith('@')) {
+      if (getType(url) == 'Function') {
         let [fnDef, arg] = fnParser(url);
         return await fnDef(arg, this.fetchDataFromUrl);
       } else {
