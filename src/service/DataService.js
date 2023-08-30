@@ -48,8 +48,8 @@ const DataService = {
     }
   },
 
-  async createDetail(requestBody, callback, errorCallback) {
-    var result = await HttpClient.postJSON(API_HOST + 'detail/createDetail', requestBody);
+  async createDetail(rdata, callback, errorCallback) {
+    var result = await HttpClient.postJSON(API_HOST + 'detail/createDetail', rdata);
     if (result.success) {
       callback(result.data);
     } else {
@@ -58,8 +58,8 @@ const DataService = {
     return result.data.data | 0;
   },
 
-  async createList(requestBody) {
-    return await HttpClient.postJSON(API_HOST + 'listing/createList', requestBody);
+  async createList(rdata) {
+    return await HttpClient.postJSON(API_HOST + 'listing/createList', rdata);
   },
 
   async listingExist(url) {

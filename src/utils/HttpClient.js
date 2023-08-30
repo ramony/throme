@@ -35,14 +35,14 @@ const HttpClient = {
     }
   },
 
-  async postJSON(endpoint, requestBody) {
+  async postJSON(endpoint, rdata) {
     try {
       const res = await fetch(endpoint, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(rdata || {})
       })
       const data = await res.json();
       return CreateSuccess(data);
