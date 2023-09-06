@@ -18,6 +18,8 @@ class AppStore {
 
   autoDisplay = false;
 
+  totalPages = null;
+
   nextUrlVisitSet = new Set();
 
   constructor() {
@@ -87,6 +89,7 @@ class AppStore {
     if (result.listFlag) {
       let append = uid == null || uid == this.listUid;
       this.listUid = uid;
+      this.totalPages = result.totalPages;
       runInAction(() => this.handleListingData(result, append));
       this.listingNext = result.listingNext;
       if (this.autoDisplay && result?.autoDisplayList) {

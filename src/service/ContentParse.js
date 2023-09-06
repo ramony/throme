@@ -83,7 +83,8 @@ class ContentParse {
     if (isListUrl) {
       let listingData = this.processListingData(list);
       let listingNext = this.convertUrl(responseData.next);
-      return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay };
+      let totalPages = responseData.totalPages;
+      return { listingData, listingNext, listFlag: true, autoDisplayList: !!params.autodisplay, totalPages };
     } else {
       let contentData = this.processContentData(list, contentUrl, urlRule.contentIds);
       return { contentData }

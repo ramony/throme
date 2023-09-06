@@ -15,7 +15,7 @@ import '@/style/ActionButtons.css';
 const ActionButtons = observer(() => {
 
   const appStore = useContext(AppContext);
-  let { resetLink, openLink, handleNext, autoDisplay, setAutoDisplay, loading } = appStore;
+  let { resetLink, openLink, handleNext, autoDisplay, setAutoDisplay, loading, totalPages } = appStore;
 
   const [open, setOpen] = useState(false);
 
@@ -27,6 +27,7 @@ const ActionButtons = observer(() => {
         <NavigateNextIcon onClick={handleNext} >Next</NavigateNextIcon>
         <DownloadIcon onClick={() => setOpen(true)} >Download</DownloadIcon>
         <Switch checked={autoDisplay} onChange={(e) => setAutoDisplay(e.target.checked)} size="small" />
+        <div className="Listing-Tips">{totalPages}</div>
       </div>
       <Download setOpen={setOpen} open={open} />
       <Loading visible={loading} />
