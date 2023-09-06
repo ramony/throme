@@ -37,7 +37,7 @@ class AppStore {
     this.handleUrl(ConfigLoad.loadEntryPath());
   }
 
-  async handleUrl(urls) {
+  async handleUrl(urls, append) {
     console.log('handleUrl invoked');
     if (!urls || !this.contentParse) {
       return;
@@ -48,7 +48,7 @@ class AppStore {
     runInAction(() => this.loading = true);
     urls = await this.contentParse.flatUrl(urls);
     let uid = nanoid();
-    await Promise.all(urls.map(url => this.handleUrlInner(url, uid)));
+    await Promise.all(urls.map(url => this.handleUrlInner(url, append)));
     runInAction(() => this.loading = false);
   }
 
@@ -58,7 +58,7 @@ class AppStore {
       return;
     }
     runInAction(() => this.loading = true);
-    await this.handleUrlInner(url, null);
+    await this.handleUrlInner(url, true);
     runInAction(() => this.loading = false);
   }
 
@@ -76,7 +76,7 @@ class AppStore {
     this.handlePageUrl(listingNext);
   }
 
-  async handleUrlInner(url, uid) {
+  async handleUrlInner(url, append) {
     console.log('url', url)
     let result = await this.contentParse.parse(url);
     if (!result) {
@@ -87,8 +87,8 @@ class AppStore {
       return;
     }
     if (result.listFlag) {
-      let append = uid == null || uid == this.listUid;
-      this.listUid = uid;
+      // let append = uid == null || uid == this.listUid;
+      // this.listUid = uid;
       this.totalPages = result.totalPages;
       runInAction(() => this.handleListingData(result, append));
       this.listingNext = result.listingNext;
@@ -98,8 +98,8 @@ class AppStore {
         setTimeout(async () => this.handleUrl(itemUrls), 1)
       }
     } else {
-      let append = uid == null || uid == this.contentUid;
-      this.contentUid = uid;
+      // let append = true;
+      // this.contentUid = uid;
       runInAction(() => this.handleContentData(result, append))
       if (!append) {
         //if new content, reset scrollTop value.
