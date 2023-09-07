@@ -47,33 +47,30 @@ class AppStore {
     }
     runInAction(() => this.loading = true);
     urls = await this.contentParse.flatUrl(urls);
-    let uid = nanoid();
-    await Promise.all(urls.map(url => this.handleUrlInner(url, append)));
+    if (urls.length > 0) {
+      if (!append) {
+        //reset list view.
+        await this.handleUrlInner(urls.shift(), false);
+      }
+      if (urls.length > 0) {
+        await Promise.all(urls.map(url => this.handleUrlInner(url, true)));
+      }
+    }
     runInAction(() => this.loading = false);
   }
 
-  async handlePageUrl(url) {
-    console.log('handlePageUrl invoked');
-    if (!url || !this.contentParse) {
+  async handleNext() {
+    let url = this.listingNext;
+    if (!url) {
       return;
     }
-    runInAction(() => this.loading = true);
-    await this.handleUrlInner(url, true);
-    runInAction(() => this.loading = false);
-  }
+    if (this.nextUrlVisitSet.has(url)) {
+      return;
+    }
+    this.nextUrlVisitSet.add(url);
+    console.log('handleNext invoked, url:', url);
 
-  handleNext() {
-    let { nextUrlVisitSet, listingNext } = this;
-    if (!listingNext) {
-      return;
-    }
-    if (this.nextUrlVisitSet.has(listingNext)) {
-      return;
-    }
-    nextUrlVisitSet.add(listingNext);
-    console.log('handleNext invoked, url:', listingNext);
-
-    this.handlePageUrl(listingNext);
+    this.handleUrl(url, true);
   }
 
   async handleUrlInner(url, append) {
@@ -87,19 +84,15 @@ class AppStore {
       return;
     }
     if (result.listFlag) {
-      // let append = uid == null || uid == this.listUid;
-      // this.listUid = uid;
       this.totalPages = result.totalPages;
       runInAction(() => this.handleListingData(result, append));
       this.listingNext = result.listingNext;
       if (this.autoDisplay && result?.autoDisplayList) {
         console.log('auto display count:', result.listingData.length);
         const itemUrls = result.listingData.map(item => item.url);
-        setTimeout(async () => this.handleUrl(itemUrls), 1)
+        setTimeout(async () => this.handleUrl(itemUrls, true), 1)
       }
     } else {
-      // let append = true;
-      // this.contentUid = uid;
       runInAction(() => this.handleContentData(result, append))
       if (!append) {
         //if new content, reset scrollTop value.
