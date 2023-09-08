@@ -161,7 +161,7 @@ class ContentParse {
     let theUrls = await Promise.all(urls.map(async (url) => {
       if (url.startsWith('@')) {
         let [fnDef, arg] = fnParser(url);
-        return await fnDef(arg, this.fetchDataFromUrl);
+        return await fnDef(arg, this);
       } else {
         return [url]
       }
