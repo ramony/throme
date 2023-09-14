@@ -137,8 +137,11 @@ class AppStore {
     this.autoDisplay = value;
   }
 
-  closeContent(index) {
-    this.contentData.splice(index, 1)
+  closeContent(index, item) {
+    this.contentData.splice(index, 1);
+    let contentIds = item.contentIds;
+    this.contentData = [];
+    DataService.setLocalMarked(contentIds[0], contentIds[1]);
   }
 
   closeAllContent() {
