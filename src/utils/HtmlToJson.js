@@ -5,7 +5,16 @@ import { getType } from '@/utils/Prototype';
 function htmlToJson(html, url, rule) {
   let { dataRule, htmlReplace } = rule
   let dom = htmlToDom(html, url, htmlReplace);
+  setNewTarget(dom);
   return domToJson(dom, url, dataRule)
+}
+
+function setNewTarget(dom) {
+  if (dom) {
+    dom.querySelectorAll("a").forEach(item => {
+      item.target = '_blank';
+    })
+  }
 }
 
 function htmlToDom(html, url, htmlReplace) {
@@ -91,18 +100,22 @@ function getData(dom, attr) {
   if (dom.length === 0) {
     return '';
   }
-  let node = dom[0];
-  let data;
-  if (attr === 'text') {
-    data = node.innerText;
-  } else if (attr === 'html') {
-    data = node.innerHTML;
-  } else if (attr === 'href') {
-    data = node.href;
-  } else {
-    data = node.getAttribute(attr);
+  // let node = dom[0];
+  let result = [];
+  for (let node of dom) {
+    let data;
+    if (attr === 'text') {
+      data = node.innerText;
+    } else if (attr === 'html') {
+      data = node.innerHTML;
+    } else if (attr === 'href') {
+      data = node.href;
+    } else {
+      data = node.getAttribute(attr);
+    }
+    result.push(data);
   }
-  return data;
+  return result.join('');
 }
 
 function queryAll(selector, dom) {
