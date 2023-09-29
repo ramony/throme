@@ -5,12 +5,12 @@ const API_HOST = 'http://localhost:30080/api/v1/';
 const LocalCache = {
   marked(key) {
     if (key) {
-      localStorage.setItem(key, 1)
+      sessionStorage.setItem(key, 1)
     }
   },
   exist(key) {
     if (key) {
-      return !!localStorage.getItem(key)
+      return !!sessionStorage.getItem(key)
     }
     return false
   }
@@ -20,11 +20,16 @@ const DetailKeyFun = (detailId, detailType) => (detailType + '-' + detailId);
 
 const DataService = {
 
-  contentExistLocal(detailId, detailType) {
+  checkLocalMarked(detailId, detailType) {
     return LocalCache.exist(DetailKeyFun(detailId, detailType));
   },
 
+  setLocalMarked(detailId, detailType) {
+    LocalCache.marked(DetailKeyFun(detailId, detailType));
+  },
+
   async markReadByDetailId(detailId, detailType) {
+    console.log('markReadByDetailId', detailId, detailType)
     LocalCache.marked(DetailKeyFun(detailId, detailType));
     return await HttpClient.postJSON(API_HOST + 'detail/markReadByDetailId', { detailId, detailType });
   },

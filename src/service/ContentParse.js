@@ -19,7 +19,7 @@ class ContentParse {
     if (!contentIds) {
       return false;
     }
-    return DataService.contentExistLocal(...contentIds)
+    return DataService.checkLocalMarked(...contentIds)
   }
 
   async parse(contentUrl, append) {
