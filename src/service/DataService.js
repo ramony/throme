@@ -57,10 +57,11 @@ const DataService = {
     var result = await HttpClient.postJSON(API_HOST + 'detail/createDetail', rdata);
     if (result.success) {
       callback(result.data);
+      return result.data.data;
     } else {
       errorCallback(result.errMsg);
+      return 0;
     }
-    return result.data.data | 0;
   },
 
   async createList(rdata) {

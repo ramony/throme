@@ -75,7 +75,7 @@ class AppStore {
 
   async handleUrlInner(url, append) {
     console.log('url', url)
-    let result = await this.contentParse.parse(url);
+    let result = await this.contentParse.parse(url, append);
     if (!result) {
       return;
     }
@@ -140,7 +140,6 @@ class AppStore {
   closeContent(index, item) {
     this.contentData.splice(index, 1);
     let contentIds = item.contentIds;
-    this.contentData = [];
     DataService.setLocalMarked(contentIds[0], contentIds[1]);
   }
 
