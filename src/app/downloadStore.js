@@ -72,9 +72,10 @@ class DownloadStore {
       if (!contentIds) {
         continue;
       }
+      item.readFlag = 0;
       if (skipTitleKeyword && item.title.includes(skipTitleKeyword)) {
         console.log('skip ' + item.title);
-        continue;
+        item.readFlag = 1;
       }
       let detailId = contentIds[0];
       item.detailType = contentIds[1];
@@ -84,7 +85,6 @@ class DownloadStore {
       item.detailOrder = detailOrder
       item.detailTitle = item.title
       item.detailUrl = item.url
-      item.readFlag = 0;
       item.localFlag = 0;
       item.tagId = 0;
       item.pageNo = pageNo;
