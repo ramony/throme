@@ -6,10 +6,12 @@
   height: 100%;
   background: #EAEEF3;
   border-radius: 10px;
+  display: grid;
+  grid-template-columns: 3fr 7fr;
 }
 
 .Left-Box {
-  width: 30%;
+  /* width: 30%; */
   height: 100%;
   float: left;
   overflow-y: hidden;
@@ -17,7 +19,7 @@
 }
 
 .Right-Box {
-  width: 70%;
+  /* width: 70%; */
   height: 100%;
   float: left;
   overflow-y: hidden;

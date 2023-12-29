@@ -3,11 +3,13 @@ import { useEffect, useContext } from 'react'
 import AppContext from '@/app/appContext';
 
 import Detail from '@/component/Detail';
+import DetailButtons from '@/component/DetailButtons';
+
 import ActionButtons from '@/component/ActionButtons';
 import Listing from '@/component/Listing';
 import '@/style/Container.css';
 
-function Container() {
+function Container(props) {
 
   const appStore = useContext(AppContext);
 
@@ -25,6 +27,7 @@ function Container() {
         <Listing />
       </div>
       <div className="Right-Box">
+        <DetailButtons />
         <Detail />
       </div>
     </div>
