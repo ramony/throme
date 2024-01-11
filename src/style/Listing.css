@@ -1,7 +1,7 @@
 .Listing {
-  margin-left: 5px;
-  width: calc(100% - 6px);
-  height: 100%;
+  /* margin-left: 5px; */
+  width: 100%;
+  height: calc(100% - 30px);
   float: left;
   overflow-y: auto;
 }
