@@ -9,7 +9,8 @@ const HttpAdaptor = {
 
   async getHtml(endpoint, encoding) {
     if (needHttpProxy(endpoint)) {
-      endpoint = "http://localhost:8888/302?url=" + encodeURIComponent(endpoint);
+      //electron supports CORS
+      // endpoint = "http://localhost:8888/302?url=" + encodeURIComponent(endpoint);
     }
     return HttpClient.getHtml(endpoint, encoding);
   }
