@@ -41,7 +41,7 @@
     "appId": "app.desktop",
     "productName": "app",
     "asar": true,
-    "copyright": "Copyright © 2022 electron",
+    "copyright": "Copyright © 2024 electron",
     "directories": {
       "buildResources": "assets",
       "output": "release/"
