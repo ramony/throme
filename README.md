@@ -14,3 +14,5 @@ npx electron-builder build --mac
 
 Best Guide
 https://juejin.cn/post/7163088791007068191 
+
+mainWindow.maximize();
