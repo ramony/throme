@@ -1,7 +1,7 @@
 {
   "name": "throme",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "dist-electron/index.js",
   "scripts": {
     "dev": "vite",
@@ -39,7 +39,7 @@
   },
   "build": {
     "appId": "app.desktop",
-    "productName": "app",
+    "productName": "throme",
     "asar": true,
     "copyright": "Copyright © 2024 electron",
     "directories": {
@@ -59,7 +59,7 @@
           ]
         }
       ],
-      "artifactName": "${productName}_${version}.${ext}"
+      "artifactName": "${thromeName}_${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,

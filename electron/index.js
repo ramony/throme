@@ -32,6 +32,7 @@ function createWindow() {
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'))
     }
 
+    mainWindow.maximize();
 
     // 打开开发者工具，默认不打开
     // mainWindow.webContents.openDevTools()
