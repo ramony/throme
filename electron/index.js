@@ -19,7 +19,7 @@ function createWindow() {
         height: 800,
         webPreferences: {
             webSecurity: false,
-            nodeIntegration: false,
+            nodeIntegration: true,
             preload: path.join(__dirname, 'preload.js')
         }
     })
@@ -29,7 +29,8 @@ function createWindow() {
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'))
     } else {
         // 加载应用----适用于 react 项目
-        mainWindow.loadURL('https://www.michaels.com/');
+        mainWindow.loadURL('http://localhost:5173/');
+        mainWindow.webContents.openDevTools()
     }
     // mainWindow.maximize();
 
