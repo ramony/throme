@@ -23,16 +23,15 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js')
         }
     })
-    if (mode === 'dev') {
-        // 加载应用----适用于 react 项目
-        mainWindow.loadURL('http://localhost:5173/');
-        mainWindow.maximize();
-    } else {
+    console.log('mode', mode)
+    if (app.isPackaged) {
         // 加载应用-----react项目打包后的路径
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'))
+    } else {
+        // 加载应用----适用于 react 项目
+        mainWindow.loadURL('https://www.michaels.com/');
     }
-
-    mainWindow.maximize();
+    // mainWindow.maximize();
 
     // 打开开发者工具，默认不打开
     // mainWindow.webContents.openDevTools()
