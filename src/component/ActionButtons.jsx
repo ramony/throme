@@ -26,7 +26,7 @@ const ActionButtons = observer(() => {
         <AddIcon onClick={openLink}>Open</AddIcon>
         <NavigateNextIcon onClick={handleNext} >Next</NavigateNextIcon>
         <DownloadIcon onClick={() => setOpen(true)} >Download</DownloadIcon>
-        <Switch checked={autoDisplay} onChange={(e) => setAutoDisplay(e.target.checked)} size="small" />
+        <Switch checked={autoDisplay} onChange={(e) => setAutoDisplay(e.target.checked)} size="small" color="warning" />
         <div className="Listing-Tips">{totalPages}</div>
       </div>
       <Download setOpen={setOpen} open={open} />
