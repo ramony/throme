@@ -5,12 +5,12 @@ const API_HOST = 'http://localhost:30080/api/v1/';
 const LocalCache = {
   marked(key) {
     if (key) {
-      sessionStorage.setItem(key, 1)
+      localStorage.setItem(key, 1)
     }
   },
   exist(key) {
     if (key) {
-      return !!sessionStorage.getItem(key)
+      return !!localStorage.getItem(key)
     }
     return false
   }

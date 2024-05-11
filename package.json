@@ -2,15 +2,11 @@
   "name": "throme",
   "private": true,
   "version": "1.0.0",
-  "main": "dist-electron/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "buildapp": "vite build && electron-builder -m",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "start-devnp": "electron . dev",
-    "start": "electron ."
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -27,45 +23,11 @@
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
-    "electron": "^29.1.5",
-    "electron-builder": "^24.13.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "vite": "^5.2.2",
-    "vite-electron-plugin": "^0.8.3",
-    "vite-plugin-electron-renderer": "^0.14.5"
-  },
-  "build": {
-    "appId": "app.desktop",
-    "productName": "throme",
-    "asar": true,
-    "copyright": "Copyright © 2024 electron",
-    "directories": {
-      "buildResources": "assets",
-      "output": "release/"
-    },
-    "files": [
-      "dist-electron/**/*",
-      "dist/**/*"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "artifactName": "${thromeName}_${version}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": true,
-      "deleteAppDataOnUninstall": false
-    }
+    "vite-electron-plugin": "^0.8.3"
   }
 }
