@@ -21,7 +21,7 @@ const Detail = observer(() => {
           if (item.contentIdString) {
             actions =
               <div className="Content-Button-Box">
-                <ClearIcon onClick={() => closeContent(index, item)} >Close {item.contentIdString}</ClearIcon>
+                <ClearIcon onClick={() => markLaterContent(index, item)} >Close {item.contentIdString}</ClearIcon>
                 <DeleteForeverIcon onClick={() => removeContent(index, item)} >Delete {item.contentIdString}</DeleteForeverIcon>
                 {item.downloaded ? <GradeIcon onClick={() => likeContent(index, item)}>Like {item.contentIdString}</GradeIcon> : <></>}
                 <span onClick={() => window.open(item.contentUrl)}>{item.contentIdString}</span>

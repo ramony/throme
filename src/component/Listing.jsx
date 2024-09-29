@@ -9,7 +9,6 @@ const Listing = observer(() => {
 
   const appStore = useContext(AppContext);
   const [hover, setHover] = useState({});
-  const [clickedItem, setClickItem] = useState("");
 
   function mouseOver(index) {
     setHover({ [index]: '1' })
@@ -19,9 +18,8 @@ const Listing = observer(() => {
     setHover({ [index]: '' })
   }
 
-  function itemClick(item, index) {
-    appStore.handleUrl(item.urlFn || item.url)
-    setClickItem(item.url + index)
+  function itemClick(index) {
+    appStore.handleItemSelected(index);
   }
 
   function scroll(e) {
@@ -43,7 +41,8 @@ const Listing = observer(() => {
     if (hover[index]) {
       classes.push('Listing-Item-Hover')
     }
-    if (clickedItem === item.url + index) {
+    let { listingSelected } = appStore;
+    if (listingSelected.url + listingSelected.index === item.url + index) {
       classes.push('Listing-Item-Click')
     }
     return classes.join(' ')
@@ -62,7 +61,7 @@ const Listing = observer(() => {
           let className = calcClassName(index, item)
           return <div className={className} key={item.key}
             onMouseOver={() => mouseOver(index)} onMouseOut={() => mouseOut(index)}
-            onClick={() => itemClick(item, index)} onContextMenu={(e) => openUrl(e, item.url)}>{item.title}</div>
+            onClick={() => itemClick(index)} onContextMenu={(e) => openUrl(e, item.url)}>{item.title}</div>
         })
       }
     </div>

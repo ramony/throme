@@ -10,6 +10,8 @@ class AppStore {
 
   listingData = [];
 
+  listingSelected = { index: -1 };
+
   contentData = [];
 
   loading = false;
@@ -35,6 +37,22 @@ class AppStore {
 
   handleEntry() {
     this.handleUrl(ConfigLoad.loadEntryPath());
+  }
+
+  async selectNextItem() {
+    let { index } = this.listingSelected;
+    if (index >= 0) {
+      this.handleItemSelected(index + 1);
+    }
+  }
+
+  async handleItemSelected(index) {
+    if (index >= this.listingData.length) {
+      return;
+    }
+    let item = this.listingData[index];
+    this.handleUrl(item.urlFn || item.url);
+    this.listingSelected = { url: item.url, index };
   }
 
   async handleUrl(urls, append) {
@@ -137,10 +155,17 @@ class AppStore {
     this.autoDisplay = value;
   }
 
-  closeContent(index, item) {
-    this.contentData.splice(index, 1);
+  markLaterContent(index, item) {
+    this.closeContent(index);
     let contentIds = item.contentIds;
     DataService.setLocalMarked(contentIds[0], contentIds[1]);
+  }
+
+  closeContent(index) {
+    this.contentData.splice(index, 1);
+    if (this.contentData.length == 0) {
+      this.selectNextItem();
+    }
   }
 
   closeAllContent() {
