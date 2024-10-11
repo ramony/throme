@@ -11,7 +11,7 @@ import '@/style/Detail.css';
 
 const Detail = observer(() => {
   const appStore = useContext(AppContext);
-  const { contentData, closeContent, removeContent, likeContent } = appStore;
+  const { contentData, markLaterContent, removeContent, likeContent } = appStore;
 
   return (
     <div className="Content">

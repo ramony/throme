@@ -5,6 +5,7 @@ import DataService from '@/service/DataService';
 import ContentParse from '@/service/ContentParse';
 import { bindClassMethods } from '@/utils/ClassUtils';
 import { nanoid } from 'nanoid'
+import ApiHost from '@/utils/ApiHost';
 
 class AppStore {
 
@@ -93,6 +94,9 @@ class AppStore {
 
   async handleUrlInner(url, append) {
     console.log('url', url)
+    if (url) {
+      url = url.replace('@apiHost@', ApiHost.GetAPIHost());
+    }
     let result = await this.contentParse.parse(url, append);
     if (!result) {
       return;
@@ -124,7 +128,8 @@ class AppStore {
       this.listingData.push(...result.listingData);
     } else {
       this.listingData = [...result.listingData];
-      this.contentData = []
+      this.listingSelected = { index: -1 };
+      this.contentData = [];
     }
   }
 

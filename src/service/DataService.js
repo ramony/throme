@@ -1,6 +1,5 @@
 import HttpClient from '@/utils/HttpClient';
-
-const API_HOST = 'http://localhost:30080/api/v1/';
+import ApiHost from '@/utils/ApiHost';
 
 const LocalCache = {
   marked(key) {
@@ -31,30 +30,30 @@ const DataService = {
   async markReadByDetailId(detailId, detailType) {
     console.log('markReadByDetailId', detailId, detailType)
     LocalCache.marked(DetailKeyFun(detailId, detailType));
-    return await HttpClient.postJSON(API_HOST + 'detail/markReadByDetailId', { detailId, detailType });
+    return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markReadByDetailId', { detailId, detailType });
   },
 
   async markScore(detailId, detailType, score) {
     LocalCache.marked(DetailKeyFun(detailId, detailType));
-    return await HttpClient.postJSON(API_HOST + 'detail/markScore', { detailId, detailType, score });
+    return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markScore', { detailId, detailType, score });
   },
 
   async markAllReadWithSameKeyword(callback) {
-    var result = await HttpClient.postJSON(API_HOST + 'detail/markAllReadWithSameKeyword', {});
+    var result = await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markAllReadWithSameKeyword', {});
     if (result.success) {
       callback(result.data);
     }
   },
 
   async checkKeywordRead(keyword, callback) {
-    var result = await HttpClient.getJSON(API_HOST + 'detail/checkKeywordRead/' + keyword);
+    var result = await HttpClient.getJSON(ApiHost.GetAPIHost() + '/detail/checkKeywordRead/' + keyword);
     if (result.success) {
       callback(result.data);
     }
   },
 
   async createDetail(rdata, callback, errorCallback) {
-    var result = await HttpClient.postJSON(API_HOST + 'detail/createDetail', rdata);
+    var result = await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/createDetail', rdata);
     if (result.success) {
       callback(result.data);
       return result.data.data;
@@ -65,11 +64,11 @@ const DataService = {
   },
 
   async createList(rdata) {
-    return await HttpClient.postJSON(API_HOST + 'listing/createList', rdata);
+    return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/listing/createList', rdata);
   },
 
   async listingExist(url) {
-    return await HttpClient.getJSON(API_HOST + 'listing/exist?pageUrl=' + url);
+    return await HttpClient.getJSON(ApiHost.GetAPIHost() + '/listing/exist?pageUrl=' + url);
   }
 
 }

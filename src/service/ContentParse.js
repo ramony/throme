@@ -23,6 +23,7 @@ class ContentParse {
   }
 
   async parse(contentUrl, append) {
+    contentUrl = Unsafe.fixExpiredUrl(contentUrl);
     contentUrl = this.filterUrl(contentUrl);
 
     if (!contentUrl) {
@@ -159,7 +160,7 @@ class ContentParse {
 
   async flatUrl(urls) {
     let theUrls = await Promise.all(urls.map(async (url) => {
-      if (url.startsWith('@')) {
+      if (url.startsWith('@@')) {
         let [fnDef, arg] = fnParser(url);
         return await fnDef(arg, this);
       } else {
