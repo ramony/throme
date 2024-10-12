@@ -56,9 +56,9 @@ const DataService = {
     var result = await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/createDetail', rdata);
     if (result.success) {
       callback(result.data);
-      return result.data.data;
+      return result.data;
     } else {
-      errorCallback(result.errMsg);
+      errorCallback(result.errorMsg);
       return 0;
     }
   },

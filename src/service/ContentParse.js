@@ -67,17 +67,22 @@ class ContentParse {
 
     let isListUrl = rule.target === 'listing';
     let responseData;
-    let { data, success, errMsg } = await HttpAdaptor.getHtml(contentUrl, params.encoding);
+    let { data, success, errorMsg } = await HttpAdaptor.getHtml(contentUrl, params.encoding);
     if (success) {
       document.getElementsByTagName("base")[0].setAttribute('href', contentUrl);
       if (rule.dataRule === 'json') {
-        responseData = JSON.parse(data).data;
+        let jData = JSON.parse(data);
+        if (jData.success == false) {
+          console.log('request throws errorCode:', jData.errorCode)
+          return;
+        }
+        responseData = jData.data;
       } else {
         responseData = htmlToJson(data, contentUrl, rule);
       }
       console.log('responseData', responseData.list.length, responseData);
     } else {
-      let list = [{ "title": "Can't visit " + contentUrl + ", error:" + errMsg }];
+      let list = [{ "title": "Can't visit " + contentUrl + ", error:" + errorMsg }];
       responseData = { list }
     }
     let list = this.convertByInterceptor(responseData.list)

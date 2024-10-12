@@ -1,6 +1,13 @@
 
 const CreateSuccess = (data) => ({ success: true, data: data });
-const CreateFail = (errMsg) => ({ success: false, errMsg: errMsg });
+const CreateFail = (errorMsg) => ({ success: false, errorCode: '999', errorMsg: errorMsg });
+const CreateJson = (jsonData) => {
+  console.log('jsonData.success', jsonData.success)
+  if (jsonData.success == undefined) {
+    return { success: true, data: jsonData };
+  }
+  return jsonData;
+};
 
 const HttpClient = {
 
@@ -28,7 +35,7 @@ const HttpClient = {
         }
       });
       const data = await res.json();
-      return CreateSuccess(data);
+      return CreateJson(data);
     } catch (e) {
       console.log(endpoint + " getJSON error, " + e)
       return CreateFail(e);
@@ -45,7 +52,7 @@ const HttpClient = {
         body: JSON.stringify(rdata || {})
       })
       const data = await res.json();
-      return CreateSuccess(data);
+      return CreateJson(data);
     } catch (e) {
       console.log(endpoint + " getJSON error, " + e)
       return CreateFail(e);

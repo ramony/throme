@@ -23,6 +23,10 @@ export default defineConfig({
     hmr: {
       overlay: true
     }
+  },
+  build: {
+    target: 'esnext', // 根据需要设置目标浏览器版本
+    minify: false // 禁用代码压缩
   }
 
 })

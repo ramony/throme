@@ -19,7 +19,6 @@ const Unsafe = {
       console.log('newUrl', newUrl)
       return newUrl;
     } catch (e) {
-      console.log('error', e)
       return url;
     }
   }
