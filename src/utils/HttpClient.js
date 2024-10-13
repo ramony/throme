@@ -9,11 +9,24 @@ const CreateJson = (jsonData) => {
   return jsonData;
 };
 
+const DEFAULT_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9...."
+
+const GetJwtToken = () => {
+  let token = localStorage.getItem('token');
+  if (token && token.indexOf('Bearer') == -1) {
+    token = "Bearer " + token;
+  }
+  return token || DEFAULT_TOKEN;
+}
+
 const HttpClient = {
 
   async getHtml(endpoint, encoding) {
     let params = {
-      headers: { 'content-type': "text/html;charset=" + encoding }
+      headers: {
+        'content-type': "text/html;charset=" + encoding,
+        'Authorization': GetJwtToken()
+      }
     }
     try {
       const res = await fetch(endpoint, params);
@@ -31,7 +44,8 @@ const HttpClient = {
       const res = await fetch(endpoint, {
         method: 'get',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': GetJwtToken()
         }
       });
       const data = await res.json();
@@ -47,7 +61,8 @@ const HttpClient = {
       const res = await fetch(endpoint, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': GetJwtToken()
         },
         body: JSON.stringify(rdata || {})
       })
