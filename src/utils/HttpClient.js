@@ -9,14 +9,14 @@ const CreateJson = (jsonData) => {
   return jsonData;
 };
 
-const DEFAULT_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9...."
+const DEFAULT_API_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9...."
 
 const GetJwtToken = () => {
-  let token = localStorage.getItem('token');
-  if (token && token.indexOf('Bearer') == -1) {
-    token = "Bearer " + token;
+  let apiToken = localStorage.getItem('apiToken');
+  if (apiToken && apiToken.indexOf('Bearer') == -1) {
+    apiToken = "Bearer " + apiToken;
   }
-  return token || DEFAULT_TOKEN;
+  return apiToken || DEFAULT_API_TOKEN;
 }
 
 const HttpClient = {
