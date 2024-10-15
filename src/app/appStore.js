@@ -160,12 +160,6 @@ class AppStore {
     this.autoDisplay = value;
   }
 
-  markLaterContent(index, item) {
-    this.closeContent(index);
-    let contentIds = item.contentIds;
-    DataService.setLocalMarked(contentIds[0], contentIds[1]);
-  }
-
   closeContent(index) {
     this.contentData.splice(index, 1);
     if (this.contentData.length == 0) {
@@ -183,9 +177,9 @@ class AppStore {
     this.closeContent(index);
   }
 
-  likeContent(index, item) {
+  markLaterContent(index, item) {
     let contentIds = item.contentIds;
-    DataService.markScore(contentIds[0], contentIds[1], 10)
+    DataService.markReadLater(contentIds[0], contentIds[1], 10)
     this.closeContent(index);
   }
 

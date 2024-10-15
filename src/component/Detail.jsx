@@ -5,7 +5,7 @@ import AppContext from '@/app/appContext';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import GradeIcon from '@mui/icons-material/Grade';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 
 import '@/style/Detail.css';
 
@@ -23,7 +23,7 @@ const Detail = observer(() => {
               <div className="Content-Button-Box">
                 <ClearIcon onClick={() => markLaterContent(index, item)} >Close {item.contentIdString}</ClearIcon>
                 <DeleteForeverIcon onClick={() => removeContent(index, item)} >Delete {item.contentIdString}</DeleteForeverIcon>
-                {item.downloaded ? <GradeIcon onClick={() => likeContent(index, item)}>Like {item.contentIdString}</GradeIcon> : <></>}
+                {item.downloaded ? <DownloadDoneIcon onClick={() => likeContent(index, item)}>Done</DownloadDoneIcon> : <></>}
                 <span onClick={() => window.open(item.contentUrl)}>{item.contentIdString}</span>
               </div>
           }

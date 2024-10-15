@@ -9,7 +9,7 @@ const CreateJson = (jsonData) => {
   return jsonData;
 };
 
-const DEFAULT_API_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9...."
+const DEFAULT_API_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNzI4OTYxNDMwLCJleHAiOjE4MzI2NDE0MzB9.gAFO8Wdj6vih_4aXh1MtIUUrZZCY8eETmDzBUonaGig"
 
 const GetJwtToken = () => {
   let apiToken = localStorage.getItem('apiToken');
