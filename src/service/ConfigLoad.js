@@ -1,12 +1,18 @@
 import HttpClient from '@/utils/HttpClient';
 import { DataPaths } from '@/config/DataConfig';
 
+const loadFile = async (config) => {
+  return config.includes("yaml") ?
+    HttpClient.getYaml(config) : HttpClient.getJSON(config);
+}
+
 const ConfigLoad = {
   async loadRules() {
     if (!this.rules) {
       let rules = [];
       for (let config of DataPaths.rules) {
-        let fileRules = await HttpClient.getJSON(config);
+        let fileRules;
+        fileRules = await loadFile(config);
         if (!fileRules.success) {
           console.log('Fail to load rule config');
           return;
@@ -19,7 +25,7 @@ const ConfigLoad = {
   },
   async loadDownloads() {
     if (!this.downloads) {
-      let config = await HttpClient.getJSON(DataPaths.download);
+      let config = await loadFile(config);
       if (!config.success) {
         console.log('Fail to load download config');
         return { list: [] };
