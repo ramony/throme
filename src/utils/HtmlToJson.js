@@ -25,7 +25,7 @@ function htmlConvert(html, url, htmlReplace) {
   let dom = document.createElement('div');
   if (htmlReplace) {
     for (let it of htmlReplace) {
-      html = html.replace(new RegExp(it[0], 'gi'), it[1]);
+      html = html.replace(new RegExp(it.source, 'gi'), it.target);
     }
   }
   dom.innerHTML = html;
@@ -83,7 +83,6 @@ function splitRule(rule) {
   return [selector, attr];
 }
 
-
 function getData(node, attr, baseUrl) {
   let data = "";
   if (attr === 'text') {
@@ -97,6 +96,7 @@ function getData(node, attr, baseUrl) {
   }
   return data;
 }
+
 function trimHtmlTag(html) {
   html = html.replace(/<meta[^>]+>/ig, '');
   html = html.replace(/<link[^>]+>/ig, '');
