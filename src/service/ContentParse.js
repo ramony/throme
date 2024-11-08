@@ -41,6 +41,10 @@ class ContentParse {
       return;
     }
 
+    if (urlRule.rule.replaceHost) {
+      contentUrl = contentUrl.replace(/http[s]{0,1}:\/\/[^\/]+\//, urlRule.rule.replaceHost)
+    }
+
     console.log('get parser for contentUrl:' + contentUrl);
     return this.sendRequest(contentUrl, urlRule);
   }

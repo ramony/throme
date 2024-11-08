@@ -1,6 +1,5 @@
 import { nextFunMap, findOnUrl } from '@/utils/NextFunMap';
-import { fnParser } from '@/utils/FnParser';
-import { getType } from '@/utils/Prototype';
+
 import * as cheerio from 'cheerio';
 
 
@@ -36,12 +35,18 @@ function htmlConvert(html, url, htmlReplace) {
 function parseRule(baseUrl, $, rule, context) {
   if (typeof rule === 'string') {
     // 处理简单的选择器字符串
-    let [selector, attr] = splitRule(rule);
-    let it = $(selector, context);
-    if (attr) {
-      return getData(it, attr, baseUrl);
+    let [selector, removeSelector, attr, convertFn] = splitRule(rule);
+    let it = selector ? $(selector, context) : $(context);
+    if (removeSelector) {
+      parseRemove($, it, removeSelector)
     }
-    return it.text().trim();
+    let data = getData(it, attr, baseUrl);
+    if (convertFn) {
+      let [name, ...param] = convertFn.split(/[ ]+/g)
+      param = param.map(it => it === '$url' ? baseUrl : it)
+      return nextFunMap[name](data, ...param)
+    }
+    return data;
   } else if (rule.selector) {
     // 处理列表，每个子元素递归解析
     const result = [];
@@ -75,22 +80,37 @@ function parseRule(baseUrl, $, rule, context) {
   }
 }
 
+function parseRemove($, context, removeSelector) {
+  $(removeSelector, context).each((i, item) => {
+    $(item).html('')
+  })
+}
+
 function splitRule(rule) {
-  let [selector, attr] = [rule, null, null];
+  let [selector, removeSelector, attr, convertFn] = [rule, null, null, null];
+  if (selector.includes("@")) {
+    [selector, convertFn] = selector.split("@");
+  }
   if (selector.includes("/")) {
     [selector, attr] = selector.split("/");
   }
-  return [selector, attr];
+  if (selector.includes("!")) {
+    [selector, removeSelector] = selector.split("!");
+  }
+  return [selector, removeSelector, attr, convertFn];
 }
 
 function getData(node, attr, baseUrl) {
   let data = "";
-  if (attr === 'text') {
-    data = node.text();
-  } else if (attr === 'html') {
+  if (!attr || attr === 'html') {
     data = node.html();
-  } else if (attr === 'fullhref') {
-    data = new URL(node.attr('href'), baseUrl).href
+  } else if (attr === 'text') {
+    data = node.text();
+  } else if (attr === 'href') {
+    data = node.attr('href')
+    if (baseUrl?.includes("http")) {
+      data = new URL(data, baseUrl).href
+    }
   } else {
     data = node.attr(attr);
   }

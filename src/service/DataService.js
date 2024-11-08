@@ -23,19 +23,15 @@ const DataService = {
     return LocalCache.exist(DetailKeyFun(detailId, detailType));
   },
 
-  setLocalMarked(detailId, detailType) {
-    LocalCache.marked(DetailKeyFun(detailId, detailType));
-  },
-
   async markReadByDetailId(detailId, detailType) {
     console.log('markReadByDetailId', detailId, detailType)
-    LocalCache.marked(DetailKeyFun(detailId, detailType));
+    //LocalCache.marked(DetailKeyFun(detailId, detailType));
     return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markReadByDetailId', { detailId, detailType });
   },
 
   async markReadLater(detailId, detailType, score) {
     console.log('markReadLater', detailId, detailType)
-    LocalCache.marked(DetailKeyFun(detailId, detailType));
+    //LocalCache.marked(DetailKeyFun(detailId, detailType));
     return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markReadLater', { detailId, detailType, score });
   },
 
