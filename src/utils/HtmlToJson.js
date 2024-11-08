@@ -39,7 +39,7 @@ function parseRule(baseUrl, $, rule, context) {
     let [selector, attr] = splitRule(rule);
     let it = $(selector, context);
     if (attr) {
-      return getData(it, attr);
+      return getData(it, attr, baseUrl);
     }
     return it.text().trim();
   } else if (rule.selector) {

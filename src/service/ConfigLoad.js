@@ -1,5 +1,4 @@
 import HttpClient from '@/utils/HttpClient';
-import { DataPaths } from '@/config/DataConfig';
 
 const loadFile = async (config) => {
   return config.includes("yaml") ?
@@ -7,10 +6,19 @@ const loadFile = async (config) => {
 }
 
 const ConfigLoad = {
+
+  async loadAppConfig(key) {
+    if (!this.config) {
+      this.config = await loadFile("config.yaml");;
+    }
+    return this.config.data[key];
+  },
+
   async loadRules() {
     if (!this.rules) {
       let rules = [];
-      for (let config of DataPaths.rules) {
+      let ruleFilePaths = await this.loadAppConfig('rules');
+      for (let config of ruleFilePaths) {
         let fileRules;
         fileRules = await loadFile(config);
         if (!fileRules.success) {
@@ -25,7 +33,8 @@ const ConfigLoad = {
   },
   async loadDownloads() {
     if (!this.downloads) {
-      let config = await loadFile(config);
+      let downloadConfigPath = await this.loadAppConfig('download')
+      let config = await loadFile(downloadConfigPath);
       if (!config.success) {
         console.log('Fail to load download config');
         return { list: [] };
@@ -34,8 +43,8 @@ const ConfigLoad = {
     }
     return this.downloads;
   },
-  loadEntryPath() {
-    return DataPaths.entry;
+  async loadEntryPath() {
+    return await this.loadAppConfig('entry');
   }
 }
 
