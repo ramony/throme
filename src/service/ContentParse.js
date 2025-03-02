@@ -22,7 +22,7 @@ class ContentParse {
     return DataService.checkLocalMarked(...contentIds)
   }
 
-  async parse(contentUrl, append) {
+  async parse(contentUrl) {
     contentUrl = Unsafe.fixExpiredUrl(contentUrl);
     contentUrl = this.filterUrl(contentUrl);
 
@@ -37,7 +37,7 @@ class ContentParse {
       return { unMatched: true };
     }
 
-    if (this.checkUrlRead(urlRule.contentIds) && append) {
+    if (this.checkUrlRead(urlRule.contentIds)) {
       return;
     }
 

@@ -46,6 +46,10 @@ class DownloadStore {
       if (!item.checked) {
         continue;
       }
+      item.from = parseInt(item.from)
+      item.to = parseInt(item.to)
+
+      this.addLogs(`Start ${item.title} from ${item.from} to ${item.to}`);
       for (let i = item.from; i < item.to; i++) {
         let url = item.url.replace("{pageNo}", i);
         // this.addLogs(`Start to download ${url}`)

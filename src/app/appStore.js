@@ -4,7 +4,7 @@ import ConfigLoad from '@/service/ConfigLoad';
 import DataService from '@/service/DataService';
 import ContentParse from '@/service/ContentParse';
 import { bindClassMethods } from '@/utils/ClassUtils';
-import { nanoid } from 'nanoid'
+import ThreadPool from '@/utils/ThreadPool'
 import ApiHost from '@/utils/ApiHost';
 
 class AppStore {
@@ -28,6 +28,13 @@ class AppStore {
   constructor() {
     makeAutoObservable(this);
     bindClassMethods(this);
+    this.threadPool = new ThreadPool(1, this.loadingSwitch(true), this.loadingSwitch(false));
+  }
+
+  loadingSwitch(flag) {
+    return () => {
+      runInAction(() => this.loading = flag)
+    }
   }
 
   async loadConfig() {
@@ -65,18 +72,29 @@ class AppStore {
     if (!Object.prototype.toString.call(urls).includes('Array')) {
       urls = [urls];
     }
-    runInAction(() => this.loading = true);
+    // runInAction(() => this.loading = true);
     urls = await this.contentParse.flatUrl(urls);
     if (urls.length > 0) {
       if (!append) {
         //reset list view.
-        await this.handleUrlInner(urls.shift(), false);
+        const url = urls.shift();
+        // await this.handleUrlInner(urls.shift(), false);
+        this.threadPool.submit(async () => {
+          await this.handleUrlInner(url, false)
+        })
       }
       if (urls.length > 0) {
-        await Promise.all(urls.map(url => this.handleUrlInner(url, true)));
+        //  await Promise.all(urls.map(url => this.handleUrlInner(url, true)));
+        for (const url of urls) {
+          //await this.handleUrlInner(url, true)
+          this.threadPool.submit(async () => {
+            await this.handleUrlInner(url, true)
+          })
+        };
+
       }
     }
-    runInAction(() => this.loading = false);
+    //runInAction(() => this.loading = false);
   }
 
   async handleNext() {
@@ -98,7 +116,7 @@ class AppStore {
     if (url) {
       url = url.replace('@apiHost@', ApiHost.GetAPIHost());
     }
-    let result = await this.contentParse.parse(url, append);
+    let result = await this.contentParse.parse(url);
     if (!result) {
       return;
     }
@@ -110,7 +128,7 @@ class AppStore {
       this.totalPages = result.totalPages;
       runInAction(() => this.handleListingData(result, append));
       this.listingNext = result.listingNext;
-      if (this.autoDisplay && result?.autoDisplayList) {
+      if (this.autoDisplay /**&& result?.autoDisplayList**/) {
         console.log('auto display count:', result.listingData.length);
         const itemUrls = result.listingData.map(item => item.url);
         setTimeout(async () => this.handleUrl(itemUrls, true), 1)
@@ -180,7 +198,7 @@ class AppStore {
 
   markLaterContent(index, item) {
     let contentIds = item.contentIds;
-    DataService.markReadLater(contentIds[0], contentIds[1], 10)
+    //DataService.markReadLater(contentIds[0], contentIds[1], 10)
     this.closeContent(index);
   }
 
