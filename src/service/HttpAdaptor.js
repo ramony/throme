@@ -10,7 +10,8 @@ const HttpAdaptor = {
       aUrl = "http://localhost:3000/" + url;
       return await HttpClient.getHtml(aUrl, encoding);
     }
-    return await getHtml(encoding, aUrl);
+    let result = await getHtml(encoding, aUrl);
+    return result;
   }
 
 }

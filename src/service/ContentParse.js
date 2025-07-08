@@ -69,7 +69,7 @@ class ContentParse {
     let responseData;
     let { data, success, errorMsg } = await HttpAdaptor.getHtml(contentUrl, params.encoding);
     if (success) {
-      document.getElementsByTagName("base")[0].setAttribute('href', contentUrl);
+      //document.getElementsByTagName("base")[0].setAttribute('href', contentUrl);
       if (rule.dataRule === 'json') {
         let jData = JSON.parse(data);
         if (jData.success == false) {
@@ -85,7 +85,7 @@ class ContentParse {
       let list = [{ "title": "Can't visit " + contentUrl + ", error:" + errorMsg }];
       responseData = { list }
     }
-    let list = this.convertByInterceptor(responseData.list)
+    let list = responseData.list;
     if (isListUrl) {
       let listingData = this.processListingData(list);
       let listingNext = this.convertUrl(responseData.next);
