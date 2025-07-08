@@ -106,7 +106,7 @@ dist
 .tern-port
 
 .idea
-/public/configdata/*.json
+/public/configdata/*.*
 /public/thirdparty/*.js
 
 .DS_Store
