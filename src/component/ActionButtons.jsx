@@ -1,7 +1,7 @@
 import { useState, useContext } from "react"
 import { observer } from 'mobx-react';
 
-import AppContext from '@/app/appContext';
+import AppContext from '@/global/appContext';
 
 import { Switch } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';

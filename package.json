@@ -1,33 +1,31 @@
 {
   "name": "throme",
+  "version": "0.1.0",
   "private": true,
-  "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.14",
-    "@mui/material": "^5.15.14",
-    "mobx": "^6.12.0",
-    "mobx-react": "^9.1.0",
-    "nanoid": "^5.0.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "i": "^0.3.7",
+    "install": "^0.13.0",
+    "js-yaml": "^4.1.0",
+    "mobx": "^6.13.7",
+    "mobx-react": "^9.2.0",
+    "nanoid": "^5.1.5",
+    "next": "15.3.5",
+    "npm": "^11.4.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.6",
-    "vite": "^5.2.2",
-    "vite-electron-plugin": "^0.8.3"
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4"
   }
 }

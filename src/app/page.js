@@ -1,16 +1,20 @@
+"use client"
+
+import '@/style/index.css';
+
 import '@/style/App.css';
 
 import React, { useState } from "react"
 
-import Container from './component/Container';
+import Container from '@/component/Container';
 
-import { theme } from './config/ThromeConfig';
+import { theme } from '@/config/ThromeConfig';
 import { ThemeProvider } from '@mui/material/styles';
 
-import { AppStore } from '@/app/appStore'
-import AppContext from '@/app/appContext'
+import { AppStore } from '@/global/appStore'
+import AppContext from '@/global/appContext'
 
-function App() {
+export default function Home() {
   const [appStore] = useState(new AppStore());
 
   return (
@@ -26,5 +30,3 @@ function App() {
   );
 
 }
-
-export default App;

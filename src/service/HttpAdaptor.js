@@ -1,18 +1,16 @@
+import getHtml from '@/utils/ServerHttpClient';
 import HttpClient from '@/utils/HttpClient';
 
-const needHttpProxy = (endpoint) => {
-  let { href } = window.location;
-  return !href.includes("chrome-extension://") && endpoint.includes("http");
-}
 
 const HttpAdaptor = {
 
-  async getHtml(endpoint, encoding) {
-    if (needHttpProxy(endpoint)) {
-      //electron supports CORS
-      // endpoint = "http://localhost:8888/302?url=" + encodeURIComponent(endpoint);
+  async getHtml(url, encoding) {
+    let aUrl = url
+    if (!url.startsWith("http")) {
+      aUrl = "http://localhost:3000/" + url;
+      return await HttpClient.getHtml(aUrl, encoding);
     }
-    return HttpClient.getHtml(endpoint, encoding);
+    return await getHtml(encoding, aUrl);
   }
 
 }

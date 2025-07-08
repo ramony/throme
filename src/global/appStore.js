@@ -36,8 +36,9 @@ class AppStore {
     this.contentParse = new ContentParse(rules);
   }
 
-  handleEntry() {
-    this.handleUrl(ConfigLoad.loadEntryPath());
+  async handleEntry() {
+    var entryUrl = await ConfigLoad.loadEntryPath();
+    this.handleUrl(entryUrl);
   }
 
   async selectNextItem() {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { observer } from 'mobx-react';
 
-import DownloadStore from '@/app/downloadStore';
+import DownloadStore from '@/global/downloadStore';
 
 import { DialogTitle, Dialog, Button, ButtonGroup, Switch, TextField, Checkbox } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -15,7 +15,7 @@ const Download = observer((props) => {
   const SmallText = { width: "80px" };
 
   useEffect(() => {
-    downloadStore.loadConfig();
+    //downloadStore.loadConfig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

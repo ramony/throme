@@ -1,3 +1,6 @@
+// "use server"
+
+import jsYaml from 'js-yaml';
 
 const CreateSuccess = (data) => ({ success: true, data: data });
 const CreateFail = (errorMsg) => ({ success: false, errorCode: '999', errorMsg: errorMsg });
@@ -56,6 +59,7 @@ const HttpClient = {
     }
   },
 
+
   async postJSON(endpoint, rdata) {
     try {
       const res = await fetch(endpoint, {
@@ -72,8 +76,24 @@ const HttpClient = {
       console.log(endpoint + " getJSON error, " + e)
       return CreateFail(e);
     }
-  }
+  },
 
+  async getYaml(endpoint) {
+    try {
+      const res = await fetch(endpoint, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/yaml'
+        }
+      });
+      const content = await res.text();
+      const data = jsYaml.load(content);
+      return CreateJson(data);
+    } catch (e) {
+      console.log(endpoint + " getJSON error, " + e)
+      return CreateFail(e);
+    }
+  },
 }
 
 export default HttpClient

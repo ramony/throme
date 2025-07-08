@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react'
 
-import AppContext from '@/app/appContext';
+import AppContext from '@/global/appContext';
 
 import Detail from '@/component/Detail';
 import DetailButtons from '@/component/DetailButtons';

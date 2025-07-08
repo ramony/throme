@@ -1,7 +1,7 @@
 import { useState, useContext } from "react"
 import { observer } from 'mobx-react';
 
-import AppContext from '@/app/appContext';
+import AppContext from '@/global/appContext';
 
 import '@/style/Listing.css';
 

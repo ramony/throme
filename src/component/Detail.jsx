@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { observer } from 'mobx-react';
 
-import AppContext from '@/app/appContext';
+import AppContext from '@/global/appContext';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
