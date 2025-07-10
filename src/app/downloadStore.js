@@ -77,7 +77,8 @@ class DownloadStore {
         continue;
       }
       item.readFlag = 0;
-      if (skipTitleKeyword && item.title.includes(skipTitleKeyword)) {
+      let title = item.title;
+      if (skipTitleKeyword && skipTitleKeyword.split(",").some(kw => title.includes(kw))) {
         console.log('skip ' + item.title);
         item.readFlag = 1;
       }

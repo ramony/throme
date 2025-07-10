@@ -34,10 +34,12 @@ class ContentParse {
 
     let urlRule = this.ruleMatcher.match(contentUrl)
     if (!urlRule.rule) {
+      console.log('rule not matched:' + contentUrl);
       return { unMatched: true };
     }
 
     if (this.checkUrlRead(urlRule.contentIds)) {
+      console.log('checkUrlRead:' + contentUrl);
       return;
     }
 

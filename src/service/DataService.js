@@ -31,8 +31,8 @@ const DataService = {
 
   async markReadLater(detailId, detailType, score) {
     console.log('markReadLater', detailId, detailType)
-    //LocalCache.marked(DetailKeyFun(detailId, detailType));
-    return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markReadLater', { detailId, detailType, score });
+    LocalCache.marked(DetailKeyFun(detailId, detailType));
+    //return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markReadLater', { detailId, detailType, score });
   },
 
   async markAllReadWithSameKeyword(callback) {
