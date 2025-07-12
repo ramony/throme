@@ -155,7 +155,7 @@ class ContentParse {
     if (!parsedUrl) {
       return null;
     }
-    if (!/^http/.test(parsedUrl)) {
+    if (!/^(http|query)/.test(parsedUrl)) {
       var a = document.createElement('a');
       a.setAttribute('href', parsedUrl);
       parsedUrl = a.href;

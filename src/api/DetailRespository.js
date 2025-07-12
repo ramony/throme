@@ -1,10 +1,9 @@
 "use server"
 
-const mysql2 = require('mysql2');
-import { Sequelize, DataTypes } from 'sequelize';
+import { Sequelize, DataTypes, Op } from 'sequelize';
 
 // 初始化连接
-const sequelize = new Sequelize('testdb', 'testuser', 'testpass', {
+const sequelize = new Sequelize('throme', 'testuser', 'testpass', {
   host: 'localhost',
   port: 3306,
   dialect: 'mysql', // 指定数据库类型,=
@@ -82,26 +81,86 @@ const Detail = sequelize.define('Detail', {
 });
 
 
-//await sequelize.sync({ force: true }); // 开发环境使用，生产环境慎用
-
-
-// 从环境变量读取配置（推荐做法）
-// const config = {
-//   host: process.env.DB_HOST || 'localhost',
-//   user: process.env.DB_USER || 'testuser',
-//   password: process.env.DB_PASSWORD || 'testpass',
-//   database: process.env.DB_NAME || 'testdb',
-//   port: process.env.DB_PORT || 3306
-// };
-
+/***
+ *  
+ */
 export async function queryApi(query) {
-  let result = await Detail.findAll({ where: query });
-  return result;
+  if (query['maxId'] != null) {
+    let maxId = query['maxId'];
+    delete query['maxId'];
+    query = { ...query, detailOrder: { [Op.lt]: maxId } }
+  }
+  if (query['readFlag'] == null) {
+    query['readFlag'] = 0
+  }
+  console.log('query', query)
+  const pageSize = 20;
+  console.log('query', query)
+  let { count, rows } = await Detail.findAndCountAll({
+    where: query,
+    limit: pageSize,              // 每页数量
+    order: [['detailOrder', 'DESC']], // 排序（重要！确保分页顺序稳定）
+  });
+  let pageCount = Math.ceil(count / pageSize)
+  let next = '';
+  if (rows.length > 0) {
+    let minId = rows.reduce((min, item) => {
+      return Math.min(min, item.detailOrder);
+    }, Number.MAX_SAFE_INTEGER);
+
+    rows = rows.map(detail => {
+      let item = detail.toJSON();
+      return {
+        title: '[' + item.pageNo + ']' + item.detailTitle,
+        url: item.detailUrl
+      }
+    });
+    //{ [Op.lt]: minId }
+    query = { ...query, maxId: minId };
+    next = "query(" + JSON.stringify(query) + ")"
+  }
+
+  let result = {
+    success: true,
+    data: {
+      list: rows,
+      next: next,
+      totalPages: pageCount
+    }
+  }
+
+  return JSON.stringify(result);
 }
 
-export async function markReadByDetailIdApi(params) {
+export async function markReadByDetailIdApi(detailType, detailId) {
+  // 1. 查询记录
+  const detail = await Detail.findOne({
+    where: { detailType: detailType, detailId: detailId },
+  });
+  console.log(detailType, detailId, detail)
 
+  // 2. 存在则更新
+  if (detail) {
+    await detail.update(
+      { readFlag: 1 }
+    );
+  }
 }
+
+export async function markReadLaterByDetailIdApi(detailType, detailId) {
+  // 1. 查询记录
+  const detail = await Detail.findOne({
+    where: { detailType: detailType, detailId: detailId },
+  });
+  console.log('markReadLaterByDetailIdApi', detailType, detailId, detail != null)
+  // 2. 存在则更新
+  if (detail) {
+    await detail.update(
+      { readFlag: 9 }
+    );
+  }
+}
+
 
 export async function createDetailApi(rdata) {
   let time = new Date();

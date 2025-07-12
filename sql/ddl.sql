@@ -1,6 +1,6 @@
 -- detail 
 
-CREATE TABLE `detail` (
+CREATE TABLE `details` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `detail_type` varchar(10) NOT NULL,
   `detail_id` varchar(100) NOT NULL,

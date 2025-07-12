@@ -3,6 +3,7 @@ npm install @mui/material @emotion/react @emotion/styled npm install @mui/icons-
 
 docker-compose -f docker-compose-mysql.yml up -d
 
+docker-compose up -d
 
 npm install --save sequelize
 

@@ -1,4 +1,4 @@
-import { createDetailApi, queryApi } from '@/api/DetailRespository';
+import { createDetailApi, queryApi, markReadByDetailIdApi, markReadLaterByDetailIdApi } from '@/api/DetailRespository';
 import ApiHost from '@/utils/ApiHost';
 
 const LocalCache = {
@@ -15,6 +15,14 @@ const LocalCache = {
   }
 }
 
+const CreateJson = (jsonData) => {
+  console.log('jsonData.success', jsonData.success)
+  if (jsonData.success == undefined) {
+    return { success: true, data: jsonData };
+  }
+  return jsonData;
+};
+
 const DetailKeyFun = (detailId, detailType) => (detailType + '-' + detailId);
 
 const DataService = {
@@ -28,15 +36,11 @@ const DataService = {
   },
 
   async markReadByDetailId(detailId, detailType) {
-    console.log('markReadByDetailId', detailId, detailType)
-    LocalCache.marked(DetailKeyFun(detailId, detailType));
-    return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markReadByDetailId', { detailId, detailType });
+    return await markReadByDetailIdApi(detailType, detailId);
   },
 
   async markReadLater(detailId, detailType, score) {
-    console.log('markReadLater', detailId, detailType)
-    LocalCache.marked(DetailKeyFun(detailId, detailType));
-    return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/markReadLater', { detailId, detailType, score });
+    return await markReadLaterByDetailIdApi(detailType, detailId);
   },
 
   async markAllReadWithSameKeyword(callback) {
@@ -65,10 +69,11 @@ const DataService = {
     }
   },
 
-  async queryDetail(query) {
-    return await queryApi(query);
-  }
 
+  async queryDetail(query) {
+    let queryResult = await queryApi(query);
+    return CreateJson(queryResult);
+  }
 
 }
 
