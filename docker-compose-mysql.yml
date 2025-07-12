@@ -16,3 +16,4 @@ services:
       - ../mysqldata/config:/etc/mysql/conf.d
       - ../mysqldata/data:/var/lib/mysql
       - ../mysqldata/init:/docker-entrypoint-initdb.d
+    restart: always  

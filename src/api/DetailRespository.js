@@ -3,8 +3,10 @@
 import { Sequelize, DataTypes, Op } from 'sequelize';
 
 // 初始化连接
+const host = process.env.DB_HOST || 'localhost';
+
 const sequelize = new Sequelize('throme', 'testuser', 'testpass', {
-  host: 'localhost',
+  host: host,
   port: 3306,
   dialect: 'mysql', // 指定数据库类型,=
   dialectModule: require('mysql2'),

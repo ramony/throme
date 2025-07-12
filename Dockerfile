@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装项目依赖
-RUN npm install
+# RUN npm install
 
 # 复制整个项目代码到容器中
 COPY . .
 
 # 构建 Next.js 项目
-RUN npm run build
+# RUN npm run build
 
 # 暴露 Next.js 应用默认的端口（通常是 3000）
 EXPOSE 3000
