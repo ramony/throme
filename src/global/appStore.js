@@ -6,6 +6,7 @@ import ContentParse from '@/service/ContentParse';
 import { bindClassMethods } from '@/utils/ClassUtils';
 import { nanoid } from 'nanoid'
 import ApiHost from '@/utils/ApiHost';
+import ThreadPool from '@/utils/ThreadPool'
 
 class AppStore {
 
@@ -28,8 +29,14 @@ class AppStore {
   constructor() {
     makeAutoObservable(this);
     bindClassMethods(this);
+    this.threadPool = new ThreadPool(3, this.loadingSwitch(true), this.loadingSwitch(false), 1);
   }
 
+  loadingSwitch(flag) {
+    return () => {
+      runInAction(() => this.loading = flag)
+    }
+  }
   async loadConfig() {
     console.log('loadConfig invoked');
     let rules = await ConfigLoad.loadRules()
@@ -57,7 +64,7 @@ class AppStore {
     this.listingSelected = { url: item.url, index };
   }
 
-  async handleUrl(urls, append) {
+  async handleUrl(urls, append, isListing) {
     console.log('handleUrl invoked');
     if (!urls || !this.contentParse) {
       return;
@@ -70,10 +77,23 @@ class AppStore {
     if (urls.length > 0) {
       if (!append) {
         //reset list view.
-        await this.handleUrlInner(urls.shift(), false);
+        const url = urls.shift();
+        // await this.handleUrlInner(urls.shift(), false);
+        this.threadPool.submit(async () => {
+          await this.handleUrlInner(url, false)
+        })
       }
       if (urls.length > 0) {
-        await Promise.all(urls.map(url => this.handleUrlInner(url, true)));
+        for (const url of urls) {
+          if (isListing) {
+            await this.handleUrlInner(url, true);
+            continue;
+          }
+          //await this.handleUrlInner(url, true)
+          this.threadPool.submit(async () => {
+            await this.handleUrlInner(url, true)
+          })
+        };
       }
     }
     runInAction(() => this.loading = false);
@@ -90,7 +110,7 @@ class AppStore {
     this.nextUrlVisitSet.add(url);
     console.log('handleNext invoked, url:', url);
 
-    this.handleUrl(url, true);
+    this.handleUrl(url, true, true);
   }
 
   async handleUrlInner(url, append) {
