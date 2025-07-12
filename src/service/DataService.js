@@ -1,4 +1,4 @@
-import HttpClient from '@/utils/HttpClient';
+import { createDetailApi, queryApi } from '@/api/DetailRespository';
 import ApiHost from '@/utils/ApiHost';
 
 const LocalCache = {
@@ -54,7 +54,8 @@ const DataService = {
   },
 
   async createDetail(rdata, callback, errorCallback) {
-    var result = await HttpClient.postJSON(ApiHost.GetAPIHost() + '/detail/createDetail', rdata);
+    var result = await createDetailApi(rdata);
+    console.log('result', result)
     if (result.success) {
       callback(result.data);
       return result.data;
@@ -64,13 +65,10 @@ const DataService = {
     }
   },
 
-  async createList(rdata) {
-    return await HttpClient.postJSON(ApiHost.GetAPIHost() + '/listing/createList', rdata);
-  },
-
-  async listingExist(url) {
-    return await HttpClient.getJSON(ApiHost.GetAPIHost() + '/listing/exist?pageUrl=' + url);
+  async queryDetail(query) {
+    return await queryApi(query);
   }
+
 
 }
 

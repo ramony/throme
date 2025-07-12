@@ -1,4 +1,4 @@
 entry: configData/entryPage.json
 rules:
   - configData/ruleConfig.yaml
-download: configData/download.yaml
+download: configData/download.json

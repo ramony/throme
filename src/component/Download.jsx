@@ -15,7 +15,7 @@ const Download = observer((props) => {
   const SmallText = { width: "80px" };
 
   useEffect(() => {
-    //downloadStore.loadConfig();
+    downloadStore.loadConfig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

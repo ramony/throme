@@ -1,0 +1,14 @@
+version: '3'
+services:
+  text-tools:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      # 在这里可以添加你的环境变量
+      # 例如：
+      # - NODE_ENV=production
+      # - API_URL=http://your-api-url
+      NODE_ENV: production
+    volumes:
+      - .:/app
